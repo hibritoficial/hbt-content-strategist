@@ -1,0 +1,33 @@
+{
+  "name": "hbt-content-strategist",
+  "version": "1.0.0",
+  "description": "Hibrit Copiloto Estrategista de Conteúdo Inteligente — Modo Instagram (v1)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "vercel-build": "npm run build"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.5",
+    "pinia": "^2.1.7",
+    "vuetify": "^3.4.0",
+    "@mdi/font": "^7.3.67",
+    "@vueuse/core": "^10.5.0",
+    "zod": "^3.22.4",
+    "dayjs": "^1.11.10",
+    "uuid": "^9.0.1",
+    "@supabase/supabase-js": "^2.38.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.0",
+    "vite": "^5.0.0",
+    "vite-plugin-vuetify": "^2.0.1",
+    "eslint": "^8.54.0",
+    "@vue/eslint-config-prettier": "^8.0.0",
+    "eslint-plugin-vue": "^9.18.1"
+  }
+}
