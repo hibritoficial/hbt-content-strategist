@@ -302,13 +302,12 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { supabase } from '@/lib/supabase'
+import { useLibraryStore } from '@/stores/library'
 
 const activeTab = ref('pillars')
 const dialog = ref(false)
 const dialogType = ref('')
 const editingItem = ref(null)
-const loading = ref(false)
 
 const dialogForm = reactive({})
 
@@ -355,26 +354,8 @@ const ctaHeaders = [
   { title: 'Ações', key: 'actions', sortable: false }
 ]
 
-// Dados do Supabase
-const pillars = ref([])
-const angles = ref([])
-const molds = ref([])
-
-// Carregar dados do Supabase
-const loadPillars = async () => {
-  const { data, error } = await supabase.from('pillars').select('*').order('name')
-  if (!error) pillars.value = data || []
-}
-
-const loadAngles = async () => {
-  const { data, error } = await supabase.from('angles').select('*').order('name')
-  if (!error) angles.value = data || []
-}
-
-const loadMolds = async () => {
-  const { data, error } = await supabase.from('molds').select('*').order('name')
-  if (!error) molds.value = data || []
-}
+const libraryStore = useLibraryStore()
+const { pillars, angles, molds, loading } = libraryStore
 
 const hooks = ref([
   { id: 1, pattern: 'Você sabia que...', examples: ['Você sabia que 90% das pessoas...', 'Você sabia que existe uma forma...'] },
@@ -426,55 +407,27 @@ const editItem = (type, item) => {
 }
 
 const saveItem = async () => {
-  loading.value = true
   try {
-    const table = getTableName(dialogType.value)
     const data = { ...dialogForm }
     
-    if (editingItem.value) {
-      // Editar
-      const { error } = await supabase
-        .from(table)
-        .update(data)
-        .eq('id', editingItem.value.id)
-      
-      if (error) throw error
-    } else {
+    if (!editingItem.value) {
       // Criar novo
-      const { error } = await supabase
-        .from(table)
-        .insert([data])
-      
-      if (error) throw error
+      if (dialogType.value === 'pillar') {
+        await libraryStore.createPillar(data)
+      } else if (dialogType.value === 'angle') {
+        await libraryStore.createAngle(data)
+      } else if (dialogType.value === 'mold') {
+        await libraryStore.createMold(data)
+      }
     }
     
-    // Recarregar dados
-    await loadData()
     dialog.value = false
-    
   } catch (error) {
     console.error('Erro ao salvar:', error.message)
-  } finally {
-    loading.value = false
   }
 }
 
-const getTableName = (type) => {
-  const tables = {
-    pillar: 'pillars',
-    angle: 'angles',
-    mold: 'molds'
-  }
-  return tables[type]
-}
 
-const loadData = async () => {
-  await Promise.all([
-    loadPillars(),
-    loadAngles(),
-    loadMolds()
-  ])
-}
 
 const deleteItem = (type, id) => {
   if (confirm('Tem certeza que deseja excluir este item?')) {
@@ -488,6 +441,6 @@ const previewMold = (mold) => {
 }
 
 onMounted(() => {
-  loadData()
+  libraryStore.loadAll()
 })
 </script>

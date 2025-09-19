@@ -298,7 +298,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useContentStore } from '@/stores/content'
-import { supabase } from '@/lib/supabase'
+import { useLibraryStore } from '@/stores/library'
 
 const route = useRoute()
 const router = useRouter()
@@ -326,25 +326,8 @@ const form = ref({
 
 const currentItem = ref(null)
 
-const pillars = ref([])
-const angles = ref([])
-const formats = ref([])
-const molds = ref([])
-
-// Carregar dados do Supabase
-const loadFormData = async () => {
-  const [pillarsRes, anglesRes, formatsRes, moldsRes] = await Promise.all([
-    supabase.from('pillars').select('*'),
-    supabase.from('angles').select('*'),
-    supabase.from('formats').select('*'),
-    supabase.from('molds').select('*')
-  ])
-  
-  pillars.value = pillarsRes.data || []
-  angles.value = anglesRes.data || []
-  formats.value = formatsRes.data || []
-  molds.value = moldsRes.data || []
-}
+const libraryStore = useLibraryStore()
+const { pillars, angles, formats, molds } = libraryStore
 
 const ctaKeywords = ref([
   { id: 1, keyword: 'SAIBA_MAIS' },
@@ -447,7 +430,7 @@ const loadContent = async () => {
 
 onMounted(async () => {
   await Promise.all([
-    loadFormData(),
+    libraryStore.loadAll(),
     loadContent()
   ])
 })

@@ -98,6 +98,11 @@
           :to="{ name: 'Metrics' }"
           class="mr-2"
         />
+        <v-btn
+          icon="mdi-sitemap"
+          :to="{ name: 'Flow' }"
+          class="mr-2"
+        />
         
         <v-spacer />
         
@@ -131,6 +136,12 @@
           Gerar 3 Copies
         </v-btn>
         
+        <v-btn
+          icon="mdi-help-circle-outline"
+          @click="docsStore.toggle"
+          class="ml-2"
+        />
+        
         <v-menu>
           <template #activator="{ props }">
             <v-btn
@@ -152,6 +163,9 @@
       <router-view />
     </v-main>
 
+    <!-- Documentação -->
+    <DocDock />
+
     <!-- Snackbar para feedback -->
     <v-snackbar
       v-model="snackbar.show"
@@ -167,11 +181,15 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useDocsStore } from '@/stores/docs'
 import { useKeyboardShortcuts } from '@/composables/useKeyboardShortcuts'
+import { useDocHotspot } from '@/composables/useDocHotspot'
+import DocDock from '@/components/docs/DocDock.vue'
 
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
+const docsStore = useDocsStore()
 
 const drawer = ref(true)
 const searchQuery = ref('')
@@ -215,6 +233,9 @@ useKeyboardShortcuts({
   'g+c': () => router.push({ name: 'Calendar' }),
   'g+p': () => router.push({ name: 'Pipeline' })
 })
+
+// Atalhos de documentação
+useDocHotspot()
 
 onMounted(async () => {
   await authStore.initialize()

@@ -318,14 +318,14 @@ const teamMembers = ref([
     name: 'André Ortega',
     email: 'andre@hibrit.com.br',
     role: 'Admin',
-    avatar: 'https://via.placeholder.com/32'
+    avatar: 'https://ui-avatars.com/api/?name=Andre+Ortega&size=32&background=9c27b0&color=fff'
   },
   {
     id: 2,
     name: 'Designer',
     email: 'design@hibrit.com.br',
     role: 'Editor',
-    avatar: 'https://via.placeholder.com/32'
+    avatar: 'https://ui-avatars.com/api/?name=Designer&size=32&background=6366f1&color=fff'
   }
 ])
 

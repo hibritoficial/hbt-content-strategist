@@ -45,6 +45,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/flow',
+    name: 'Flow',
+    component: () => import('@/views/Flow.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/channels/instagram',
     name: 'Instagram',
     component: () => import('@/views/channels/Instagram.vue'),

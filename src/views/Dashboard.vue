@@ -2,7 +2,10 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <h1 class="text-h4 mb-6">Dashboard</h1>
+        <div class="d-flex align-center gap-2 mb-6">
+          <h1 class="text-h4">Dashboard</h1>
+          <DocHotspot topic="dashboard-overview" title="Como usar o Dashboard" />
+        </div>
       </v-col>
     </v-row>
 
@@ -98,6 +101,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useContentStore } from '@/stores/content'
+import DocHotspot from '@/components/docs/DocHotspot.vue'
 import dayjs from 'dayjs'
 
 const contentStore = useContentStore()

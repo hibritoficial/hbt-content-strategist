@@ -131,7 +131,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useContentStore } from '@/stores/content'
-import { supabase } from '@/lib/supabase'
+import { useLibraryStore } from '@/stores/library'
 import dayjs from 'dayjs'
 
 const router = useRouter()
@@ -144,17 +144,8 @@ const filters = ref({
   format: null
 })
 
-const pillars = ref([])
-const formats = ref([])
-
-// Carregar dados do Supabase
-const loadFilters = async () => {
-  const { data: pillarsData } = await supabase.from('pillars').select('*')
-  const { data: formatsData } = await supabase.from('formats').select('*')
-  
-  pillars.value = pillarsData || []
-  formats.value = formatsData || []
-}
+const libraryStore = useLibraryStore()
+const { pillars, formats } = libraryStore
 
 const statusOptions = [
   { title: 'Backlog', value: 'backlog' },
@@ -256,7 +247,7 @@ const onDrop = async (event, date) => {
 onMounted(async () => {
   await Promise.all([
     contentStore.fetchItems(),
-    loadFilters()
+    libraryStore.loadAll()
   ])
 })
 </script>
