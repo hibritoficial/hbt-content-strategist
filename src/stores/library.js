@@ -61,6 +61,45 @@ export const useLibraryStore = defineStore('library', () => {
     return { success: !error, data: newItem, error }
   }
 
+  const deletePillar = async (id) => {
+    const { error } = await supabase
+      .from('pillars')
+      .delete()
+      .eq('id', id)
+    
+    if (!error) {
+      const index = pillars.value.findIndex(p => p.id === id)
+      if (index > -1) pillars.value.splice(index, 1)
+    }
+    return { success: !error, error }
+  }
+
+  const deleteAngle = async (id) => {
+    const { error } = await supabase
+      .from('angles')
+      .delete()
+      .eq('id', id)
+    
+    if (!error) {
+      const index = angles.value.findIndex(a => a.id === id)
+      if (index > -1) angles.value.splice(index, 1)
+    }
+    return { success: !error, error }
+  }
+
+  const deleteMold = async (id) => {
+    const { error } = await supabase
+      .from('molds')
+      .delete()
+      .eq('id', id)
+    
+    if (!error) {
+      const index = molds.value.findIndex(m => m.id === id)
+      if (index > -1) molds.value.splice(index, 1)
+    }
+    return { success: !error, error }
+  }
+
   return {
     pillars,
     angles,
@@ -70,6 +109,9 @@ export const useLibraryStore = defineStore('library', () => {
     loadAll,
     createPillar,
     createAngle,
-    createMold
+    createMold,
+    deletePillar,
+    deleteAngle,
+    deleteMold
   }
 })

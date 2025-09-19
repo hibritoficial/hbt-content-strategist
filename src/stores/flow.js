@@ -178,13 +178,19 @@ export const useFlowStore = defineStore('flow', () => {
       // Atualizar status dos nós baseado na atividade
       for (const [nodeId, count] of Object.entries(metrics)) {
         const status = count > 0 ? 'active' : 'pending'
-        await supabase
+        const { error } = await supabase
           .from('flow_node_status')
           .upsert({
             node_id: nodeId,
             status,
             metrics: { completion: Math.min(count * 10, 100), active_items: count }
+          }, {
+            onConflict: 'node_id'
           })
+        
+        if (error) {
+          console.error('Erro ao atualizar status do nó:', nodeId, error)
+        }
       }
     } catch (error) {
       console.error('Erro na sincronização:', error)
@@ -207,14 +213,21 @@ export const useFlowStore = defineStore('flow', () => {
 
   const updateNodeStatus = async (nodeId, status, metrics = {}) => {
     try {
-      await supabase
+      const { error } = await supabase
         .from('flow_node_status')
         .upsert({
           node_id: nodeId,
           status,
           metrics,
           updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'node_id'
         })
+      
+      if (error) {
+        console.error('Erro ao atualizar status:', error)
+        return
+      }
       
       // Atualizar store local
       const node = nodes.value.find(n => n.id === nodeId)

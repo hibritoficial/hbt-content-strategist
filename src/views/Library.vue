@@ -2,7 +2,27 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <h1 class="text-h4 mb-6">Biblioteca</h1>
+        <div class="d-flex justify-space-between align-center mb-6">
+          <h1 class="text-h4">Biblioteca</h1>
+          <div class="d-flex gap-2">
+            <v-btn
+              color="warning"
+              prepend-icon="mdi-database-remove"
+              @click="cleanDuplicates"
+              :loading="cleaning"
+            >
+              Limpar Duplicatas
+            </v-btn>
+            <v-btn
+              color="success"
+              prepend-icon="mdi-database-plus"
+              @click="seedInitialData"
+              :loading="seeding"
+            >
+              Popular Dados Iniciais
+            </v-btn>
+          </div>
+        </div>
       </v-col>
     </v-row>
 
@@ -27,7 +47,7 @@
           </v-card-title>
           <v-data-table
             :headers="pillarHeaders"
-            :items="pillars"
+            :items="libraryStore.pillars"
             class="elevation-1"
           >
             <template #item.actions="{ item }">
@@ -49,7 +69,7 @@
           </v-card-title>
           <v-data-table
             :headers="angleHeaders"
-            :items="angles"
+            :items="libraryStore.angles"
             class="elevation-1"
           >
             <template #item.actions="{ item }">
@@ -71,7 +91,7 @@
           </v-card-title>
           <v-data-table
             :headers="moldHeaders"
-            :items="molds"
+            :items="libraryStore.molds"
             class="elevation-1"
           >
             <template #item.actions="{ item }">
@@ -303,11 +323,15 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useLibraryStore } from '@/stores/library'
+import { seedLibraryData } from '@/utils/seedData'
+import { cleanDuplicateData } from '@/utils/cleanDuplicates'
 
 const activeTab = ref('pillars')
 const dialog = ref(false)
 const dialogType = ref('')
 const editingItem = ref(null)
+const seeding = ref(false)
+const cleaning = ref(false)
 
 const dialogForm = reactive({})
 
@@ -355,7 +379,6 @@ const ctaHeaders = [
 ]
 
 const libraryStore = useLibraryStore()
-const { pillars, angles, molds, loading } = libraryStore
 
 const hooks = ref([
   { id: 1, pattern: 'Você sabia que...', examples: ['Você sabia que 90% das pessoas...', 'Você sabia que existe uma forma...'] },
@@ -418,6 +441,30 @@ const saveItem = async () => {
         await libraryStore.createAngle(data)
       } else if (dialogType.value === 'mold') {
         await libraryStore.createMold(data)
+      } else if (dialogType.value === 'hook') {
+        // Adicionar ao array local
+        const newId = Math.max(...hooks.value.map(h => h.id)) + 1
+        hooks.value.unshift({ id: newId, ...data })
+      } else if (dialogType.value === 'hashtag') {
+        // Adicionar ao array local
+        const newId = Math.max(...hashtagClusters.value.map(h => h.id)) + 1
+        hashtagClusters.value.unshift({ id: newId, ...data })
+      } else if (dialogType.value === 'cta') {
+        // Adicionar ao array local
+        const newId = Math.max(...ctaKeywords.value.map(c => c.id)) + 1
+        ctaKeywords.value.unshift({ id: newId, ...data })
+      }
+    } else {
+      // Editar existente
+      if (dialogType.value === 'hook') {
+        const index = hooks.value.findIndex(h => h.id === editingItem.value.id)
+        if (index > -1) Object.assign(hooks.value[index], data)
+      } else if (dialogType.value === 'hashtag') {
+        const index = hashtagClusters.value.findIndex(h => h.id === editingItem.value.id)
+        if (index > -1) Object.assign(hashtagClusters.value[index], data)
+      } else if (dialogType.value === 'cta') {
+        const index = ctaKeywords.value.findIndex(c => c.id === editingItem.value.id)
+        if (index > -1) Object.assign(ctaKeywords.value[index], data)
       }
     }
     
@@ -429,15 +476,109 @@ const saveItem = async () => {
 
 
 
-const deleteItem = (type, id) => {
-  if (confirm('Tem certeza que deseja excluir este item?')) {
-    // TODO: Implementar exclusão real
-    console.log('Deleting:', type, id)
+const deleteItem = async (type, id) => {
+  if (!confirm('Tem certeza que deseja excluir este item?')) {
+    return
+  }
+  
+  try {
+    let result
+    if (type === 'pillar') {
+      result = await libraryStore.deletePillar(id)
+    } else if (type === 'angle') {
+      result = await libraryStore.deleteAngle(id)
+    } else if (type === 'mold') {
+      result = await libraryStore.deleteMold(id)
+    } else if (type === 'hook') {
+      // Remover do array local (dados estáticos)
+      const index = hooks.value.findIndex(h => h.id === id)
+      if (index > -1) {
+        hooks.value.splice(index, 1)
+        result = { success: true }
+      }
+    } else if (type === 'hashtag') {
+      // Remover do array local (dados estáticos)
+      const index = hashtagClusters.value.findIndex(h => h.id === id)
+      if (index > -1) {
+        hashtagClusters.value.splice(index, 1)
+        result = { success: true }
+      }
+    } else if (type === 'cta') {
+      // Remover do array local (dados estáticos)
+      const index = ctaKeywords.value.findIndex(c => c.id === id)
+      if (index > -1) {
+        ctaKeywords.value.splice(index, 1)
+        result = { success: true }
+      }
+    }
+    
+    if (result?.success) {
+      alert('Item excluído com sucesso!')
+    } else {
+      alert('Erro ao excluir item: ' + (result?.error?.message || 'Erro desconhecido'))
+    }
+  } catch (error) {
+    console.error('Erro ao excluir:', error)
+    alert('Erro ao excluir item')
   }
 }
 
 const previewMold = (mold) => {
   console.log('Previewing mold:', mold)
+}
+
+const seedInitialData = async () => {
+  seeding.value = true
+  try {
+    const result = await seedLibraryData()
+    await libraryStore.loadAll()
+    
+    let message = 'Resultados:\n'
+    message += `Pilares: ${result.results.pillars}\n`
+    message += `Ângulos: ${result.results.angles}\n`
+    message += `Formatos: ${result.results.formats}\n`
+    message += `Moldes: ${result.results.molds}\n`
+    
+    if (result.errors.length > 0) {
+      message += '\nErros:\n' + result.errors.join('\n')
+    }
+    
+    alert(message)
+  } catch (error) {
+    console.error('Erro:', error)
+    alert('Erro ao inserir dados iniciais')
+  } finally {
+    seeding.value = false
+  }
+}
+
+const cleanDuplicates = async () => {
+  if (!confirm('Tem certeza que deseja remover dados duplicados? Esta ação não pode ser desfeita.')) {
+    return
+  }
+  
+  cleaning.value = true
+  try {
+    const result = await cleanDuplicateData()
+    await libraryStore.loadAll()
+    
+    let message = 'Limpeza concluída:\n'
+    message += `Pilares: ${result.results.pillars}\n`
+    message += `Ângulos: ${result.results.angles}\n`
+    message += `Formatos: ${result.results.formats}\n`
+    message += `Moldes: ${result.results.molds}\n`
+    
+    if (result.errors.length > 0) {
+      message += '\nErros:\n' + result.errors.join('\n')
+    }
+    
+    alert(message)
+  } catch (error) {
+    console.error('Erro:', error)
+    alert('Erro ao limpar duplicatas')
+  } finally {
+    cleaning.value = false
+  }
 }
 
 onMounted(() => {

@@ -93,6 +93,7 @@ import { useDocsStore } from '@/stores/docs'
 import FlowNode from '@/components/flow/FlowNode.vue'
 import DocHotspot from '@/components/docs/DocHotspot.vue'
 import StoryMode from '@/components/flow/StoryMode.vue'
+import '@vue-flow/core/dist/style.css'
 import '@/styles/vue-flow.css'
 
 const flowStore = useFlowStore()

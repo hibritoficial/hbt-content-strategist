@@ -10,37 +10,20 @@
         <v-list density="compact" nav>
           <!-- Negócio -->
           <v-list-subheader>NEGÓCIO</v-list-subheader>
-          <v-list-item
-            prepend-icon="mdi-domain"
-            title="Marcas"
-            value="brands"
-            :to="{ name: 'Settings' }"
-          />
-          <v-list-item
-            prepend-icon="mdi-account-group"
-            title="Equipes"
-            value="teams"
-            :to="{ name: 'Settings' }"
-          />
+
           
           <!-- Marca & Marketing -->
           <v-list-subheader>MARCA & MARKETING</v-list-subheader>
           <v-list-item
-            prepend-icon="mdi-pillar"
-            title="Pilares"
-            value="pillars"
+            prepend-icon="mdi-library"
+            title="Biblioteca"
+            value="library"
             :to="{ name: 'Library' }"
           />
           <v-list-item
-            prepend-icon="mdi-angle-acute"
-            title="Ângulos"
-            value="angles"
-            :to="{ name: 'Library' }"
-          />
-          <v-list-item
-            prepend-icon="mdi-palette"
-            title="Visual"
-            value="visual"
+            prepend-icon="mdi-cog"
+            title="Configurações"
+            value="settings"
             :to="{ name: 'Settings' }"
           />
           
@@ -101,6 +84,11 @@
         <v-btn
           icon="mdi-sitemap"
           :to="{ name: 'Flow' }"
+          class="mr-2"
+        />
+        <v-btn
+          icon="mdi-chart-sankey"
+          :to="{ name: 'Funnels' }"
           class="mr-2"
         />
         

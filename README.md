@@ -127,67 +127,235 @@ Orquestrar, em fluxo leve, o processo de copy/arte para Instagram com pilares/â
 - `npm run preview` - Preview do build
 - `npm run lint` - Linting do código
 
-## 🎨 Funcionalidades Implementadas
+## 🗺️ Estrutura de Navegação e Funcionalidades
 
-### ✅ Dashboard
+### 📱 Menu Lateral (Rail Navigation)
+
+#### **MARCA & MARKETING**
+- **📚 Biblioteca** - Gerenciamento de recursos de conteúdo
+- **⚙️ Configurações** - Configurações gerais do sistema
+
+#### **CANAIS**
+- **📷 Instagram** - Canal ativo com funcionalidades completas
+- **📺 YouTube** - Placeholder (futuro)
+- **📝 Blog** - Placeholder (futuro)
+
+### 🔝 Barra Superior (App Bar)
+
+#### **Navegação Rápida**
+- **🏠 Dashboard** - Visão geral do sistema
+- **📅 Calendar** - Calendário de conteúdos
+- **📋 Pipeline** - Kanban de produção
+- **📚 Library** - Biblioteca de recursos
+- **📊 Metrics** - Métricas e analytics
+- **🔗 Flow** - Fluxo de trabalho
+- **🎯 Funnels** - Construtor de funis
+
+#### **Ferramentas**
+- **🔍 Busca Global** - Campo de busca (atalho: /)
+- **➕ Novo** - Criar conteúdo (atalho: N)
+- **🤖 Gerar 3 Copies** - IA para variações
+- **❓ Ajuda** - Documentação
+- **👤 Perfil** - Menu do usuário
+
+---
+
+## 🎨 Funcionalidades Detalhadas por Tela
+
+### ✅ **Dashboard** (`/`)
+**Visão geral do sistema com cards informativos**
 - Cards de status das peças do dia
 - Ações rápidas (Novo conteúdo, Gerar copies, Ir ao editor)
 - Próximas ações pendentes
+- Resumo de métricas principais
 
-### ✅ Pipeline (Kanban)
-- Colunas por status do fluxo
-- Drag & drop para mudança de status
-- Menu contextual (Duplicar, Gerar variações, Excluir)
-
-### ✅ Calendar
+### ✅ **Calendar** (`/calendar`)
+**Calendário visual para agendamento de conteúdos**
 - Visão semanal com drag & drop
 - Filtros por pilar, status e formato
 - Cards informativos das peças
+- Criação rápida de conteúdo por data
 
-### ✅ Editor
-- Formulário de brief estruturado
-- Prévia dos moldes (Carrossel 6x, Reels)
-- Sidebar com hooks e hashtags sugeridos
-- Barra de ações contextuais
+### ✅ **Pipeline** (`/pipeline`)
+**Kanban para gerenciamento do fluxo de produção**
+- Colunas por status: Backlog → Brief → Copy → Design → Pronto → Agendado → Publicado
+- Drag & drop para mudança de status
+- Menu contextual (Duplicar, Gerar variações, Excluir)
+- Filtros e busca por conteúdo
 
-### ✅ Library (Biblioteca)
-- CRUD completo para todos os recursos
-- Tabs organizadas por categoria
-- Modais de edição dinâmicos
+### ✅ **Editor** (`/editor/:id`)
+**Interface principal para criação e edição de conteúdo**
 
-### ✅ Metrics
+#### **Painel Esquerdo - Brief & Copy**
+- **Campos Básicos:**
+  - Título da peça
+  - Pilar de conteúdo (Autoridade, Relacionamento, Vendas, Educativo)
+  - Ângulo de abordagem (Dor, Sonho, Medo, Urgência, Curiosidade)
+  - Formato (Post, Carrossel, Reels, Story)
+  - Molde LEGO (templates visuais)
+
+- **Campos de Copy:**
+  - Oferta/Hook principal
+  - Prova/Âncora social
+  - Texto do CTA + palavra-chave
+  - Clusters de hashtags
+  - UTM Campaign/Content
+  - Data de agendamento
+
+#### **Painel Direito - Prévia & Sugestões**
+- **Prévia do Molde:**
+  - Carrossel 6x (6 slides estruturados)
+  - Reels (timeline 0-2s, 3-15s, 16-20s)
+  - Preview dinâmica baseada no molde selecionado
+
+- **Sidebar de Sugestões:**
+  - Hooks sugeridos (clicáveis)
+  - Clusters de hashtags organizados
+  - Palavras-chave CTA
+
+#### **Barra de Ações**
+- **Gerar 3 Variações** - IA para criar variações do copy
+- **Salvar** - Persistir alterações
+- **Status** - Alterar status do conteúdo (dropdown)
+
+### ✅ **Library** (`/library`)
+**Biblioteca completa de recursos para criação de conteúdo**
+
+#### **Aba: Pilares** (Supabase)
+- **Funcionalidades:** ✅ Listar, ✅ Criar, ✅ Deletar
+- **Dados:** Autoridade, Relacionamento, Vendas, Educativo
+- **Campos:** Nome, Descrição
+
+#### **Aba: Ângulos** (Supabase)
+- **Funcionalidades:** ✅ Listar, ✅ Criar, ✅ Deletar
+- **Dados:** Dor, Sonho, Medo, Urgência, Curiosidade
+- **Campos:** Nome, Descrição
+
+#### **Aba: Moldes** (Supabase)
+- **Funcionalidades:** ✅ Listar, ✅ Criar, ✅ Deletar, ✅ Preview
+- **Dados:** Carrossel 6x, Reels, Post Educativo, Post de Vendas, etc.
+- **Campos:** Nome, Descrição
+
+#### **Aba: Hooks** (Local)
+- **Funcionalidades:** ✅ Listar, ✅ Criar, ✅ Editar, ✅ Deletar
+- **Dados:** Padrões de ganchos ("Você sabia que...", "O segredo para...")
+- **Campos:** Padrão, Exemplos (array)
+
+#### **Aba: Hashtags** (Local)
+- **Funcionalidades:** ✅ Listar, ✅ Criar, ✅ Editar, ✅ Deletar
+- **Dados:** Clusters organizados (amplas, nicho, branded)
+- **Campos:** Tipo de cluster, Tags (array)
+
+#### **Aba: CTAs** (Local)
+- **Funcionalidades:** ✅ Listar, ✅ Criar, ✅ Editar, ✅ Deletar
+- **Dados:** Palavras-chave para automação
+- **Campos:** Palavra-chave, Resposta automática, Tag de destino
+
+#### **Ferramentas da Biblioteca**
+- **🗃️ Popular Dados Iniciais** - Insere dados padrão no Supabase
+- **🧹 Limpar Duplicatas** - Remove registros duplicados (com proteção de FK)
+
+### ✅ **Metrics** (`/metrics`)
+**Analytics e métricas de performance**
 - Tabela editável de métricas
 - Cards de performance geral
 - Ranking de hooks e CTAs
 - Filtros por período e categoria
 
-### ✅ Settings
+### ✅ **Settings** (`/settings`)
+**Configurações gerais do sistema**
 - Configurações de negócio (marcas, equipes)
 - Identidade visual e tom de voz
 - Configuração de canais
 
-### ✅ Channels
-- Instagram: configurações específicas e constraints
-- YouTube/Blog: placeholders para futuras implementações
+### ✅ **Flow** (`/flow`)
+**Visualização de fluxo de trabalho**
+- Fluxograma interativo do processo
+- Nodes com status e conexões
+- Sistema de atualização de status
+
+### ✅ **Funnels** (`/funnels`)
+**Construtor de funis de marketing**
+- Lista de funis criados
+- Templates pré-definidos (Lead Magnet Básico)
+- Acesso ao construtor visual
+
+### ✅ **Funnel Builder** (`/funnels/:id`)
+**Interface visual para construção de funis**
+- Drag & drop de componentes
+- Conexões entre etapas
+- Modo compacto/detalhado
+- Export para PNG
+- Templates de funil
+
+### ✅ **Channels**
+
+#### **Instagram** (`/channels/instagram`)
+- Canal ativo com funcionalidades completas
+- Configurações específicas do Instagram
+- Constraints e limitações da plataforma
+
+#### **YouTube/Blog** (`/channels/youtube`, `/channels/blog`)
+- Placeholders para futuras implementações
+- Estrutura preparada para expansão
+
+---
+
+## ⌨️ Atalhos de Teclado
+
+- **N** - Criar novo conteúdo
+- **/** - Focar no campo de busca
+- **G+C** - Ir para Calendar
+- **G+P** - Ir para Pipeline
+- **ESC** - Cancelar conexões (Funnel Builder)
+
+---
+
+## 🗄️ Estrutura de Dados
+
+### **Supabase (Produção)**
+- `pillars` - Pilares de conteúdo
+- `angles` - Ângulos de abordagem  
+- `formats` - Formatos de conteúdo
+- `molds` - Moldes LEGO
+- `content_items` - Itens de conteúdo
+- `funnel_nodes` - Nós dos funis
+- `funnel_edges` - Conexões dos funis
+- `flow_node_status` - Status dos nós do fluxo
+
+### **Local (Desenvolvimento)**
+- `hooks` - Padrões de ganchos
+- `hashtagClusters` - Clusters de hashtags
+- `ctaKeywords` - Palavras-chave CTA
+
+---
 
 ## 🔮 Próximos Passos
 
 ### Integrações Pendentes
-- [ ] Conexão completa com Supabase
-- [ ] Autenticação e RLS
-- [ ] Upload de arquivos
+- [ ] Autenticação completa e RLS
+- [ ] Upload de arquivos e mídia
 - [ ] Geração de variações por IA
+- [ ] Integração com APIs do Instagram
 
 ### Funcionalidades Avançadas
 - [ ] Sistema de templates visuais
 - [ ] Automação de publicação
-- [ ] Analytics avançados
+- [ ] Analytics avançados em tempo real
 - [ ] Colaboração em tempo real
+- [ ] Sistema de aprovação de conteúdo
 
 ### Canais Futuros
-- [ ] YouTube (roteiros, thumbnails, SEO)
-- [ ] Blog (artigos longos, SEO, links internos)
-- [ ] LinkedIn, TikTok, Twitter
+- [ ] **YouTube** (roteiros, thumbnails, SEO)
+- [ ] **Blog** (artigos longos, SEO, links internos)
+- [ ] **LinkedIn, TikTok, Twitter**
+
+### Melhorias de UX
+- [ ] Modo escuro
+- [ ] Personalização de workspace
+- [ ] Notificações push
+- [ ] Histórico de alterações
+- [ ] Comentários e feedback
 
 ## 🎯 Filosofia do Projeto
 

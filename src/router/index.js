@@ -51,6 +51,18 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/funnels',
+    name: 'Funnels',
+    component: () => import('@/views/Funnels.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/funnels/:id',
+    name: 'FunnelBuilder',
+    component: () => import('@/views/FunnelBuilder.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/channels/instagram',
     name: 'Instagram',
     component: () => import('@/views/channels/Instagram.vue'),

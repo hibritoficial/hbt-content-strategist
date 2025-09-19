@@ -1,4 +1,99 @@
-@import '@vue-flow/core/dist/style.css';
-@import '@vue-flow/core/dist/theme-default.css';
-@import '@vue-flow/controls/dist/style.css';
-@import '@vue-flow/minimap/dist/style.css';
+/* Estilos customizados para Vue Flow */
+
+/* Edges com handles específicos */
+.vue-flow__edge {
+  stroke: #e8eaf6 !important;
+  stroke-width: 4px !important;
+  stroke-dasharray: 12,6 !important;
+  stroke-linecap: round !important;
+}
+
+.vue-flow__edge .vue-flow__edge-path {
+  stroke: #e8eaf6 !important;
+  stroke-width: 4px !important;
+  stroke-dasharray: 12,6 !important;
+  stroke-linecap: round !important;
+}
+
+/* Setas das edges */
+.vue-flow__arrowhead {
+  fill: #e8eaf6 !important;
+  stroke: #c5cae9 !important;
+  stroke-width: 0.5px !important;
+}
+
+/* Remover labels das edges */
+.vue-flow__edge-text {
+  display: none !important;
+}
+
+.vue-flow__edge-textbg {
+  display: none !important;
+}
+
+/* Garantir que edges sejam capturadas corretamente */
+.vue-flow__edge {
+  pointer-events: none;
+}
+
+.vue-flow__edge .vue-flow__edge-path {
+  pointer-events: none;
+}
+
+/* Forçar renderização correta das edges no export */
+.vue-flow__edge path {
+  stroke: #e8eaf6 !important;
+  stroke-width: 4px !important;
+  stroke-dasharray: 12,6 !important;
+  stroke-linecap: round !important;
+  fill: none !important;
+  cursor: pointer !important;
+}
+
+.vue-flow__edge marker path {
+  fill: #e8eaf6 !important;
+  stroke: #c5cae9 !important;
+}
+
+/* Hover effect nas edges */
+.vue-flow__edge:hover path {
+  stroke: #ff5722 !important;
+  stroke-width: 5px !important;
+}
+
+/* Edge selecionada */
+.vue-flow__edge.selected path {
+  stroke: #ff5722 !important;
+  stroke-width: 5px !important;
+}
+
+/* Minimapa oculto durante captura */
+.vue-flow__minimap {
+  z-index: 1000;
+}
+
+/* Handles customizados */
+.custom-handle {
+  width: 16px !important;
+  height: 16px !important;
+  background: #667eea !important;
+  border: 2px solid white !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.funnel-node:hover .custom-handle {
+  opacity: 1;
+}
+
+/* Forçar posições laterais */
+.vue-flow__handle[data-handlepos="right"] {
+  right: -8px !important;
+  left: auto !important;
+}
+
+.vue-flow__handle[data-handlepos="left"] {
+  left: -8px !important;
+  right: auto !important;
+}

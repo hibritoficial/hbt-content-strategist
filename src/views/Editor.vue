@@ -70,21 +70,23 @@
               <v-col cols="6">
                 <v-select
                   v-model="form.pillar_id"
-                  :items="pillars"
+                  :items="libraryStore.pillars"
                   item-title="name"
                   item-value="id"
                   label="Pilar"
                   variant="outlined"
+                  no-data-text="Nenhum pilar disponível"
                 />
               </v-col>
               <v-col cols="6">
                 <v-select
                   v-model="form.angle_id"
-                  :items="angles"
+                  :items="libraryStore.angles"
                   item-title="name"
                   item-value="id"
                   label="Ângulo"
                   variant="outlined"
+                  no-data-text="Nenhum ângulo disponível"
                 />
               </v-col>
             </v-row>
@@ -93,21 +95,23 @@
               <v-col cols="6">
                 <v-select
                   v-model="form.format_id"
-                  :items="formats"
+                  :items="libraryStore.formats"
                   item-title="name"
                   item-value="id"
                   label="Formato"
                   variant="outlined"
+                  no-data-text="Nenhum formato disponível"
                 />
               </v-col>
               <v-col cols="6">
                 <v-select
                   v-model="form.mold_id"
-                  :items="molds"
+                  :items="libraryStore.molds"
                   item-title="name"
                   item-value="id"
                   label="Molde"
                   variant="outlined"
+                  no-data-text="Nenhum molde disponível"
                 />
               </v-col>
             </v-row>
@@ -145,6 +149,7 @@
                   item-value="id"
                   label="Palavra-chave"
                   variant="outlined"
+                  no-data-text="Nenhuma palavra-chave disponível"
                 />
               </v-col>
             </v-row>
@@ -327,7 +332,6 @@ const form = ref({
 const currentItem = ref(null)
 
 const libraryStore = useLibraryStore()
-const { pillars, angles, formats, molds } = libraryStore
 
 const ctaKeywords = ref([
   { id: 1, keyword: 'SAIBA_MAIS' },
@@ -358,7 +362,7 @@ const hashtagClusters = ref([
 ])
 
 const selectedMold = computed(() => {
-  return molds.value.find(m => m.id === form.value.mold_id)
+  return libraryStore.molds?.find(m => m.id === form.value.mold_id)
 })
 
 const getStatusColor = (status) => {
