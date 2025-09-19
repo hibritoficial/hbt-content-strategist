@@ -8,8 +8,8 @@ Mono-repo **1 código → N clientes** (tenants) com Vue 3 + Vuetify, Supabase e
 
 ### Variáveis de Ambiente (Vercel)
 ```
-VITE_SUPABASE_URL=https://jfxvfekzoaixdmckrlch.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmeHZmZWt6b2FpeGRtY2tybGNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyNDU3MTUsImV4cCI6MjA3MzgyMTcxNX0.f4Oed_H6X7zYc5n7dhQtrmOsv-DNBBWK_1eDKV9Xdg8
+VITE_SUPABASE_URL=your_supabase_url_here
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 ```
 
 ## 🚀 Stack Tecnológica
