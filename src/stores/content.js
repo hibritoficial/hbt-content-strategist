@@ -14,10 +14,10 @@ export const useContentStore = defineStore('content', () => {
     }, {})
   })
 
-  const fetchItems = async () => {
+  const fetchItems = async (workspaceId = null) => {
     loading.value = true
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('content_items')
         .select(`
           *,
@@ -26,7 +26,13 @@ export const useContentStore = defineStore('content', () => {
           formats(name),
           molds(name)
         `)
-        .order('updated_at', { ascending: false })
+      
+      // Filtrar por brand se especificado
+      if (workspaceId) {
+        query = query.eq('brand_id', workspaceId)
+      }
+      
+      const { data, error } = await query.order('updated_at', { ascending: false })
       
       if (error) throw error
       items.value = data || []
@@ -39,38 +45,61 @@ export const useContentStore = defineStore('content', () => {
 
   const createItem = async (itemData) => {
     try {
-      const { data, error } = await supabase
+      // Clean the data - remove null/undefined values and problematic fields
+      const cleanData = Object.fromEntries(
+        Object.entries(itemData).filter(([key, value]) => {
+          // Skip cta_keyword_id to avoid foreign key issues
+          if (key === 'cta_keyword_id') return false
+          return value !== null && value !== undefined && value !== ''
+        })
+      )
+      
+      const { error } = await supabase
         .from('content_items')
-        .insert([itemData])
-        .select()
-        .single()
+        .insert(cleanData)
       
       if (error) throw error
-      items.value.unshift(data)
-      return { success: true, data }
+      
+      // Refresh the items list
+      await fetchItems()
+      
+      return { success: true }
     } catch (error) {
+      console.error('Create item error:', error)
       return { success: false, error: error.message }
     }
   }
 
   const updateItem = async (id, updates) => {
     try {
-      const { data, error } = await supabase
+      // Clean the data - remove null/undefined values and problematic fields
+      const cleanData = Object.fromEntries(
+        Object.entries(updates).filter(([key, value]) => {
+          // Skip problematic fields
+          if (key === 'cta_keyword_id') return false
+          if (key === 'id') return false // Don't update ID
+          if (key === 'created_at') return false // Don't update created_at
+          if (key === 'pillars') return false // Don't update joined data
+          if (key === 'angles') return false
+          if (key === 'formats') return false
+          if (key === 'molds') return false
+          return value !== null && value !== undefined
+        })
+      )
+      
+      const { error } = await supabase
         .from('content_items')
-        .update(updates)
+        .update(cleanData)
         .eq('id', id)
-        .select()
-        .single()
       
       if (error) throw error
       
-      const index = items.value.findIndex(item => item.id === id)
-      if (index !== -1) {
-        items.value[index] = data
-      }
+      // Refresh the items list
+      await fetchItems()
       
-      return { success: true, data }
+      return { success: true }
     } catch (error) {
+      console.error('Update item error:', error)
       return { success: false, error: error.message }
     }
   }

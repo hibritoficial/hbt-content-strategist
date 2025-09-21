@@ -13,13 +13,6 @@
           <!-- Barra de ações -->
           <div class="d-flex gap-2">
             <v-btn
-              color="info"
-              prepend-icon="mdi-auto-fix"
-              @click="autofillForm"
-            >
-              Autopreencher
-            </v-btn>
-            <v-btn
               color="secondary"
               prepend-icon="mdi-auto-fix"
               @click="generateVariations"
@@ -71,8 +64,6 @@
               label="Título da Peça"
               variant="outlined"
               class="mb-4"
-              :placeholder="titleSuggestion.value"
-              @focus="clearIfSuggestion('title')"
             />
             
             <v-row>
@@ -128,12 +119,10 @@
             <!-- Campos de copy -->
             <v-textarea
               v-model="form.offer"
-              label="Oferta/Hook"
+              label="Oferta"
               variant="outlined"
               rows="2"
               class="mb-4"
-              :placeholder="offerSuggestion.value"
-              @focus="clearIfSuggestion('offer')"
             />
             
             <v-textarea
@@ -142,8 +131,6 @@
               variant="outlined"
               rows="2"
               class="mb-4"
-              :placeholder="proofSuggestion.value"
-              @focus="clearIfSuggestion('proof_anchor')"
             />
             
             <v-row>
@@ -152,8 +139,6 @@
                   v-model="form.cta_text"
                   label="Texto do CTA"
                   variant="outlined"
-                  :placeholder="ctaSuggestion.value"
-                  @focus="clearIfSuggestion('cta_text')"
                 />
               </v-col>
               <v-col cols="4">
@@ -172,10 +157,9 @@
             <v-text-field
               v-model="form.hashtags_cluster"
               label="Clusters de Hashtags"
+              placeholder="amplas:nicho:branded"
               variant="outlined"
               class="mb-4"
-              :placeholder="hashtagSuggestion.value"
-              @focus="clearIfSuggestion('hashtags_cluster')"
             />
             
             <v-row>
@@ -184,8 +168,6 @@
                   v-model="form.utm_campaign"
                   label="UTM Campaign"
                   variant="outlined"
-                  :placeholder="utmCampaignSuggestion.value"
-                  @focus="clearIfSuggestion('utm_campaign')"
                 />
               </v-col>
               <v-col cols="6">
@@ -193,8 +175,6 @@
                   v-model="form.utm_content"
                   label="UTM Content"
                   variant="outlined"
-                  :placeholder="utmContentSuggestion.value"
-                  @focus="clearIfSuggestion('utm_content')"
                 />
               </v-col>
             </v-row>
@@ -324,6 +304,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useContentStore } from '@/stores/content'
 import { useLibraryStore } from '@/stores/library'
+import { useWorkspaceStore } from '@/stores/workspace'
 
 const route = useRoute()
 const router = useRouter()
@@ -331,15 +312,6 @@ const contentStore = useContentStore()
 
 const saving = ref(false)
 const isNew = computed(() => route.params.id === 'new')
-
-// Sugestões para os campos
-const titleSuggestion = ref('5 Dicas Para Aumentar Suas Vendas no Instagram')
-const offerSuggestion = ref('Você sabia que 90% dos empreendedores cometem este erro no Instagram?')
-const proofSuggestion = ref('Mais de 1.000 alunos já aplicaram essa estratégia e aumentaram suas vendas em 300%')
-const ctaSuggestion = ref('Comente QUERO para receber o guia completo')
-const hashtagSuggestion = ref('#marketing #instagram #vendas #empreendedorismo #digitalmarketing')
-const utmCampaignSuggestion = ref('instagram_post_vendas_q1_2024')
-const utmContentSuggestion = ref('carrossel_5_dicas_vendas')
 
 const form = ref({
   title: '',
@@ -358,56 +330,14 @@ const form = ref({
   status: 'backlog'
 })
 
-const autofillForm = () => {
-  // Preencher campos de texto com sugestões
-  form.value.title = titleSuggestion.value
-  form.value.offer = offerSuggestion.value
-  form.value.proof_anchor = proofSuggestion.value
-  form.value.cta_text = ctaSuggestion.value
-  form.value.hashtags_cluster = hashtagSuggestion.value
-  form.value.utm_campaign = utmCampaignSuggestion.value
-  form.value.utm_content = utmContentSuggestion.value
-  
-  // Selecionar opções aleatórias nos selects
-  if (libraryStore.pillars?.length) {
-    const randomPillar = libraryStore.pillars[Math.floor(Math.random() * libraryStore.pillars.length)]
-    form.value.pillar_id = randomPillar.id
-  }
-  
-  if (libraryStore.angles?.length) {
-    const randomAngle = libraryStore.angles[Math.floor(Math.random() * libraryStore.angles.length)]
-    form.value.angle_id = randomAngle.id
-  }
-  
-  if (libraryStore.formats?.length) {
-    const randomFormat = libraryStore.formats[Math.floor(Math.random() * libraryStore.formats.length)]
-    form.value.format_id = randomFormat.id
-  }
-  
-  if (libraryStore.molds?.length) {
-    const randomMold = libraryStore.molds[Math.floor(Math.random() * libraryStore.molds.length)]
-    form.value.mold_id = randomMold.id
-  }
-  
-  if (ctaKeywords.value?.length) {
-    const randomKeyword = ctaKeywords.value[Math.floor(Math.random() * ctaKeywords.value.length)]
-    form.value.cta_keyword_id = randomKeyword.id
-  }
-  
-  // Data de agendamento para próxima semana
-  const nextWeek = new Date()
-  nextWeek.setDate(nextWeek.getDate() + 7)
-  form.value.scheduled_date = nextWeek.toISOString().split('T')[0]
-}
-
 const currentItem = ref(null)
 
 const libraryStore = useLibraryStore()
 
 const ctaKeywords = ref([
-  { id: '550e8400-e29b-41d4-a716-446655440001', keyword: 'SAIBA_MAIS' },
-  { id: '550e8400-e29b-41d4-a716-446655440002', keyword: 'ACESSE_LINK' },
-  { id: '550e8400-e29b-41d4-a716-446655440003', keyword: 'COMENTE_AQUI' }
+  { id: 1, keyword: 'SAIBA_MAIS' },
+  { id: 2, keyword: 'ACESSE_LINK' },
+  { id: 3, keyword: 'COMENTE_AQUI' }
 ])
 
 const statusOptions = [
@@ -469,11 +399,13 @@ const saveContent = async () => {
     if (isNew.value) {
       const result = await contentStore.createItem({
         ...form.value,
-        channel: 'instagram'
+        channel: 'instagram',
+        brand_id: 1, // TODO: Get from auth store
+        created_by: 1 // TODO: Get from auth store
       })
       
       if (result.success) {
-        router.push('/pipeline')
+        router.push(`/editor/${result.data.id}`)
       }
     } else {
       await contentStore.updateItem(route.params.id, form.value)
@@ -482,22 +414,6 @@ const saveContent = async () => {
     console.error('Error saving content:', error)
   } finally {
     saving.value = false
-  }
-}
-
-const clearIfSuggestion = (field) => {
-  const suggestions = {
-    title: titleSuggestion.value,
-    offer: offerSuggestion.value,
-    proof_anchor: proofSuggestion.value,
-    cta_text: ctaSuggestion.value,
-    hashtags_cluster: hashtagSuggestion.value,
-    utm_campaign: utmCampaignSuggestion.value,
-    utm_content: utmContentSuggestion.value
-  }
-  
-  if (form.value[field] === suggestions[field]) {
-    form.value[field] = ''
   }
 }
 
@@ -518,8 +434,9 @@ const loadContent = async () => {
 }
 
 onMounted(async () => {
+  const workspaceStore = useWorkspaceStore()
   await Promise.all([
-    libraryStore.loadAll(),
+    libraryStore.loadAll(workspaceStore.currentId),
     loadContent()
   ])
 })

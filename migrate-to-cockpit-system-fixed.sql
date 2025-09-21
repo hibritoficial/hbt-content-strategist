@@ -1,0 +1,255 @@
+-- Migração para Sistema Cockpit: Modo Cliente vs Modo Hibrit
+-- Execute no Supabase SQL Editor
+
+-- 1. Migrar dados de brands para workspaces (se necessário)
+INSERT INTO workspaces (name, slug, brand_settings)
+SELECT 
+    b.name,
+    b.slug,
+    '{}'::jsonb
+FROM brands b
+WHERE NOT EXISTS (
+    SELECT 1 FROM workspaces w WHERE w.slug = b.slug
+);
+
+-- 2. Migrar brand_members para workspace_members
+INSERT INTO workspace_members (workspace_id, user_id, role)
+SELECT 
+    w.id as workspace_id,
+    bm.user_id,
+    CASE 
+        WHEN bm.role = 'owner' THEN 'owner'
+        WHEN bm.role = 'admin' THEN 'manager'
+        ELSE 'editor'
+    END as role
+FROM brand_members bm
+JOIN brands b ON bm.brand_id = b.id
+JOIN workspaces w ON w.slug = b.slug
+WHERE NOT EXISTS (
+    SELECT 1 FROM workspace_members wm 
+    WHERE wm.workspace_id = w.id AND wm.user_id = bm.user_id
+);
+
+-- 3. Atualizar content_items para usar workspace_id
+UPDATE content_items 
+SET workspace_id = w.id
+FROM brands b
+JOIN workspaces w ON w.slug = b.slug
+WHERE content_items.brand_id = b.id 
+AND content_items.workspace_id IS NULL;
+
+-- 4. Atualizar funnels para usar workspace_id
+UPDATE funnels 
+SET workspace_id = w.id
+FROM brands b
+JOIN workspaces w ON w.slug = b.slug
+WHERE funnels.brand_id = b.id 
+AND funnels.workspace_id IS NULL;
+
+-- 5. Criar views para Portfolio
+CREATE OR REPLACE VIEW portfolio_cockpit AS
+SELECT 
+    w.id as workspace_id,
+    w.name as client_name,
+    w.slug as client_slug,
+    COUNT(DISTINCT f.id) as total_funnels,
+    COUNT(DISTINCT CASE WHEN f.is_active THEN f.id END) as active_funnels,
+    COUNT(DISTINCT ci.id) as total_content_items,
+    COUNT(DISTINCT CASE WHEN ci.status = 'backlog' THEN ci.id END) as backlog_count,
+    COUNT(DISTINCT CASE WHEN ci.status = 'brief' THEN ci.id END) as brief_count,
+    COUNT(DISTINCT CASE WHEN ci.status = 'copy' THEN ci.id END) as copy_count,
+    COUNT(DISTINCT CASE WHEN ci.status = 'design' THEN ci.id END) as design_count,
+    COUNT(DISTINCT CASE WHEN ci.status = 'ready' THEN ci.id END) as ready_count,
+    COUNT(DISTINCT CASE WHEN ci.status = 'scheduled' THEN ci.id END) as scheduled_count,
+    COUNT(DISTINCT CASE WHEN ci.status = 'published' THEN ci.id END) as published_count,
+    COUNT(DISTINCT CASE 
+        WHEN ci.scheduled_date BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '7 days' 
+        THEN ci.id 
+    END) as next_7_days_count,
+    COUNT(DISTINCT ck.id) as total_ctas,
+    MAX(GREATEST(
+        COALESCE(ci.updated_at, '1970-01-01'::timestamptz),
+        COALESCE(f.updated_at, '1970-01-01'::timestamptz)
+    )) as last_activity
+FROM workspaces w
+LEFT JOIN content_items ci ON ci.workspace_id = w.id
+LEFT JOIN funnels f ON f.workspace_id = w.id
+LEFT JOIN cta_keywords ck ON ck.id = ci.cta_keyword_id
+GROUP BY w.id, w.name, w.slug
+ORDER BY last_activity DESC;
+
+-- 6. Criar view para alertas
+CREATE OR REPLACE VIEW portfolio_alerts AS
+SELECT 
+    w.id as workspace_id,
+    w.name as client_name,
+    'funnel' as alert_type,
+    CASE 
+        WHEN COUNT(DISTINCT CASE WHEN f.is_active THEN f.id END) = 0 THEN 'red'
+        WHEN COUNT(DISTINCT f.id) > 5 THEN 'yellow'
+        ELSE 'green'
+    END as severity,
+    CASE 
+        WHEN COUNT(DISTINCT CASE WHEN f.is_active THEN f.id END) = 0 THEN 'Nenhum funil ativo'
+        WHEN COUNT(DISTINCT f.id) > 5 THEN 'Muitos funis criados'
+        ELSE 'Funis OK'
+    END as message,
+    '/funnels' as action_url
+FROM workspaces w
+LEFT JOIN funnels f ON f.workspace_id = w.id
+GROUP BY w.id, w.name
+UNION ALL
+SELECT 
+    w.id as workspace_id,
+    w.name as client_name,
+    'content' as alert_type,
+    CASE 
+        WHEN COUNT(DISTINCT CASE WHEN ci.status = 'copy' THEN ci.id END) > 3 THEN 'red'
+        WHEN COUNT(DISTINCT CASE WHEN ci.status = 'copy' THEN ci.id END) > 1 THEN 'yellow'
+        ELSE 'green'
+    END as severity,
+    CASE 
+        WHEN COUNT(DISTINCT CASE WHEN ci.status = 'copy' THEN ci.id END) > 3 THEN 'Gargalo na produção de copy'
+        WHEN COUNT(DISTINCT CASE WHEN ci.status = 'copy' THEN ci.id END) > 1 THEN 'Atenção na produção'
+        ELSE 'Produção OK'
+    END as message,
+    '/pipeline' as action_url
+FROM workspaces w
+LEFT JOIN content_items ci ON ci.workspace_id = w.id
+GROUP BY w.id, w.name;
+
+-- 7. Criar view para métricas
+CREATE OR REPLACE VIEW portfolio_metrics AS
+SELECT 
+    w.id as workspace_id,
+    w.name as client_name,
+    COUNT(DISTINCT CASE 
+        WHEN ci.updated_at >= CURRENT_DATE - INTERVAL '30 days' 
+        AND ci.status = 'published' 
+        THEN ci.id 
+    END) as published_last_30d,
+    COUNT(DISTINCT CASE 
+        WHEN ci.updated_at >= CURRENT_DATE - INTERVAL '7 days' 
+        AND ci.status = 'published' 
+        THEN ci.id 
+    END) as published_last_7d,
+    CASE 
+        WHEN COUNT(DISTINCT ci.id) > 0 THEN
+            ROUND(
+                ((COUNT(DISTINCT CASE WHEN ci.status = 'published' THEN ci.id END)::float / 
+                 COUNT(DISTINCT ci.id)::float) * 100)::numeric, 
+                1
+            )
+        ELSE 0
+    END as pipeline_conversion_rate,
+    COUNT(DISTINCT CASE WHEN ci.channel = 'instagram' THEN ci.id END) as instagram_count,
+    COUNT(DISTINCT CASE WHEN ci.channel = 'youtube' THEN ci.id END) as youtube_count,
+    COUNT(DISTINCT CASE WHEN ci.channel = 'blog' THEN ci.id END) as blog_count,
+    CASE 
+        WHEN COUNT(DISTINCT ci.id) = 0 THEN 0
+        ELSE LEAST(100, GREATEST(0,
+            40 +
+            (CASE 
+                WHEN COUNT(DISTINCT ci.id) > 0 THEN
+                    (COUNT(DISTINCT CASE WHEN ci.status = 'published' THEN ci.id END)::float / 
+                     COUNT(DISTINCT ci.id)::float) * 30
+                ELSE 0
+            END) +
+            (CASE 
+                WHEN COUNT(DISTINCT CASE 
+                    WHEN ci.updated_at >= CURRENT_DATE - INTERVAL '7 days' 
+                    THEN ci.id 
+                END) > 0 THEN 20
+                ELSE 0
+            END) +
+            (CASE 
+                WHEN COUNT(DISTINCT ci.channel) >= 2 THEN 10
+                WHEN COUNT(DISTINCT ci.channel) = 1 THEN 5
+                ELSE 0
+            END)
+        ))
+    END as health_score
+FROM workspaces w
+LEFT JOIN content_items ci ON ci.workspace_id = w.id
+GROUP BY w.id, w.name
+ORDER BY health_score DESC;
+
+-- 8. Função para determinar role do usuário
+CREATE OR REPLACE FUNCTION get_user_role(user_uuid UUID)
+RETURNS TEXT AS $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM auth.users 
+        WHERE id = user_uuid 
+        AND (raw_user_meta_data->>'org' = 'hibrit' OR raw_user_meta_data->>'role' = 'hibrit_staff')
+    ) THEN
+        RETURN 'hibrit_staff';
+    ELSE
+        RETURN 'client_user';
+    END IF;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 9. Função para obter workspaces do usuário
+CREATE OR REPLACE FUNCTION get_user_workspaces(user_uuid UUID)
+RETURNS TABLE(
+    workspace_id UUID,
+    workspace_name TEXT,
+    workspace_slug TEXT,
+    user_role TEXT,
+    is_hibrit_staff BOOLEAN
+) AS $$
+DECLARE
+    user_role_type TEXT;
+BEGIN
+    user_role_type := get_user_role(user_uuid);
+    
+    IF user_role_type = 'hibrit_staff' THEN
+        RETURN QUERY
+        SELECT 
+            w.id,
+            w.name::TEXT,
+            w.slug::TEXT,
+            'hibrit_staff'::TEXT,
+            TRUE
+        FROM workspaces w
+        ORDER BY w.name;
+    ELSE
+        RETURN QUERY
+        SELECT 
+            w.id,
+            w.name::TEXT,
+            w.slug::TEXT,
+            wm.role::TEXT,
+            FALSE
+        FROM workspaces w
+        JOIN workspace_members wm ON wm.workspace_id = w.id
+        WHERE wm.user_id = user_uuid
+        ORDER BY w.name;
+    END IF;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 10. Atualizar RLS policies
+DROP POLICY IF EXISTS "Users can view workspaces" ON workspaces;
+DROP POLICY IF EXISTS "Users can update workspaces" ON workspaces;
+
+CREATE POLICY "Hibrit staff can view all workspaces" ON workspaces
+    FOR SELECT USING (
+        get_user_role(auth.uid()) = 'hibrit_staff'
+    );
+
+CREATE POLICY "Clients can view their workspaces" ON workspaces
+    FOR SELECT USING (
+        get_user_role(auth.uid()) = 'client_user' AND
+        EXISTS (
+            SELECT 1 FROM workspace_members wm 
+            WHERE wm.workspace_id = id AND wm.user_id = auth.uid()
+        )
+    );
+
+-- 11. Criar índices para performance
+CREATE INDEX IF NOT EXISTS idx_content_items_workspace_status ON content_items(workspace_id, status);
+CREATE INDEX IF NOT EXISTS idx_content_items_scheduled_date ON content_items(scheduled_date) WHERE scheduled_date IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_funnels_workspace_active ON funnels(workspace_id, is_active);
+CREATE INDEX IF NOT EXISTS idx_workspace_members_user_workspace ON workspace_members(user_id, workspace_id);

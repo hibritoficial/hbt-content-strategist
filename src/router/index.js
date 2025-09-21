@@ -4,6 +4,40 @@ import { useAuthStore } from '@/stores/auth'
 const routes = [
   {
     path: '/',
+    redirect: '/cockpit'
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/views/Admin.vue'),
+    meta: { requiresAuth: true, requiresHibrit: true }
+  },
+  {
+    path: '/tasks',
+    name: 'Tasks',
+    component: () => import('@/views/Tasks.vue'),
+    meta: { requiresAuth: true, requiresHibrit: true }
+  },
+  {
+    path: '/cockpit',
+    name: 'Cockpit',
+    component: () => import('@/views/CockpitNew.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/content-center',
+    name: 'ContentCenter',
+    component: () => import('@/views/ContentCenter.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/funnel-center',
+    name: 'FunnelCenter',
+    component: () => import('@/views/FunnelCenter.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/dashboard',
     name: 'Dashboard',
     component: () => import('@/views/Dashboard.vue'),
     meta: { requiresAuth: true }
@@ -48,7 +82,7 @@ const routes = [
     path: '/flow',
     name: 'Flow',
     component: () => import('@/views/Flow.vue'),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, requiresHibrit: true }
   },
   {
     path: '/funnels',
@@ -81,6 +115,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/setup-admin',
+    name: 'SetupAdmin',
+    component: () => import('@/views/SetupAdmin.vue'),
+    meta: { requiresAuth: true, requiresHibrit: true }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/Login.vue')
@@ -102,9 +142,20 @@ router.beforeEach(async (to, from, next) => {
   
   if (to.meta.requiresAuth && !authStore.user) {
     next('/login')
-  } else {
-    next()
+    return
   }
+  
+  // Verificar se precisa ser Hibrit Staff
+  if (to.meta.requiresHibrit) {
+    const userData = authStore.user?.user_metadata || authStore.user?.raw_user_meta_data || {}
+    const isHibrit = userData.org === 'hibrit' || userData.role === 'hibrit_staff'
+    if (!isHibrit) {
+      next('/cockpit')
+      return
+    }
+  }
+  
+  next()
 })
 
 export default router

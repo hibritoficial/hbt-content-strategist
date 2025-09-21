@@ -43,12 +43,19 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
+  const refreshUser = async () => {
+    const { data: { user: currentUser } } = await supabase.auth.getUser()
+    user.value = currentUser
+    return currentUser
+  }
+
   return {
     user,
     loading,
     initialized,
     signIn,
     signOut,
-    initialize
+    initialize,
+    refreshUser
   }
 })

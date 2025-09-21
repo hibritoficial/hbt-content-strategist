@@ -31,12 +31,17 @@
 
         <!-- Content -->
         <div v-if="currentTopic" class="px-4">
+          <!-- Breadcrumb -->
+          <div v-if="currentTopic.breadcrumb" class="breadcrumb mb-3">
+            <span class="breadcrumb-text">{{ currentTopic.breadcrumb }}</span>
+          </div>
+          
           <h3 class="text-h6 mb-3">{{ currentTopic.title }}</h3>
           
           <v-tabs v-model="docsStore.activeTab" density="compact">
             <v-tab value="sistema">Sistema</v-tab>
             <v-tab value="metodo">Método</v-tab>
-            <v-tab value="marketing">Marketing</v-tab>
+            <v-tab value="conhecimento">Conhecimento</v-tab>
           </v-tabs>
 
           <v-window v-model="docsStore.activeTab" class="mt-4">
@@ -45,7 +50,7 @@
               :key="dimension"
               :value="dimension"
             >
-              <div class="text-body-2">{{ content }}</div>
+              <div class="doc-content" v-html="formatContent(content)"></div>
             </v-window-item>
           </v-window>
 
@@ -123,10 +128,56 @@ const handleSearch = () => {
 const getTopicTitle = (topicId) => {
   return docsStore.topics[topicId]?.title || topicId
 }
+
+const formatContent = (content) => {
+  return content
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/`(.*?)`/g, '<code>$1</code>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>')
+    .replace(/• /g, '&nbsp;&nbsp;• ')
+}
 </script>
 
 <style scoped>
 .doc-dock {
   z-index: 2000;
+}
+
+.breadcrumb {
+  padding: 8px 12px;
+  background: rgba(37, 99, 235, 0.1);
+  border-radius: 6px;
+  border-left: 3px solid #2563eb;
+}
+
+.breadcrumb-text {
+  font-size: 0.8rem;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.doc-content {
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.doc-content strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.doc-content em {
+  color: #6b7280;
+  font-style: italic;
+}
+
+.doc-content code {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85em;
 }
 </style>

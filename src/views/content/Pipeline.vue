@@ -1,33 +1,5 @@
 <template>
   <v-container fluid>
-    <!-- Navigation Drawer para edição -->
-    <v-navigation-drawer
-      v-model="drawerOpen"
-      location="right"
-      width="600"
-      temporary
-    >
-      <v-card flat height="100%">
-        <v-card-title class="d-flex justify-space-between align-center">
-          <span>{{ editingItem ? 'Editar Conteúdo' : 'Novo Conteúdo' }}</span>
-          <v-btn
-            icon="mdi-close"
-            variant="text"
-            @click="closeDrawer"
-          />
-        </v-card-title>
-        
-        <v-card-text class="pa-4" style="height: calc(100% - 64px); overflow-y: auto;">
-          <ContentEditor
-            v-if="drawerOpen"
-            :item="editingItem"
-            @saved="onContentSaved"
-            @cancel="closeDrawer"
-          />
-        </v-card-text>
-      </v-card>
-    </v-navigation-drawer>
-
     <v-row>
       <v-col cols="12">
         <div class="d-flex justify-space-between align-center mb-6">
@@ -66,22 +38,12 @@
           
           <v-card-text>
             <div class="pipeline-items">
-              <div v-if="contentStore.loading" class="text-center py-4">
-                <v-progress-circular indeterminate color="primary" />
-                <p class="text-caption mt-2">Carregando conteúdos...</p>
-              </div>
-              
-              <div v-else-if="getItemsByStatus(status.key).length === 0" class="text-center py-4">
-                <v-icon size="48" color="grey-lighten-1">mdi-file-document-outline</v-icon>
-                <p class="text-caption text-grey">Nenhum conteúdo</p>
-              </div>
-              
               <v-card
                 v-for="item in getItemsByStatus(status.key)"
                 :key="item.id"
                 class="mb-3 pipeline-item"
                 elevation="2"
-                @click="openDrawer(item)"
+                @click="openEditor(item.id)"
               >
                 <v-card-text class="pa-3">
                   <div class="text-subtitle-2 font-weight-bold mb-1">
@@ -132,18 +94,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useContentStore } from '@/stores/content'
-import ContentEditor from '@/components/ContentEditor.vue'
 import dayjs from 'dayjs'
 
 const router = useRouter()
 const contentStore = useContentStore()
-
-// Drawer state
-const drawerOpen = ref(false)
-const editingItem = ref(null)
 
 const statuses = [
   { key: 'backlog', label: 'Backlog', color: 'grey' },
@@ -165,23 +122,11 @@ const getCTAColor = (keywordId) => {
 }
 
 const createNew = () => {
-  editingItem.value = null
-  drawerOpen.value = true
+  router.push('/content/editor/new')
 }
 
-const openDrawer = (item) => {
-  editingItem.value = item
-  drawerOpen.value = true
-}
-
-const closeDrawer = () => {
-  drawerOpen.value = false
-  editingItem.value = null
-}
-
-const onContentSaved = () => {
-  closeDrawer()
-  loadContent() // Refresh the pipeline
+const openEditor = (id) => {
+  router.push(`/content/editor/${id}`)
 }
 
 const duplicateItem = async (item) => {
@@ -210,24 +155,8 @@ const deleteItem = async (id) => {
   }
 }
 
-const loadContent = async () => {
-  const brandId = window.getCurrentBrandId?.()
-  await contentStore.fetchItems(brandId)
-  console.log('Content items loaded for brand:', brandId, contentStore.items)
-}
-
-const handleBrandChange = (event) => {
-  console.log('Pipeline: Brand changed to', event.detail.brandId)
-  loadContent()
-}
-
-onMounted(async () => {
-  await loadContent()
-  window.addEventListener('brand-changed', handleBrandChange)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('brand-changed', handleBrandChange)
+onMounted(() => {
+  contentStore.fetchItems()
 })
 </script>
 

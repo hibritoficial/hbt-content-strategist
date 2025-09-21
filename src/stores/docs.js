@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { adminDocs } from '@/data/adminDocs'
 
 export const useDocsStore = defineStore('docs', () => {
   const isOpen = ref(false)
@@ -8,6 +9,7 @@ export const useDocsStore = defineStore('docs', () => {
   const searchQuery = ref('')
 
   const topics = ref({
+    ...adminDocs,
     'dashboard-overview': {
       id: 'dashboard-overview',
       route: '/dashboard',
