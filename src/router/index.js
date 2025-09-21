@@ -13,6 +13,24 @@ const routes = [
     meta: { requiresAuth: true, requiresHibrit: true }
   },
   {
+    path: '/labs',
+    name: 'HibritLabs',
+    component: () => import('@/views/HibritLabs.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/labs/interface-test',
+    name: 'InterfaceTest',
+    component: () => import('@/views/InterfaceTest.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/labs/cxa-dashboard',
+    name: 'CXADashboard',
+    component: () => import('@/views/CXADashboard.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/tasks',
     name: 'Tasks',
     component: () => import('@/views/Tasks.vue'),

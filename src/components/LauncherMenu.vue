@@ -200,10 +200,11 @@
             <v-btn
               block
               variant="outlined"
-              prepend-icon="mdi-flask"
-              disabled
+              prepend-icon="mdi-atom"
+              :to="{ name: 'HibritLabs' }"
+              class="hibrit-labs-btn"
             >
-              Experimentos
+              HIBRIT LABS
             </v-btn>
           </v-col>
         </v-row>
@@ -219,3 +220,19 @@ import { useDocsStore } from '@/stores/docs'
 const cockpitStore = useCockpitStore()
 const docsStore = useDocsStore()
 </script>
+
+<style scoped>
+.hibrit-labs-btn {
+  background: linear-gradient(135deg, rgba(0, 255, 157, 0.1), rgba(0, 123, 255, 0.1)) !important;
+  border-color: rgba(0, 255, 157, 0.3) !important;
+  color: #00ff9d !important;
+  font-weight: 600 !important;
+}
+
+.hibrit-labs-btn:hover {
+  background: linear-gradient(135deg, rgba(0, 255, 157, 0.2), rgba(0, 123, 255, 0.2)) !important;
+  border-color: #00ff9d !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 255, 157, 0.3) !important;
+}
+</style>
