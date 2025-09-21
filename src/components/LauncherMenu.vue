@@ -185,9 +185,10 @@
               block
               variant="outlined"
               prepend-icon="mdi-trophy"
-              disabled
+              :to="{ name: 'Gamification' }"
+              class="gamification-btn"
             >
-              Gamification
+              🎮 Gamification
             </v-btn>
           </v-col>
         </v-row>
@@ -259,5 +260,19 @@ const docsStore = useDocsStore()
   border-color: #3b82f6 !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3) !important;
+}
+
+.gamification-btn {
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(75, 0, 130, 0.1)) !important;
+  border-color: rgba(138, 43, 226, 0.3) !important;
+  color: #8a2be2 !important;
+  font-weight: 600 !important;
+}
+
+.gamification-btn:hover {
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(75, 0, 130, 0.2)) !important;
+  border-color: #8a2be2 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(138, 43, 226, 0.3) !important;
 }
 </style>

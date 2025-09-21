@@ -163,6 +163,18 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/gamification',
+    name: 'Gamification',
+    component: () => import('@/views/Gamification.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/gamification/operacao-anti-ghosting',
+    name: 'OperacaoAntiGhosting',
+    component: () => import('@/views/gamification/OperacaoAntiGhosting.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/channels/instagram',
     name: 'Instagram',
     component: () => import('@/views/channels/Instagram.vue'),
