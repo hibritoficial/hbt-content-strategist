@@ -234,19 +234,7 @@
           class="mr-2"
         />
         
-        <v-spacer />
-        
-        <!-- Command Centers -->
-        <v-btn
-          color="primary"
-          prepend-icon="mdi-chart-timeline-variant"
-          variant="elevated"
-          class="mr-2"
-          @click="openContentCenter"
-        >
-          Content Center
-        </v-btn>
-        
+        <!-- Left side buttons -->
         <v-btn
           color="deep-purple"
           prepend-icon="mdi-crown"
@@ -258,20 +246,26 @@
         </v-btn>
         
         <v-btn
-          color="secondary"
-          prepend-icon="mdi-plus"
-          @click="createNew"
+          color="primary"
+          prepend-icon="mdi-chart-timeline-variant"
+          variant="elevated"
+          class="mr-4"
+          @click="openContentCenter"
         >
-          Novo (N)
+          Content Center
         </v-btn>
         
-
-        
         <v-btn
-          icon="mdi-help-circle-outline"
-          @click="docsStore.toggle"
-          class="ml-2"
-        />
+          color="success"
+          prepend-icon="mdi-flask"
+          variant="elevated"
+          class="hibrit-labs-btn"
+          @click="() => router.push('/labs')"
+        >
+          HIBRIT LABS
+        </v-btn>
+        
+        <v-spacer />
         
         <!-- Launcher -->
         <v-menu>
@@ -406,10 +400,6 @@ const openFunnelCenter = () => {
   router.push({ name: 'FunnelCenter' })
 }
 
-const createNew = () => {
-  router.push({ name: 'Editor', params: { id: 'new' } })
-}
-
 const generateCopies = () => {
   // Implementar geração de copies
   showSnackbar('Gerando 3 variações...', 'info')
@@ -453,7 +443,6 @@ const stopSimulation = () => {
 
 // Atalhos de teclado
 useKeyboardShortcuts({
-  'n': createNew,
   '/': () => document.querySelector('input[placeholder*="Buscar"]')?.focus(),
   'g+c': () => router.push({ name: 'Calendar' }),
   'g+p': () => router.push({ name: 'Pipeline' })
@@ -538,6 +527,21 @@ onMounted(async () => {
   }
   to {
     box-shadow: 0 6px 20px rgba(156, 39, 176, 0.6);
+  }
+}
+
+.hibrit-labs-btn {
+  background: linear-gradient(45deg, #00ff9d, #007bff) !important;
+  box-shadow: 0 4px 15px rgba(0, 255, 157, 0.4) !important;
+  animation: labs-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes labs-glow {
+  from {
+    box-shadow: 0 4px 15px rgba(0, 255, 157, 0.4);
+  }
+  to {
+    box-shadow: 0 6px 20px rgba(0, 255, 157, 0.6);
   }
 }
 

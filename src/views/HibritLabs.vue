@@ -49,6 +49,106 @@
       </div>
     </div>
 
+    <!-- Two Pillars Introduction -->
+    <div class="pillars-section">
+      <div class="pillars-header">
+        <h2>Dois Universos Interconectados</h2>
+        <p>Pesquisa e Desenvolvimento trabalhando em sinergia para revolucionar o marketing digital</p>
+      </div>
+      
+      <div class="pillars-grid">
+        <!-- Neural Research Engine Pillar -->
+        <div class="pillar-card research-pillar" @click="$router.push('/labs/neural-research-engine')">
+          <div class="pillar-particles research-particles"></div>
+          <div class="pillar-content">
+            <div class="pillar-badge research-badge">
+              <v-icon size="18" color="#fbbf24">mdi-brain</v-icon>
+              <span>PESQUISA</span>
+            </div>
+            
+            <h3 class="pillar-title research-title">
+              <span class="title-neural">NEURAL RESEARCH</span>
+              <span class="title-engine">ENGINE</span>
+            </h3>
+            
+            <p class="pillar-description">
+              Sistema avançado de absorção e produção de conhecimento científico aplicado ao marketing digital
+            </p>
+            
+            <div class="pillar-features">
+              <div class="feature-item">
+                <v-icon size="16" color="#fbbf24">mdi-sitemap</v-icon>
+                <span>5 Áreas de Pesquisa</span>
+              </div>
+              <div class="feature-item">
+                <v-icon size="16" color="#fbbf24">mdi-layers</v-icon>
+                <span>4 Camadas de Aprendizado</span>
+              </div>
+              <div class="feature-item">
+                <v-icon size="16" color="#fbbf24">mdi-compass</v-icon>
+                <span>Cobertura 360°</span>
+              </div>
+            </div>
+            
+            <button class="pillar-btn research-btn">
+              <v-icon size="16">mdi-brain</v-icon>
+              Explorar Sistema de Conhecimento
+            </button>
+          </div>
+        </div>
+        
+        <!-- Scientific Laboratories Pillar -->
+        <div class="pillar-card labs-pillar" @click="$router.push('/labs/scientific-laboratories')">
+          <div class="pillar-particles labs-particles"></div>
+          <div class="pillar-content">
+            <div class="pillar-badge labs-badge">
+              <v-icon size="18" color="#00ff9d">mdi-flask</v-icon>
+              <span>DESENVOLVIMENTO</span>
+            </div>
+            
+            <h3 class="pillar-title labs-title">
+              <span class="title-scientific">LABORATÓRIOS</span>
+              <span class="title-scientific-accent">CIENTÍFICOS</span>
+            </h3>
+            
+            <p class="pillar-description">
+              Ambiente controlado para desenvolvimento, teste e validação de tecnologias disruptivas em marketing digital
+            </p>
+            
+            <div class="pillar-features">
+              <div class="feature-item">
+                <v-icon size="16" color="#00ff9d">mdi-test-tube</v-icon>
+                <span>6 Laboratórios Ativos</span>
+              </div>
+              <div class="feature-item">
+                <v-icon size="16" color="#00ff9d">mdi-chart-line</v-icon>
+                <span>94.7% Taxa de Sucesso</span>
+              </div>
+              <div class="feature-item">
+                <v-icon size="16" color="#00ff9d">mdi-rocket-launch</v-icon>
+                <span>1,247 Experimentos</span>
+              </div>
+            </div>
+            
+            <button class="pillar-btn labs-btn">
+              <v-icon size="16">mdi-flask</v-icon>
+              Acessar Laboratórios
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="synergy-section">
+        <div class="synergy-content">
+          <div class="synergy-icon">
+            <v-icon size="32" color="#8b5cf6">mdi-atom</v-icon>
+          </div>
+          <h3>Sinergia entre Pesquisa e Desenvolvimento</h3>
+          <p>O Neural Research Engine alimenta os Laboratórios Científicos com conhecimento estruturado, enquanto os experimentos práticos validam e refinam as teorias, criando um ciclo contínuo de inovação.</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Laboratory Navigation Carousel -->
     <div class="lab-navigation">
       <div class="carousel-header">
@@ -417,18 +517,18 @@
         <div class="design-tools">
           <div class="tool-card">
             <div class="card-icon">
-              <v-icon size="32" color="#ff6b6b">mdi-flask</v-icon>
+              <v-icon size="32" color="#00ff9d">mdi-monitor-dashboard</v-icon>
             </div>
-            <h3>🔬 Interface Experiments</h3>
-            <p>Laboratório de testes de interface e experiência do usuário</p>
+            <h3>🚀 Experimentos de Interface</h3>
+            <p>5 experimentos completos: CXA Dashboard, Analytics, Funnel Builder, Mobile e CXA Ultimate</p>
             <div class="interface-experiments">
-              <div class="experiment-item" @click="$router.push('/labs/interface-test')">
+              <div class="experiment-item" @click="$router.push('/labs/cxa-dashboard')">
                 <div class="experiment-icon">
                   <v-icon size="20">mdi-monitor-dashboard</v-icon>
                 </div>
                 <div class="experiment-info">
-                  <h4>Dashboard Components Test</h4>
-                  <p>Teste visual de componentes de dashboard</p>
+                  <h4>CXA Dashboard</h4>
+                  <p>Dashboard completo de funis e receita</p>
                   <div class="experiment-status">
                     <span class="status-dot running"></span>
                     <span>Ativo</span>
@@ -439,35 +539,102 @@
                 </div>
               </div>
               
-              <div class="experiment-item disabled">
+              <div class="experiment-item" @click="$router.push('/labs/analytics-overview')">
                 <div class="experiment-icon">
-                  <v-icon size="20">mdi-form-select</v-icon>
+                  <v-icon size="20">mdi-chart-line</v-icon>
                 </div>
                 <div class="experiment-info">
-                  <h4>Form Components Test</h4>
-                  <p>Teste de formulários e inputs</p>
+                  <h4>Analytics Overview</h4>
+                  <p>Visão geral de métricas avançadas</p>
                   <div class="experiment-status">
                     <span class="status-dot pending"></span>
                     <span>Em Desenvolvimento</span>
                   </div>
                 </div>
+                <div class="experiment-arrow">
+                  <v-icon size="14">mdi-chevron-right</v-icon>
+                </div>
               </div>
               
-              <div class="experiment-item disabled">
+              <div class="experiment-item" @click="$router.push('/labs/funnel-builder')">
                 <div class="experiment-icon">
-                  <v-icon size="20">mdi-animation</v-icon>
+                  <v-icon size="20">mdi-filter-variant</v-icon>
                 </div>
                 <div class="experiment-info">
-                  <h4>Animation Performance Test</h4>
-                  <p>Teste de performance de animações</p>
+                  <h4>Funnel Builder</h4>
+                  <p>Construtor visual de funis</p>
                   <div class="experiment-status">
                     <span class="status-dot pending"></span>
                     <span>Planejado</span>
                   </div>
                 </div>
+                <div class="experiment-arrow">
+                  <v-icon size="14">mdi-chevron-right</v-icon>
+                </div>
+              </div>
+              
+              <div class="experiment-item" @click="$router.push('/labs/mobile-interface')">
+                <div class="experiment-icon">
+                  <v-icon size="20">mdi-cellphone</v-icon>
+                </div>
+                <div class="experiment-info">
+                  <h4>Mobile Interface</h4>
+                  <p>Interface otimizada para mobile</p>
+                  <div class="experiment-status">
+                    <span class="status-dot pending"></span>
+                    <span>Planejado</span>
+                  </div>
+                </div>
+                <div class="experiment-arrow">
+                  <v-icon size="14">mdi-chevron-right</v-icon>
+                </div>
+              </div>
+              
+              <div class="experiment-item" @click="$router.push('/labs/cxa-ultimate')">
+                <div class="experiment-icon">
+                  <v-icon size="20">mdi-rocket-launch</v-icon>
+                </div>
+                <div class="experiment-info">
+                  <h4>CXA Ultimate</h4>
+                  <p>Dashboard definitivo de Customer Experience Automation</p>
+                  <div class="experiment-status">
+                    <span class="status-dot running"></span>
+                    <span>Ativo</span>
+                  </div>
+                </div>
+                <div class="experiment-arrow">
+                  <v-icon size="14">mdi-chevron-right</v-icon>
+                </div>
               </div>
             </div>
-            <button class="lab-action-btn">Acessar Laboratório</button>
+            <button class="lab-action-btn" @click="$router.push('/labs/cxa-dashboard')">Abrir Experimentos</button>
+          </div>
+          
+          <div class="tool-card">
+            <div class="card-icon">
+              <v-icon size="32" color="#ff6b6b">mdi-test-tube</v-icon>
+            </div>
+            <h3>🧪 Testes de Componentes</h3>
+            <p>Laboratório dedicado para testes visuais de componentes de interface</p>
+            <div class="component-tests-preview">
+              <div class="test-category">
+                <v-icon size="16" color="#10b981">mdi-cursor-pointer</v-icon>
+                <span>Botões & Ações</span>
+              </div>
+              <div class="test-category">
+                <v-icon size="16" color="#3b82f6">mdi-form-select</v-icon>
+                <span>Formulários</span>
+              </div>
+              <div class="test-category">
+                <v-icon size="16" color="#f59e0b">mdi-chart-bar</v-icon>
+                <span>Dados & Métricas</span>
+              </div>
+              <div class="test-category">
+                <v-icon size="16" color="#8b5cf6">mdi-navigation</v-icon>
+                <span>Navegação</span>
+              </div>
+            </div>
+            <button class="lab-action-btn" @click="$router.push('/labs/components-test')">Acessar Testes</button>
           </div>
           
           <div class="tool-card">
@@ -1095,6 +1262,276 @@ const createExperiment = (template) => {
   color: white;
   position: relative;
   overflow-x: hidden;
+}
+
+/* Two Pillars Section */
+.pillars-section {
+  padding: 60px 40px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(26, 26, 46, 0.8) 50%, rgba(22, 33, 62, 0.8) 100%);
+  border-top: 2px solid rgba(139, 92, 246, 0.3);
+  border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.pillars-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.pillars-header h2 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+}
+
+.pillars-header p {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto 60px;
+}
+
+.pillar-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 40px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+
+.pillar-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+}
+
+.research-pillar:hover {
+  border-color: rgba(251, 191, 36, 0.6);
+  box-shadow: 0 20px 60px rgba(251, 191, 36, 0.3);
+}
+
+.labs-pillar:hover {
+  border-color: rgba(0, 255, 157, 0.6);
+  box-shadow: 0 20px 60px rgba(0, 255, 157, 0.3);
+}
+
+.pillar-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.6;
+}
+
+.research-particles {
+  background-image: 
+    radial-gradient(2px 2px at 30px 40px, rgba(251, 191, 36, 0.4), transparent),
+    radial-gradient(1px 1px at 80px 20px, rgba(245, 158, 11, 0.3), transparent);
+  background-repeat: repeat;
+  background-size: 120px 80px;
+  animation: researchFloat 20s linear infinite;
+}
+
+.labs-particles {
+  background-image: 
+    radial-gradient(2px 2px at 40px 30px, rgba(0, 255, 157, 0.4), transparent),
+    radial-gradient(1px 1px at 70px 60px, rgba(0, 123, 255, 0.3), transparent);
+  background-repeat: repeat;
+  background-size: 100px 90px;
+  animation: labsFloat 18s linear infinite;
+}
+
+@keyframes researchFloat {
+  0% { transform: translateX(0px) translateY(0px); }
+  100% { transform: translateX(-120px) translateY(-80px); }
+}
+
+@keyframes labsFloat {
+  0% { transform: translateX(0px) translateY(0px); }
+  100% { transform: translateX(-100px) translateY(-90px); }
+}
+
+.pillar-content {
+  position: relative;
+  z-index: 2;
+}
+
+.pillar-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.research-badge {
+  background: rgba(251, 191, 36, 0.2);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  color: #fbbf24;
+}
+
+.labs-badge {
+  background: rgba(0, 255, 157, 0.2);
+  border: 1px solid rgba(0, 255, 157, 0.4);
+  color: #00ff9d;
+}
+
+.pillar-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin: 0 0 20px 0;
+  line-height: 1.2;
+}
+
+.title-neural {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-engine {
+  color: #ff6b35;
+  margin-left: 12px;
+}
+
+.title-scientific {
+  background: linear-gradient(135deg, #00ff9d, #007bff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-scientific-accent {
+  color: #007bff;
+  margin-left: 12px;
+}
+
+.pillar-description {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 24px 0;
+  line-height: 1.6;
+}
+
+.pillar-features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.pillar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.research-btn {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3);
+}
+
+.research-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(251, 191, 36, 0.5);
+}
+
+.labs-btn {
+  background: linear-gradient(135deg, #00ff9d, #007bff);
+  box-shadow: 0 8px 25px rgba(0, 255, 157, 0.3);
+}
+
+.labs-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(0, 255, 157, 0.5);
+}
+
+/* Synergy Section */
+.synergy-section {
+  text-align: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.1));
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.synergy-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.synergy-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2));
+  border: 2px solid rgba(139, 92, 246, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  animation: synergyPulse 3s ease-in-out infinite;
+}
+
+@keyframes synergyPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+  50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(139, 92, 246, 0.6); }
+}
+
+.synergy-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.synergy-content p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  line-height: 1.6;
 }
 
 /* Laboratory Header */
@@ -2628,6 +3065,26 @@ const createExperiment = (template) => {
   color: #8b5cf6;
 }
 
+/* Component Tests Preview */
+.component-tests-preview {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.test-category {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
 /* Interface Experiments in Visual Impact */
 .interface-experiments {
   display: flex;
@@ -3034,6 +3491,32 @@ const createExperiment = (template) => {
 
 /* Responsive */
 @media (max-width: 768px) {
+  .pillars-header h2 {
+    font-size: 2.2rem;
+  }
+  
+  .pillars-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .pillar-card {
+    padding: 30px 20px;
+  }
+  
+  .pillar-title {
+    font-size: 1.8rem;
+  }
+  
+  .title-engine,
+  .title-scientific-accent {
+    margin-left: 8px;
+  }
+  
+  .pillars-section {
+    padding: 40px 20px;
+  }
+  
   .lab-hero {
     flex-direction: column;
     text-align: center;

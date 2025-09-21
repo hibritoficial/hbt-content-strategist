@@ -19,6 +19,18 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/labs/scientific-laboratories',
+    name: 'ScientificLaboratories',
+    component: () => import('@/views/ScientificLaboratories.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/labs/neural-research-engine',
+    name: 'NeuralResearchEngine',
+    component: () => import('@/views/NeuralResearchEngine.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/labs/interface-test',
     name: 'InterfaceTest',
     component: () => import('@/views/InterfaceTest.vue'),
@@ -27,7 +39,37 @@ const routes = [
   {
     path: '/labs/cxa-dashboard',
     name: 'CXADashboard',
-    component: () => import('@/views/CXADashboard.vue'),
+    component: () => import('@/views/experiments/CXADashboardExperiment.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/labs/cxa-ultimate',
+    name: 'CXAUltimate',
+    component: () => import('@/views/experiments/CXAUltimateExperiment.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/labs/analytics-overview',
+    name: 'AnalyticsOverview',
+    component: () => import('@/views/experiments/AnalyticsOverviewExperiment.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/labs/funnel-builder',
+    name: 'FunnelBuilderExperiment',
+    component: () => import('@/views/experiments/FunnelBuilderExperiment.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/labs/mobile-interface',
+    name: 'MobileInterfaceExperiment',
+    component: () => import('@/views/experiments/MobileInterfaceExperiment.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/labs/components-test',
+    name: 'ComponentsTest',
+    component: () => import('@/views/ComponentsTest.vue'),
     meta: { requiresAuth: true }
   },
   {
