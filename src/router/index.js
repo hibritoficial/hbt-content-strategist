@@ -157,6 +157,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/crm',
+    name: 'CRM',
+    component: () => import('@/views/CRM.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/channels/instagram',
     name: 'Instagram',
     component: () => import('@/views/channels/Instagram.vue'),

@@ -141,6 +141,23 @@
             </v-tooltip>
           </v-list-item>
           
+          <!-- CRM -->
+          <v-list-item
+            prepend-icon="mdi-account-group"
+            :title="navState === 'expanded' ? 'CRM' : undefined"
+            value="crm"
+            :to="{ name: 'CRM' }"
+            color="primary"
+          >
+            <v-tooltip
+              v-if="navState === 'compact'"
+              activator="parent"
+              location="end"
+            >
+              CRM
+            </v-tooltip>
+          </v-list-item>
+          
           <!-- Admin (Hibrit only) -->
           <template v-if="isHibrit">
             <v-divider class="my-2" />

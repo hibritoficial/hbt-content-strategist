@@ -54,6 +54,17 @@
               Métricas
             </v-btn>
           </v-col>
+          <v-col cols="6">
+            <v-btn
+              block
+              variant="outlined"
+              prepend-icon="mdi-account-group"
+              :to="{ name: 'CRM' }"
+              class="crm-btn"
+            >
+              💎 CRM
+            </v-btn>
+          </v-col>
         </v-row>
       </div>
 
@@ -234,5 +245,19 @@ const docsStore = useDocsStore()
   border-color: #00ff9d !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 255, 157, 0.3) !important;
+}
+
+.crm-btn {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(29, 78, 216, 0.1)) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  color: #3b82f6 !important;
+  font-weight: 600 !important;
+}
+
+.crm-btn:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(29, 78, 216, 0.2)) !important;
+  border-color: #3b82f6 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3) !important;
 }
 </style>
