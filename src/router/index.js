@@ -85,6 +85,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/cockpit/ocs',
+    name: 'CockpitOCS',
+    component: () => import('@/views/CockpitOCS.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/content-center',
     name: 'ContentCenter',
     component: () => import('@/views/ContentCenter.vue'),

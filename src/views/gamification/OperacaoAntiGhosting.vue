@@ -15,8 +15,8 @@
         </div>
         
         <h1 class="mission-title">
-          <span class="title-main">Missão de Resgate</span>
-          <span class="title-sub">Recuperando Sinais Perdidos</span>
+          <span class="title-main">Série Gamificada</span>
+          <span class="title-sub">6 Episódios • Recursos Avançados • Mentoria Gratuita</span>
         </h1>
         
         <div class="mission-stats">
@@ -82,17 +82,115 @@
     <div class="content-area">
       <!-- Área Pública -->
       <div v-if="activeTab === 'public'" class="public-area">
-        <PublicArea />
+        <NetflixTimeline />
       </div>
 
       <!-- Painel MASP -->
       <div v-if="activeTab === 'masp'" class="masp-panel">
-        <MASPPanel />
+        <div class="masp-simple">
+          <h2>🎯 Painel MASP</h2>
+          <p>Missões • Artefatos • Selos • Passaporte</p>
+          
+          <!-- Quick Stats -->
+          <div class="masp-grid">
+            <div class="masp-card missions">
+              <div class="card-icon">🎯</div>
+              <h3>Missões</h3>
+              <div class="card-stats">6/20 Ativas</div>
+            </div>
+            
+            <div class="masp-card artifacts">
+              <div class="card-icon">📜</div>
+              <h3>Artefatos</h3>
+              <div class="card-stats">20 Recursos</div>
+            </div>
+            
+            <div class="masp-card badges">
+              <div class="card-icon">🏆</div>
+              <h3>Selos</h3>
+              <div class="card-stats">3/20 Conquistados</div>
+            </div>
+            
+            <div class="masp-card passport">
+              <div class="card-icon">🏆</div>
+              <h3>Passaporte</h3>
+              <div class="card-stats">Prêmio R$ 350</div>
+            </div>
+          </div>
+          
+          <!-- Resources Lists -->
+          <div class="resources-section">
+            <div class="resource-category">
+              <h3>🎯 Missões (6 Ativas)</h3>
+              <div class="resource-items">
+                <div class="resource-item active">M1: Radar Anti-Ghosting</div>
+                <div class="resource-item locked">M5: Luz na Sala - Pitch 45s</div>
+                <div class="resource-item locked">M4: Portão 3Q - Pré-qualificação</div>
+                <div class="resource-item locked">M6: Relógio Fantasma</div>
+                <div class="resource-item locked">M16: Fecho-Cofre</div>
+                <div class="resource-item locked">M18: Central de Telemetria</div>
+              </div>
+            </div>
+            
+            <div class="resource-category">
+              <h3>📜 Artefatos (20 Recursos)</h3>
+              <div class="resource-items">
+                <div class="resource-item unlocked">A1: Planilha Forense</div>
+                <div class="resource-item unlocked">A10: Estojo Vidas Reais</div>
+                <div class="resource-item locked">A5: Script Pitch 45s</div>
+                <div class="resource-item locked">A7: Preço 2 Etapas</div>
+                <div class="resource-item locked">A3: Aberturas V1/V2</div>
+                <div class="resource-item locked">A18: Radar de KPIs</div>
+                <div class="resource-item locked">A4: Portal 3Q</div>
+                <div class="resource-item locked">A6: Calendário Tático</div>
+                <div class="resource-item locked">A15: Checklist Fecho-Cofre</div>
+                <div class="resource-item locked">A11: Pacotes + Links</div>
+              </div>
+            </div>
+            
+            <div class="resource-category">
+              <h3>🏆 Selos (3/20 Conquistados)</h3>
+              <div class="resource-items">
+                <div class="resource-item earned">S1: Varredura</div>
+                <div class="resource-item earned">S9: Espelho</div>
+                <div class="resource-item earned">S17: Telemetria</div>
+                <div class="resource-item locked">S5: Luz antes do Preço</div>
+                <div class="resource-item locked">S7: Preço Luminoso</div>
+                <div class="resource-item locked">S4: Guarda-Portão 3Q</div>
+                <div class="resource-item locked">S6: Relógio Certo</div>
+                <div class="resource-item locked">S11: Invocador</div>
+                <div class="resource-item locked">S16: Fecho-Cofre</div>
+                <div class="resource-item locked">S20: Queda Livre 30%</div>
+              </div>
+            </div>
+            
+            <div class="resource-category passport-section">
+              <h3>🏆 Passaporte (Prêmio R$ 350)</h3>
+              <div class="passport-progress">
+                <div class="progress-info">
+                  <span>Colete 10 selos para desbloquear prêmio equivalente a R$ 350</span>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 30%"></div>
+                  </div>
+                  <span class="progress-text">3/10 selos coletados</span>
+                </div>
+                <div class="passport-reward locked">
+                  <div class="reward-icon">🎁</div>
+                  <div class="reward-text">Mentoria Gratuita 45min</div>
+                  <div class="reward-value">Valor: R$ 350</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Analytics -->
       <div v-if="activeTab === 'analytics'" class="analytics-area">
-        <AnalyticsArea />
+        <div class="analytics-placeholder">
+          <h3>📊 Analytics em Desenvolvimento</h3>
+          <p>Métricas avançadas em breve...</p>
+        </div>
       </div>
     </div>
 
@@ -121,9 +219,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import PublicArea from '@/components/gamification/PublicArea.vue'
-import MASPPanel from '@/components/gamification/MASPPanel.vue'
-import AnalyticsArea from '@/components/gamification/AnalyticsArea.vue'
+import NetflixTimeline from '@/components/gamification/NetflixTimelineFixed.vue'
 
 const activeTab = ref('public')
 const signalStrength = ref(73)
@@ -144,9 +240,9 @@ const achievements = ref([
 ])
 
 const tabs = [
-  { key: 'public', icon: '🌐', label: 'Área Pública', notification: null },
-  { key: 'masp', icon: '🎯', label: 'Painel MASP', notification: '3' },
-  { key: 'analytics', icon: '📊', label: 'Analytics', notification: null }
+  { key: 'public', icon: '🎥', label: 'Série', notification: null },
+  { key: 'masp', icon: '🎯', label: 'Painel Avançado', notification: '3' },
+  { key: 'analytics', icon: '📊', label: 'Analytics', notification: 'Em breve' }
 ]
 
 onMounted(() => {
@@ -530,6 +626,230 @@ onMounted(() => {
 .hud-label {
   font-size: 9px;
   color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+}
+
+.analytics-placeholder {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.analytics-placeholder h3 {
+  font-size: 24px;
+  margin-bottom: 12px;
+  color: #8a2be2;
+}
+
+.analytics-placeholder p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.placeholder {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.placeholder h3 {
+  font-size: 24px;
+  margin-bottom: 12px;
+  color: #00ff88;
+}
+
+.placeholder p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.masp-simple {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.masp-simple h2 {
+  font-size: 32px;
+  margin-bottom: 8px;
+  color: #00ff88;
+}
+
+.masp-simple p {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 40px;
+}
+
+.masp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.masp-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.masp-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 255, 136, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.card-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.masp-card h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.card-stats {
+  font-size: 14px;
+  color: #00ff88;
+  font-weight: 600;
+}
+
+/* Resources Section */
+.resources-section {
+  margin-top: 40px;
+  text-align: left;
+}
+
+.resource-category {
+  margin-bottom: 32px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.resource-category h3 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #00ff88;
+  border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+  padding-bottom: 8px;
+}
+
+.resource-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 8px;
+}
+
+.resource-item {
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.resource-item.active {
+  background: rgba(255, 193, 7, 0.1);
+  border-left-color: #ffc107;
+  color: #ffc107;
+}
+
+.resource-item.unlocked {
+  background: rgba(0, 255, 136, 0.1);
+  border-left-color: #00ff88;
+  color: #00ff88;
+}
+
+.resource-item.earned {
+  background: rgba(76, 175, 80, 0.1);
+  border-left-color: #4caf50;
+  color: #4caf50;
+}
+
+.resource-item.locked {
+  background: rgba(255, 255, 255, 0.05);
+  border-left-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Passport Section */
+.passport-section {
+  border: 2px solid rgba(255, 193, 7, 0.3);
+  background: rgba(255, 193, 7, 0.05);
+}
+
+.passport-progress {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.progress-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.progress-info span {
+  display: block;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffc107, #ff9800);
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.passport-reward {
+  text-align: center;
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.passport-reward.locked {
+  opacity: 0.6;
+}
+
+.reward-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.reward-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.reward-value {
+  font-size: 12px;
+  color: #ffc107;
   font-weight: 600;
 }
 

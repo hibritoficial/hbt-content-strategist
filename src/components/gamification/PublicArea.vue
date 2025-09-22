@@ -1,5 +1,10 @@
 <template>
   <div class="public-area">
+    <!-- Série Timeline -->
+    <div class="serie-section">
+      <SerieTimeline />
+    </div>
+
     <!-- Alerta de Sinal -->
     <div class="signal-alert">
       <div class="alert-background">
@@ -158,8 +163,67 @@
       </div>
     </div>
 
+    <!-- Gatilho de Captura -->
+    <div v-if="scanCompleted && !userCaptured" class="capture-gate">
+      <div class="gate-background">
+        <div class="gate-glow"></div>
+      </div>
+      
+      <div class="gate-content">
+        <div class="gate-icon">🔒</div>
+        <h3 class="gate-title">Acesso Restrito</h3>
+        <p class="gate-description">
+          Para continuar e acessar o Mapa de Rotas + recursos avançados, 
+          precisamos do seu contato para enviar os materiais.
+        </p>
+        
+        <div class="capture-form">
+          <v-text-field
+            v-model="captureData.name"
+            label="Seu nome"
+            variant="outlined"
+            density="comfortable"
+            class="mb-3"
+          />
+          
+          <v-text-field
+            v-model="captureData.email"
+            label="Seu melhor email"
+            variant="outlined"
+            density="comfortable"
+            type="email"
+            class="mb-3"
+          />
+          
+          <v-text-field
+            v-model="captureData.whatsapp"
+            label="WhatsApp (com DDD)"
+            variant="outlined"
+            density="comfortable"
+            class="mb-4"
+          />
+          
+          <v-btn 
+            class="unlock-btn"
+            size="large"
+            block
+            @click="unlockContent"
+            :disabled="!isFormValid"
+          >
+            <span class="btn-icon">🔓</span>
+            <span class="btn-text">Desbloquear Conteúdo</span>
+          </v-btn>
+        </div>
+        
+        <div class="capture-guarantee">
+          <span class="guarantee-icon">🔒</span>
+          <span class="guarantee-text">Seus dados estão seguros • Sem spam • Apenas conteúdo de valor</span>
+        </div>
+      </div>
+    </div>
+
     <!-- CTA Principal -->
-    <div v-if="scanCompleted" class="main-cta">
+    <div v-if="scanCompleted && userCaptured" class="main-cta">
       <div class="cta-background">
         <div class="cta-glow"></div>
       </div>
@@ -202,16 +266,151 @@
         </div>
       </div>
     </div>
+
+    <!-- Episódios da Série -->
+    <div v-if="userCaptured" class="episodes-section">
+      <div class="section-header">
+        <h3 class="section-title">🎥 Episódios da Série</h3>
+        <p class="section-subtitle">6 episódios + recursos avançados no Painel</p>
+      </div>
+      
+      <div class="episodes-timeline">
+        <div 
+          v-for="(episode, index) in episodes" 
+          :key="episode.id"
+          class="episode-card"
+          :class="{ 
+            available: episode.available, 
+            current: episode.current,
+            completed: episode.completed 
+          }"
+          @click="openEpisode(episode)"
+        >
+          <div class="episode-number">EP{{ episode.number }}</div>
+          <div class="episode-content">
+            <h4 class="episode-title">{{ episode.title }}</h4>
+            <p class="episode-description">{{ episode.description }}</p>
+            
+            <div class="episode-resources">
+              <div class="resource-item">
+                <span class="resource-icon">🎯</span>
+                <span class="resource-text">{{ episode.missions }} missões</span>
+              </div>
+              <div class="resource-item">
+                <span class="resource-icon">📜</span>
+                <span class="resource-text">{{ episode.artifacts }} artefatos</span>
+              </div>
+              <div class="resource-item">
+                <span class="resource-icon">🏆</span>
+                <span class="resource-text">{{ episode.badges }} selos</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="episode-status">
+            <div v-if="episode.completed" class="status-icon completed">✓</div>
+            <div v-else-if="episode.current" class="status-icon current">▶️</div>
+            <div v-else-if="episode.available" class="status-icon available">🔓</div>
+            <div v-else class="status-icon locked">🔒</div>
+          </div>
+          
+          <div v-if="index < episodes.length - 1" class="episode-connector"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import SerieTimeline from './SerieTimeline.vue'
 
 const radarActive = ref(false)
 const scanProgress = ref(0)
 const scanCompleted = ref(false)
 const ghostingLevel = ref(0)
+const userCaptured = ref(false)
+
+const captureData = ref({
+  name: '',
+  email: '',
+  whatsapp: ''
+})
+
+const episodes = ref([
+  {
+    id: 1,
+    number: 1,
+    title: 'Intro Ghosting',
+    description: 'Radar de Contatos e Termômetro de Ghosting',
+    available: true,
+    current: true,
+    completed: false,
+    missions: 1,
+    artifacts: 2,
+    badges: 2
+  },
+  {
+    id: 2,
+    number: 2,
+    title: 'Técnica OEP',
+    description: 'Objetivo → Encaixe → Proposta em 3 passos',
+    available: false,
+    current: false,
+    completed: false,
+    missions: 1,
+    artifacts: 3,
+    badges: 2
+  },
+  {
+    id: 3,
+    number: 3,
+    title: 'Diagnóstico 10 Conversas',
+    description: 'Autópsia de chats e identificação de quebras',
+    available: false,
+    current: false,
+    completed: false,
+    missions: 1,
+    artifacts: 2,
+    badges: 2
+  },
+  {
+    id: 4,
+    number: 4,
+    title: 'Pré-qualificação & Preço',
+    description: 'Portão 3Q e Preço com Luz Acesa',
+    available: false,
+    current: false,
+    completed: false,
+    missions: 1,
+    artifacts: 2,
+    badges: 2
+  },
+  {
+    id: 5,
+    number: 5,
+    title: 'Cadência & Desghosting',
+    description: 'Relógio Fantasma e Ritual de Invocação',
+    available: false,
+    current: false,
+    completed: false,
+    missions: 1,
+    artifacts: 3,
+    badges: 3
+  },
+  {
+    id: 6,
+    number: 6,
+    title: 'Fechamento & KPIs',
+    description: 'Fecho-Cofre e métricas finais',
+    available: false,
+    current: false,
+    completed: false,
+    missions: 1,
+    artifacts: 3,
+    badges: 3
+  }
+])
 
 const signals = ref([
   { id: 1, x: 25, y: 30, status: 'lost', color: '#ff4444' },
@@ -301,8 +500,29 @@ const playTeaser = () => {
   console.log('Reproduzir vídeo teaser')
 }
 
+const isFormValid = computed(() => {
+  return captureData.value.name.length > 2 && 
+         captureData.value.email.includes('@') && 
+         captureData.value.whatsapp.length > 10
+})
+
+const unlockContent = () => {
+  if (isFormValid.value) {
+    userCaptured.value = true
+    console.log('Usuário capturado:', captureData.value)
+    // Aqui integraria com backend para salvar o lead
+  }
+}
+
 const downloadMap = () => {
   console.log('Download do Mapa 8K iniciado')
+}
+
+const openEpisode = (episode) => {
+  if (episode.available) {
+    console.log('Abrir episódio:', episode.title)
+    // Aqui abriria o conteúdo do episódio
+  }
 }
 </script>
 
@@ -1012,6 +1232,249 @@ const downloadMap = () => {
   font-size: 14px;
 }
 
+/* Capture Gate */
+.capture-gate {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 24px;
+  padding: 48px;
+  text-align: center;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.gate-background {
+  position: absolute;
+  inset: 0;
+}
+
+.gate-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 193, 7, 0.2) 0%, transparent 70%);
+  animation: gate-pulse 3s ease-in-out infinite;
+}
+
+@keyframes gate-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+.gate-content {
+  position: relative;
+  z-index: 2;
+}
+
+.gate-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 0 10px rgba(255, 193, 7, 0.5));
+}
+
+.gate-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  color: #ffc107;
+}
+
+.gate-description {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 32px 0;
+  line-height: 1.6;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.capture-form {
+  max-width: 400px;
+  margin: 0 auto 24px;
+}
+
+.unlock-btn {
+  background: linear-gradient(135deg, #ffc107, #ff9800) !important;
+  color: white !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  font-size: 16px !important;
+}
+
+.unlock-btn:disabled {
+  opacity: 0.5 !important;
+}
+
+.capture-guarantee {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Episodes Section */
+.episodes-section {
+  margin-top: 40px;
+}
+
+.episodes-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.episode-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  opacity: 0.6;
+}
+
+.episode-card.available {
+  opacity: 1;
+  border-color: rgba(0, 255, 136, 0.3);
+}
+
+.episode-card.current {
+  border-color: rgba(255, 193, 7, 0.5);
+  background: rgba(255, 193, 7, 0.05);
+  box-shadow: 0 0 20px rgba(255, 193, 7, 0.2);
+}
+
+.episode-card.completed {
+  border-color: rgba(0, 255, 136, 0.5);
+  background: rgba(0, 255, 136, 0.05);
+}
+
+.episode-card:hover.available {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.episode-number {
+  background: linear-gradient(135deg, #8a2be2, #4b0082);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 14px;
+  min-width: 60px;
+  text-align: center;
+}
+
+.episode-card.current .episode-number {
+  background: linear-gradient(135deg, #ffc107, #ff9800);
+}
+
+.episode-card.completed .episode-number {
+  background: linear-gradient(135deg, #00ff88, #0088ff);
+}
+
+.episode-content {
+  flex: 1;
+}
+
+.episode-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: white;
+}
+
+.episode-description {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+
+.episode-resources {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.resource-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.resource-icon {
+  font-size: 14px;
+}
+
+.episode-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.status-icon.completed {
+  background: #00ff88;
+  color: white;
+}
+
+.status-icon.current {
+  background: #ffc107;
+  color: white;
+  animation: current-pulse 2s ease-in-out infinite;
+}
+
+.status-icon.available {
+  background: rgba(0, 255, 136, 0.2);
+  color: #00ff88;
+}
+
+.status-icon.locked {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes current-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 193, 7, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(255, 193, 7, 0.6); }
+}
+
+.episode-connector {
+  position: absolute;
+  left: 50px;
+  bottom: -20px;
+  width: 2px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.episode-card.completed .episode-connector {
+  background: #00ff88;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .thermometer-container {
@@ -1030,6 +1493,16 @@ const downloadMap = () => {
   .social-proof {
     flex-direction: column;
     gap: 16px;
+  }
+  
+  .episode-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+  
+  .episode-resources {
+    justify-content: center;
   }
 }
 </style>

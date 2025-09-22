@@ -119,33 +119,43 @@
           <h2 class="section-title">🎯 Templates de Experiências</h2>
         </div>
         
-        <div class="templates-grid">
-          <div 
-            v-for="template in templates" 
-            :key="template.id"
-            class="template-card"
-            @click="useTemplate(template)"
-          >
-            <div class="template-preview">
-              <div class="preview-icon">{{ template.icon }}</div>
-            </div>
-            
-            <div class="template-info">
-              <h3 class="template-title">{{ template.title }}</h3>
-              <p class="template-description">{{ template.description }}</p>
+        <!-- Carrossel Futurista -->
+        <FuturisticCarousel 
+          :slides="templates" 
+          :auto-play="true" 
+          :interval="4000"
+        >
+          <template #default="{ slide, isActive }">
+            <div class="template-slide" :class="{ active: isActive }" @click="useTemplate(slide)">
+              <div class="slide-preview">
+                <div class="preview-icon">{{ slide.icon }}</div>
+                <div class="preview-glow"></div>
+              </div>
               
-              <div class="template-tags">
-                <span 
-                  v-for="tag in template.tags" 
-                  :key="tag"
-                  class="template-tag"
-                >
-                  {{ tag }}
-                </span>
+              <div class="slide-info">
+                <h3 class="slide-title">{{ slide.title }}</h3>
+                <p class="slide-description">{{ slide.description }}</p>
+                
+                <div class="slide-tags">
+                  <span 
+                    v-for="tag in slide.tags" 
+                    :key="tag"
+                    class="slide-tag"
+                  >
+                    {{ tag }}
+                  </span>
+                </div>
+                
+                <div class="slide-action">
+                  <div class="action-btn">
+                    <span class="btn-text">Usar Template</span>
+                    <span class="btn-icon">⚡</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </template>
+        </FuturisticCarousel>
       </div>
 
       <!-- Analytics -->
@@ -202,6 +212,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import FuturisticCarousel from '@/components/FuturisticCarousel.vue'
 
 const router = useRouter()
 const activeTab = ref('experiences')
@@ -257,30 +268,58 @@ const templates = ref([
   {
     id: 1,
     title: 'Série Anti-Ghosting',
-    description: 'Template para recuperação de leads perdidos',
+    description: 'Template para recuperação de leads perdidos com mecânicas de suspense e urgência',
     icon: '👻',
     tags: ['Vendas', 'Recuperação', 'Série']
   },
   {
     id: 2,
     title: 'Jornada do Herói',
-    description: 'Experiência épica de onboarding',
+    description: 'Experiência épica de onboarding com narrativa envolvente e progressão por níveis',
     icon: '⚔️',
     tags: ['Onboarding', 'RPG', 'Jornada']
   },
   {
     id: 3,
     title: 'Academia de Vendas',
-    description: 'Treinamento progressivo com níveis',
+    description: 'Treinamento progressivo com níveis, badges e certificações para equipes comerciais',
     icon: '🎓',
     tags: ['Treinamento', 'Vendas', 'Progressão']
   },
   {
     id: 4,
     title: 'Programa Fidelidade',
-    description: 'Sistema de pontos e recompensas',
+    description: 'Sistema de pontos, recompensas e status VIP para clientes recorrentes',
     icon: '💎',
     tags: ['Fidelidade', 'Pontos', 'Recompensas']
+  },
+  {
+    id: 5,
+    title: 'Missão Conversão',
+    description: 'Campanha de vendas com mecânicas de RPG, quests e recompensas progressivas',
+    icon: '🎯',
+    tags: ['Conversão', 'RPG', 'Campanha']
+  },
+  {
+    id: 6,
+    title: 'Laboratório de Leads',
+    description: 'Experiência científica para captura e qualificação de leads com experimentos',
+    icon: '🧪',
+    tags: ['Leads', 'Captura', 'Qualificação']
+  },
+  {
+    id: 7,
+    title: 'Arena de Competição',
+    description: 'Torneio gamificado entre equipes com rankings, troféus e premiações',
+    icon: '🏆',
+    tags: ['Competição', 'Equipes', 'Rankings']
+  },
+  {
+    id: 8,
+    title: 'Universo Educativo',
+    description: 'Plataforma de aprendizado com planetas, missões e descobertas progressivas',
+    icon: '🌌',
+    tags: ['Educação', 'Aprendizado', 'Progressão']
   }
 ])
 
@@ -668,62 +707,149 @@ const createFromTemplate = (template) => {
   color: rgba(255, 255, 255, 0.6);
 }
 
-/* Templates Grid */
-.templates-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.template-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 20px;
+/* Template Slide Styles */
+.template-slide {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.template-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(0, 255, 136, 0.3);
-}
-
-.template-preview {
+.slide-preview {
+  position: relative;
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .preview-icon {
-  font-size: 48px;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+  font-size: 64px;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
 }
 
-.template-title {
-  font-size: 18px;
+.template-slide.active .preview-icon {
+  font-size: 72px;
+  filter: drop-shadow(0 0 25px rgba(0, 255, 136, 0.8));
+  animation: icon-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes icon-pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+.preview-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.template-slide.active .preview-glow {
+  opacity: 1;
+  animation: glow-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow-pulse {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  100% { transform: translate(-50%, -50%) scale(1.2); }
+}
+
+.slide-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.slide-title {
+  font-size: 20px;
   font-weight: 700;
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
+  color: #fff;
+  transition: color 0.3s ease;
 }
 
-.template-description {
+.template-slide.active .slide-title {
+  color: #00ff88;
+}
+
+.slide-description {
   color: rgba(255, 255, 255, 0.7);
   margin: 0 0 16px 0;
   font-size: 14px;
+  line-height: 1.4;
+  flex: 1;
 }
 
-.template-tags {
+.slide-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-.template-tag {
+.slide-tag {
   background: rgba(0, 255, 136, 0.1);
   color: #00ff88;
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
   font-size: 11px;
   font-weight: 600;
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  transition: all 0.3s ease;
+}
+
+.template-slide.active .slide-tag {
+  background: rgba(0, 255, 136, 0.2);
+  border-color: rgba(0, 255, 136, 0.4);
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+}
+
+.slide-action {
+  margin-top: auto;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  padding: 12px 20px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.template-slide.active .action-btn {
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 136, 255, 0.2));
+  border-color: #00ff88;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-text {
+  color: #00ff88;
+}
+
+.btn-icon {
+  font-size: 16px;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.6));
 }
 
 /* Analytics Grid */
