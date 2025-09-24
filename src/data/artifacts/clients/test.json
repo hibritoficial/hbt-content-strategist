@@ -1,0 +1,34 @@
+{
+  "client": {
+    "id": "agrolito",
+    "name": "Agrolito",
+    "business": {
+      "name": "Agrolito",
+      "product": "Remineralizador de Solo"
+    },
+    "funnels": {
+      "F1": {
+        "id": "f1",
+        "name": "Agronegócio",
+        "description": "Produtores rurais",
+        "icon": "mdi-sprout",
+        "color": "#4CAF50",
+        "cultures": ["Cana", "Banana"],
+        "regions": {
+          "CE": ["Jaguaribe"],
+          "BA": ["Juazeiro"]
+        },
+        "avatars": [
+          {
+            "id": "produtor",
+            "name": "Produtor",
+            "description": "Pequeno produtor",
+            "icon": "mdi-account-hard-hat",
+            "color": "green"
+          }
+        ]
+      }
+    }
+  }
+}
+

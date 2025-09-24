@@ -1,0 +1,43 @@
+{
+  "version": "1.0.0",
+  "templates": {
+    "reel-30s": {
+      "id": "reel-30s",
+      "name": "Reel 30-45s",
+      "description": "Vídeo curto para engajamento rápido",
+      "structure": ["Hook (dor/condição)", "Mecanismo", "Prova", "Aplicação", "CTA"],
+      "duration": "30-45s"
+    },
+    "carrossel-7": {
+      "id": "carrossel-7",
+      "name": "Carrossel AIDA (7 slides)",
+      "description": "Formato AIDA para posts educativos",
+      "structure": ["Atenção", "Dor", "Causa", "Mecanismo", "Prova", "Oferta", "CTA"],
+      "duration": "2-3min"
+    },
+    "post-educativo": {
+      "id": "post-educativo",
+      "name": "Post Educativo",
+      "description": "Post com dica técnica e valor",
+      "structure": ["Título", "Introdução", "Ponto 1", "Ponto 2", "Ponto 3", "Conclusão", "CTA"],
+      "duration": "1-2min"
+    }
+  },
+  "hooks": [
+    {"id": "hook-1", "text": "3 sinais do solo pedindo remineralização", "category": "Problema"},
+    {"id": "hook-2", "text": "O detalhe que segura K no perfil (e não é mais adubo)", "category": "Curiosidade"},
+    {"id": "hook-3", "text": "Adubar sem resposta? Veja o que medir antes", "category": "Dica Técnica"}
+  ],
+  "proofs": [
+    {"id": "proof-1", "name": "Registro MAPA", "description": "Certificação oficial", "icon": "mdi-certificate", "color": "blue"},
+    {"id": "proof-2", "name": "Laudos/Composição", "description": "Análise técnica", "icon": "mdi-file-document", "color": "green"},
+    {"id": "proof-3", "name": "Antes/Depois Lado-a-Lado", "description": "Resultados visuais", "icon": "mdi-image-multiple", "color": "orange"}
+  ],
+  "ctas": [
+    {"id": "cta-1", "text": "Quero talhão-piloto", "type": "Primário"},
+    {"id": "cta-2", "text": "Falar no WhatsApp", "type": "Secundário"},
+    {"id": "cta-3", "text": "Baixar Guia por Cultura", "type": "Educacional"},
+    {"id": "cta-4", "text": "Falar com Consultor Técnico", "type": "Técnico"}
+  ]
+}
+

@@ -273,6 +273,16 @@
         </v-btn>
         
         <v-btn
+          color="orange"
+          prepend-icon="mdi-factory"
+          variant="elevated"
+          class="mr-4"
+          @click="openCOC"
+        >
+          COC
+        </v-btn>
+        
+        <v-btn
           color="success"
           prepend-icon="mdi-flask"
           variant="elevated"
@@ -353,6 +363,9 @@
     <!-- Documentação -->
     <DocDock />
 
+    <!-- Navegação de Cockpits -->
+    <CockpitNavigation v-if="!isLoginPage" />
+
     <!-- Snackbar para feedback -->
     <v-snackbar
       v-model="snackbar.show"
@@ -376,6 +389,7 @@ import { useDocHotspot } from '@/composables/useDocHotspot'
 import DocDock from '@/components/docs/DocDock.vue'
 import ContextBar from '@/components/ContextBar.vue'
 import LauncherMenu from '@/components/LauncherMenu.vue'
+import CockpitNavigation from '@/components/CockpitNavigation.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -411,6 +425,10 @@ const isHibrit = computed(() => {
 
 const openContentCenter = () => {
   router.push({ name: 'ContentCenter' })
+}
+
+const openCOC = () => {
+  router.push({ name: 'ContentOperationalCenter' })
 }
 
 const openFunnelCenter = () => {

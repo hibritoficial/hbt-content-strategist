@@ -1,0 +1,305 @@
+{
+  "version": "2.0.0",
+  "updated": "2025-01-22",
+  "client": {
+    "id": "agrolito",
+    "name": "Agrolito",
+    "business": {
+      "name": "Agrolito",
+      "product": "Remineralizador de Solo (fonolito)",
+      "segment": "Agromineral",
+      "region_focus": ["Nordeste", "Bahia Norte"],
+      "registration": "MAPA"
+    },
+    "competitive_positioning": {
+      "vs_vulcano": {
+        "our_advantages": [
+          "Fonolito vs Granulito (melhor K)",
+          "Preço mais acessível",
+          "Foco pequeno/médio produtor",
+          "Flexibilidade comercial"
+        ],
+        "counter_narratives": [
+          "Registro MAPA também temos",
+          "Parcerias regionais fortes",
+          "Resultados documentados L2L"
+        ]
+      },
+      "vs_kp_fertil": {
+        "our_advantages": [
+          "Presença regional Nordeste",
+          "Conhecimento clima semiárido",
+          "Logística regional otimizada"
+        ]
+      }
+    },
+    "funnels": {
+      "F1": {
+        "id": "f1",
+        "name": "Agronegócio",
+        "description": "Produtores rurais e agrônomos",
+        "icon": "mdi-sprout",
+        "color": "#4CAF50",
+        "cultures": ["Cana", "Banana", "Coco", "Tomate", "Acerola", "Café", "Maracujá"],
+        "regions": {
+          "CE": ["Jaguaribe", "Limoeiro do Norte", "Quixeré", "Russas"],
+          "BA": ["Juazeiro", "Casa Nova", "Sobradinho"],
+          "RN": ["Mossoró", "Vale do Açu"]
+        },
+        "avatars": [
+          {
+            "id": "produtor",
+            "name": "Produtor",
+            "description": "Pequeno/Médio produtor",
+            "icon": "mdi-account-hard-hat",
+            "color": "green",
+            "pain_points": [
+              "Adubo caro e solo que não responde",
+              "Lixiviação, pouca retenção de água",
+              "pH baixo, CTC/CRA ruins"
+            ],
+            "goals": [
+              "Reduzir custos com fertilizantes",
+              "Melhorar estrutura do solo",
+              "Aumentar produtividade"
+            ]
+          },
+          {
+            "id": "agronomo",
+            "name": "Agrônomo",
+            "description": "Consultor técnico",
+            "icon": "mdi-account-tie",
+            "color": "blue",
+            "pain_points": [
+              "Clientes insatisfeitos com resultados",
+              "Dificuldade em recomendar soluções",
+              "Falta de alternativas sustentáveis"
+            ],
+            "goals": [
+              "Oferecer soluções inovadoras",
+              "Melhorar resultados dos clientes",
+              "Diferenciação no mercado"
+            ]
+          },
+          {
+            "id": "comprador",
+            "name": "Comprador",
+            "description": "Comprador técnico",
+            "icon": "mdi-account-supervisor",
+            "color": "orange",
+            "pain_points": [
+              "Dependência de importados",
+              "Preços voláteis",
+              "Qualidade inconsistente"
+            ],
+            "goals": [
+              "Reduzir dependência externa",
+              "Estabilizar custos",
+              "Garantir qualidade"
+            ]
+          }
+        ],
+        "campaigns": {
+          "3.1": "Criativo Geral Agro",
+          "3.2": "Criativo Coco",
+          "3.3": "Criativo Banana",
+          "3.4": "Criativo MIX 1"
+        }
+      },
+      "F2": {
+        "id": "f2",
+        "name": "Jardinagem/Paisagismo",
+        "description": "Paisagistas e hobbistas",
+        "icon": "mdi-flower",
+        "color": "#9C27B0",
+        "cultures": ["Jardinagem", "Paisagismo", "Horta"],
+        "regions": {
+          "Nordeste": ["Fortaleza", "Recife", "Salvador"],
+          "Sudeste": ["São Paulo", "Rio de Janeiro", "Belo Horizonte"]
+        },
+        "avatars": [
+          {
+            "id": "paisagista",
+            "name": "Paisagista",
+            "description": "Profissional de paisagismo",
+            "icon": "mdi-account-tie",
+            "color": "purple",
+            "pain_points": [
+              "Plantas não se desenvolvem bem",
+              "Solo compactado",
+              "Dificuldade em manter jardins"
+            ],
+            "goals": [
+              "Melhorar desenvolvimento das plantas",
+              "Reduzir manutenção",
+              "Aumentar satisfação dos clientes"
+            ]
+          },
+          {
+            "id": "hobbista",
+            "name": "Hobbista",
+            "description": "Jardineiro amador",
+            "icon": "mdi-account",
+            "color": "pink",
+            "pain_points": [
+              "Plantas morrem facilmente",
+              "Solo pobre",
+              "Falta de conhecimento técnico"
+            ],
+            "goals": [
+              "Ter plantas saudáveis",
+              "Aprender sobre solo",
+              "Economizar em produtos"
+            ]
+          }
+        ],
+        "products": ["Kit Jardinagem 500g/5kg"]
+      },
+      "F3": {
+        "id": "f3",
+        "name": "Pastagens",
+        "description": "Recuperação e implantação de pastagens",
+        "icon": "mdi-grass",
+        "color": "#8BC34A",
+        "cultures": ["Pastagem", "Recuperação", "Implantação"],
+        "regions": {
+          "Nordeste": ["Sertão", "Agreste", "Zona da Mata"],
+          "Centro-Oeste": ["Cerrado", "Pantanal"]
+        },
+        "avatars": [
+          {
+            "id": "pecuarista",
+            "name": "Pecuarista",
+            "description": "Produtor de gado",
+            "icon": "mdi-cow",
+            "color": "brown",
+            "pain_points": [
+              "Pastagem falhando na seca",
+              "Baixa produtividade",
+              "Custo alto de manutenção"
+            ],
+            "goals": [
+              "Pastagem mais resistente",
+              "Reduzir custos",
+              "Aumentar lotação"
+            ]
+          }
+        ],
+        "focus": ["Recuperação", "Implantação", "Resiliência seca"]
+      }
+    },
+    "brand_fields": {
+      "unique_mechanism": {
+        "what": "Remineralização com liberação gradual de K/Si/Ca/Mg",
+        "how": "Produto alcalino que corrige acidez",
+        "benefits": ["Melhora estrutura", "Aumenta CTC/CRA", "Efeito residual"],
+        "technical": {
+          "composition": "Fonolito",
+          "nutrients": ["K", "Si", "Ca", "Mg"],
+          "ph_effect": "Alcalino"
+        }
+      },
+      "offers": {
+        "formats": ["Saco 25kg", "Big bag", "Granel"],
+        "application": "Área total/cobertura",
+        "plans_by_culture": {
+          "Cana": "90 dias",
+          "Fruticultura": "Irrigada",
+          "Pastagem": "Pré-chuva"
+        }
+      },
+      "proof_hierarchy": [
+        "Registro MAPA (código + link)",
+        "Laudos/composição",
+        "Antes/Depois lado-a-lado",
+        "Depoimentos técnicos",
+        "Presença em feiras (Alagoas Cana Show)",
+        "Parcerias (EMATER/Codevasf)"
+      ],
+      "tone": {
+        "archetype": "Sábio-Construtor",
+        "style": "Técnico-amigável, educativo e respeitoso",
+        "restrictions": [
+          "Evitar confronto direto com químicos",
+          "Provar antes de prometer",
+          "Sem promessas numéricas sem medição/laudo"
+        ]
+      }
+    },
+    "technical_specifications": {
+      "guaranteed_composition": {
+        "K2O": "≥ 1.0%",
+        "CaO": "≥ 2.5%",
+        "MgO": "≥ 2.0%",
+        "SiO2": "45-55%",
+        "soma_bases": "≥ 9%",
+        "ph_abrasao": "7.5-8.5"
+      },
+      "mineralogy": {
+        "primary": "Feldspato potássico",
+        "secondary": "Nefelina, analcima",
+        "trace": "Biotita, piroxênio"
+      },
+      "physical": {
+        "granulometry": {
+          "filler": "< 0.3mm (100%)",
+          "po": "< 2mm (100%)",
+          "farelado": "< 4mm (100%)"
+        }
+      },
+      "application_rates": {
+        "cana": "3-5 ton/ha",
+        "banana": "2-4 ton/ha",
+        "coco": "3-4 ton/ha",
+        "cafe": "2-3 ton/ha",
+        "pastagem": "2-4 ton/ha",
+        "jardinagem": "200-500 g/m²"
+      }
+    },
+    "content_calendar": {
+      "seasonal": {
+        "manga_uva": {
+          "region": "VSF Juazeiro/Petrolina",
+          "focus": "Janelas de poda/colheita escalonadas"
+        },
+        "banana": {
+          "region": "Jaguaribe/CE",
+          "focus": "K/Si e resiliência hídrica"
+        },
+        "cana": {
+          "region": "AL/PE/BA",
+          "focus": "Pré-plantio e brotação"
+        }
+      }
+    },
+    "kpi_targets": {
+      "reels": {
+        "vtr_3s": "≥35%",
+        "saves": "≥3%",
+        "technical_comments": true
+      },
+      "landing_page": {
+        "cvr_lead": "3-6%"
+      },
+      "whatsapp": {
+        "response_rate": "≥25%"
+      }
+    },
+    "status": {
+      "active_campaigns": ["3.1", "3.2", "3.3", "3.4"],
+      "next_priorities": [
+        "Landing da promoção Indique e Ganhe",
+        "Fluxo WhatsApp automatizado",
+        "Calculadora de dose/ROI",
+        "Fotos padronizadas por cultura"
+      ],
+      "content_ready": [],
+      "content_pending": [
+        "3 posts sobre blocos estruturais",
+        "Reels checklist de campo",
+        "Carrossel CTC/CRA explicado"
+      ]
+    }
+  }
+}
+

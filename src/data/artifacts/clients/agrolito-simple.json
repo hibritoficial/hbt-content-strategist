@@ -1,0 +1,151 @@
+{
+  "version": "2.0.0",
+  "updated": "2025-01-22",
+  "client": {
+    "id": "agrolito",
+    "name": "Agrolito",
+    "business": {
+      "name": "Agrolito",
+      "product": "Remineralizador de Solo (fonolito)",
+      "segment": "Agromineral",
+      "region_focus": ["Nordeste", "Bahia Norte"],
+      "registration": "MAPA"
+    },
+    "funnels": {
+      "F1": {
+        "id": "f1",
+        "name": "Agronegócio",
+        "description": "Produtores rurais e agrônomos",
+        "icon": "mdi-sprout",
+        "color": "#4CAF50",
+        "cultures": ["Cana", "Banana", "Coco", "Tomate", "Acerola", "Café", "Maracujá"],
+        "regions": {
+          "CE": ["Jaguaribe", "Limoeiro do Norte", "Quixeré", "Russas"],
+          "BA": ["Juazeiro", "Casa Nova", "Sobradinho"],
+          "RN": ["Mossoró", "Vale do Açu"]
+        },
+        "avatars": [
+          {
+            "id": "produtor",
+            "name": "Produtor",
+            "description": "Pequeno/Médio produtor",
+            "icon": "mdi-account-hard-hat",
+            "color": "green",
+            "pain_points": [
+              "Adubo caro e solo que não responde",
+              "Lixiviação, pouca retenção de água",
+              "pH baixo, CTC/CRA ruins"
+            ],
+            "goals": [
+              "Reduzir custos com fertilizantes",
+              "Melhorar estrutura do solo",
+              "Aumentar produtividade"
+            ]
+          },
+          {
+            "id": "agronomo",
+            "name": "Agrônomo",
+            "description": "Consultor técnico",
+            "icon": "mdi-account-tie",
+            "color": "blue",
+            "pain_points": [
+              "Clientes insatisfeitos com resultados",
+              "Dificuldade em recomendar soluções",
+              "Falta de alternativas sustentáveis"
+            ],
+            "goals": [
+              "Oferecer soluções inovadoras",
+              "Melhorar resultados dos clientes",
+              "Diferenciação no mercado"
+            ]
+          }
+        ]
+      },
+      "F2": {
+        "id": "f2",
+        "name": "Jardinagem/Paisagismo",
+        "description": "Paisagistas e hobbistas",
+        "icon": "mdi-flower",
+        "color": "#9C27B0",
+        "cultures": ["Jardinagem", "Paisagismo", "Horta"],
+        "regions": {
+          "Nordeste": ["Fortaleza", "Recife", "Salvador"],
+          "Sudeste": ["São Paulo", "Rio de Janeiro", "Belo Horizonte"]
+        },
+        "avatars": [
+          {
+            "id": "paisagista",
+            "name": "Paisagista",
+            "description": "Profissional de paisagismo",
+            "icon": "mdi-account-tie",
+            "color": "purple",
+            "pain_points": [
+              "Plantas não se desenvolvem bem",
+              "Solo compactado",
+              "Dificuldade em manter jardins"
+            ],
+            "goals": [
+              "Melhorar desenvolvimento das plantas",
+              "Reduzir manutenção",
+              "Aumentar satisfação dos clientes"
+            ]
+          }
+        ]
+      },
+      "F3": {
+        "id": "f3",
+        "name": "Pastagens",
+        "description": "Recuperação e implantação de pastagens",
+        "icon": "mdi-grass",
+        "color": "#8BC34A",
+        "cultures": ["Pastagem", "Capim", "Braquiária", "Panicum"],
+        "regions": {
+          "CE": ["Jaguaribe", "Limoeiro do Norte", "Quixeré", "Russas"],
+          "BA": ["Juazeiro", "Casa Nova", "Sobradinho"],
+          "RN": ["Mossoró", "Vale do Açu"],
+          "PE": ["Petrolina", "Garanhuns", "Caruaru"],
+          "AL": ["Arapiraca", "Palmeira dos Índios"]
+        },
+        "avatars": [
+          {
+            "id": "pecuarista",
+            "name": "Pecuarista",
+            "description": "Produtor de gado",
+            "icon": "mdi-cow",
+            "color": "brown",
+            "pain_points": [
+              "Pastagem falhando na seca",
+              "Baixa produtividade do capim",
+              "Solo compactado pelo gado",
+              "Dificuldade de rebrota"
+            ],
+            "goals": [
+              "Aumentar capacidade de suporte",
+              "Melhorar qualidade do pasto",
+              "Reduzir custos com suplementação",
+              "Pastagem mais resistente à seca"
+            ]
+          },
+          {
+            "id": "tecnico-pastagem",
+            "name": "Técnico em Pastagem",
+            "description": "Consultor especializado",
+            "icon": "mdi-account-tie-hat",
+            "color": "green",
+            "pain_points": [
+              "Clientes com pastagens degradadas",
+              "Falta de alternativas sustentáveis",
+              "Dificuldade em recomendar soluções"
+            ],
+            "goals": [
+              "Oferecer soluções inovadoras",
+              "Melhorar resultados dos clientes",
+              "Diferenciação no mercado"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+

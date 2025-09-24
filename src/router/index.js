@@ -97,6 +97,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/coc',
+    name: 'ContentOperationalCenter',
+    component: () => import('@/views/ContentOperationalCenter.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/funnel-center',
     name: 'FunnelCenter',
     component: () => import('@/views/FunnelCenter.vue'),

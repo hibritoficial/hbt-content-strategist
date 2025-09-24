@@ -1,0 +1,300 @@
+{
+  "version": "2.0.0",
+  "updated": "2025-01-22",
+  "process": {
+    "name": "Content Creation Process",
+    "description": "Processo modular para criação de conteúdo usando framework LEGO",
+    "steps": [
+      {
+        "id": "context",
+        "name": "Definir Contexto",
+        "description": "Selecionar cliente, funil, cultura, região e avatar",
+        "required_fields": ["client", "funnel", "culture", "region", "avatar"],
+        "validation": "All fields must be selected"
+      },
+      {
+        "id": "template",
+        "name": "Escolher Template",
+        "description": "Selecionar formato e molde visual",
+        "required_fields": ["template"],
+        "validation": "Template must be selected"
+      },
+      {
+        "id": "content",
+        "name": "Criar Conteúdo",
+        "description": "Definir gancho, prova social e CTA",
+        "required_fields": ["hook", "proof", "cta"],
+        "validation": "All content elements must be selected"
+      },
+      {
+        "id": "generation",
+        "name": "Gerar Variações",
+        "description": "Produzir múltiplas versões do conteúdo",
+        "required_fields": ["variations"],
+        "validation": "At least 3 variations must be generated"
+      },
+      {
+        "id": "quality_check",
+        "name": "Quality Check",
+        "description": "Validar clareza, benefício, prova e CTA único",
+        "criteria": [
+          "Clareza da mensagem",
+          "Benefício claro para o avatar",
+          "Prova social relevante",
+          "CTA único e específico",
+          "Ética e compliance"
+        ]
+      }
+    ]
+  },
+  "templates": {
+    "reel_30_45s": {
+      "id": "reel-30s",
+      "name": "Reel 30-45s",
+      "description": "Vídeo educativo rápido",
+      "structure": [
+        "Hook (dor/condição) - 0-3s",
+        "Mecanismo (solução) - 3-15s",
+        "Prova (resultado) - 15-30s",
+        "Aplicação (como usar) - 30-40s",
+        "CTA (ação) - 40-45s"
+      ],
+      "visual_notes": "Uso de texto sobreposto, transições rápidas, música envolvente",
+      "best_for": ["Educativo", "Tutorial", "Dica rápida"]
+    },
+    "carrossel_aida": {
+      "id": "carrossel-7",
+      "name": "Carrossel 7 slides",
+      "description": "AIDA completo",
+      "structure": [
+        "Slide 1: Atenção (hook visual)",
+        "Slide 2: Interesse (problema/dor)",
+        "Slide 3: Desejo (solução/benefício)",
+        "Slide 4: Prova (resultado/case)",
+        "Slide 5: Mecanismo (como funciona)",
+        "Slide 6: Oferta (produto/serviço)",
+        "Slide 7: Ação (CTA claro)"
+      ],
+      "visual_notes": "Design consistente, hierarquia visual clara, CTA destacado",
+      "best_for": ["Vendas", "Apresentação de produto", "Case de sucesso"]
+    },
+    "post_educativo": {
+      "id": "post-educativo",
+      "name": "Post Educativo",
+      "description": "Conteúdo informativo",
+      "structure": [
+        "Título impactante",
+        "Texto explicativo (2-3 parágrafos)",
+        "Lista de benefícios",
+        "Prova social",
+        "CTA educativo"
+      ],
+      "visual_notes": "Imagem de apoio, texto legível, hashtags relevantes",
+      "best_for": ["Educativo", "Dica técnica", "Informação"]
+    }
+  },
+  "hooks": {
+    "educational": [
+      {
+        "id": "sinais-solo",
+        "text": "3 sinais do solo pedindo remineralização",
+        "category": "Educativo",
+        "best_for": ["Agronegócio", "Técnico"]
+      },
+      {
+        "id": "detalhe-k",
+        "text": "O detalhe que segura K no perfil (e não é mais adubo)",
+        "category": "Técnico",
+        "best_for": ["Agronegócio", "Especializado"]
+      }
+    ],
+    "problem_solution": [
+      {
+        "id": "adubar-sem-resposta",
+        "text": "Adubar sem resposta? Veja o que medir antes",
+        "category": "Problema",
+        "best_for": ["Agronegócio", "Frustração"]
+      },
+      {
+        "id": "aumenta-dose",
+        "text": "Aumenta dose todo ciclo? O problema não é o adubo",
+        "category": "Problema",
+        "best_for": ["Agronegócio", "Custo"]
+      }
+    ],
+    "results": [
+      {
+        "id": "mudou-talhao",
+        "text": "O que mudou no talhão após 90 dias de [MECANISMO]",
+        "category": "Resultado",
+        "best_for": ["Agronegócio", "Prova"]
+      },
+      {
+        "id": "economia-comprovada",
+        "text": "Produtor economiza R$ 2.800/ha em 3 anos",
+        "category": "Resultado",
+        "best_for": ["Agronegócio", "Economia"]
+      }
+    ]
+  },
+  "proofs": {
+    "certifications": [
+      {
+        "id": "registro-mapa",
+        "name": "Registro MAPA",
+        "description": "Certificação oficial do Ministério da Agricultura",
+        "icon": "mdi-certificate",
+        "color": "green",
+        "credibility": "high"
+      },
+      {
+        "id": "iso-certification",
+        "name": "ISO 9001:2015",
+        "description": "Certificação de qualidade",
+        "icon": "mdi-certificate",
+        "color": "blue",
+        "credibility": "high"
+      }
+    ],
+    "technical": [
+      {
+        "id": "laudos",
+        "name": "Laudos Técnicos",
+        "description": "Composição garantida e analisada",
+        "icon": "mdi-file-document",
+        "color": "blue",
+        "credibility": "high"
+      },
+      {
+        "id": "analise-solo",
+        "name": "Análise de Solo",
+        "description": "Resultados antes e depois",
+        "icon": "mdi-test-tube",
+        "color": "orange",
+        "credibility": "medium"
+      }
+    ],
+    "social": [
+      {
+        "id": "antes-depois",
+        "name": "Antes/Depois",
+        "description": "Resultados visuais comprovados",
+        "icon": "mdi-image-multiple",
+        "color": "orange",
+        "credibility": "high"
+      },
+      {
+        "id": "depoimentos",
+        "name": "Depoimentos",
+        "description": "Cases de sucesso reais",
+        "icon": "mdi-account-voice",
+        "color": "purple",
+        "credibility": "medium"
+      }
+    ]
+  },
+  "ctas": {
+    "primary": [
+      {
+        "id": "talhao-piloto",
+        "text": "Quero talhão-piloto",
+        "type": "Primário",
+        "urgency": "high",
+        "best_for": ["Agronegócio", "Teste"]
+      },
+      {
+        "id": "calcular-economia",
+        "text": "Calcular minha economia",
+        "type": "Primário",
+        "urgency": "medium",
+        "best_for": ["Agronegócio", "ROI"]
+      }
+    ],
+    "secondary": [
+      {
+        "id": "whatsapp",
+        "text": "Falar no WhatsApp",
+        "type": "Secundário",
+        "urgency": "medium",
+        "best_for": ["Suporte", "Dúvidas"]
+      },
+      {
+        "id": "agendar-consulta",
+        "text": "Agendar consulta técnica",
+        "type": "Secundário",
+        "urgency": "low",
+        "best_for": ["Consultoria", "Técnico"]
+      },
+      {
+        "id": "consultor-tecnico",
+        "text": "Falar com Consultor Técnico",
+        "type": "Técnico",
+        "urgency": "medium",
+        "best_for": ["Suporte Técnico", "Especializado"]
+      }
+    ],
+    "educational": [
+      {
+        "id": "guia-cultura",
+        "text": "Baixar Guia por Cultura",
+        "type": "Educativo",
+        "urgency": "low",
+        "best_for": ["Educativo", "Lead magnet"]
+      },
+      {
+        "id": "oficina-escola",
+        "text": "Agendar oficina na escola",
+        "type": "Educativo",
+        "urgency": "low",
+        "best_for": ["Educativo", "Comunidade"]
+      }
+    ]
+  },
+  "quality_criteria": {
+    "clarity": {
+      "description": "Mensagem clara e compreensível",
+      "checklist": [
+        "Linguagem adequada ao avatar",
+        "Termos técnicos explicados",
+        "Estrutura lógica",
+        "Objetivo claro"
+      ]
+    },
+    "benefit": {
+      "description": "Benefício claro para o usuário",
+      "checklist": [
+        "Problema identificado",
+        "Solução apresentada",
+        "Resultado esperado",
+        "Valor percebido"
+      ]
+    },
+    "proof": {
+      "description": "Prova social relevante",
+      "checklist": [
+        "Credibilidade da fonte",
+        "Relevância para o avatar",
+        "Resultado mensurável",
+        "Contexto similar"
+      ]
+    },
+    "cta": {
+      "description": "Call-to-action único e específico",
+      "checklist": [
+        "Ação clara",
+        "Urgência apropriada",
+        "Fácil de executar",
+        "Alinhado com o funil"
+      ]
+    },
+    "ethics": {
+      "description": "Ética e compliance",
+      "checklist": [
+        "Verdadeiro e verificável",
+        "Sem promessas exageradas",
+        "Respeitoso com concorrência",
+        "Compliance regulatório"
+      ]
+    }
+  }
+}

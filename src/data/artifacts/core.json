@@ -1,0 +1,41 @@
+{
+  "version": "1.0.0",
+  "updated": "2025-01-22",
+  "identity": {
+    "mission": "Transformar dados em decisões estratégicas através de sistemas modulares e inteligência artificial",
+    "vision": "Ser a referência em automação de conteúdo e gestão de funis de marketing",
+    "values": [
+      "Excelência técnica",
+      "Inovação contínua",
+      "Foco no resultado",
+      "Simplicidade na complexidade"
+    ]
+  },
+  "philosophy": {
+    "principles": [
+      "Sistema modular versionado para escalabilidade",
+      "Artefatos reutilizáveis e composáveis",
+      "Processos claros e documentados",
+      "Integração nativa com IAs",
+      "UX minimalista - 'não me faça pensar'"
+    ],
+    "design_principles": [
+      "Mobile-first",
+      "Progressive enhancement",
+      "Accessibility by design",
+      "Performance optimization"
+    ]
+  },
+  "terminology": {
+    "content_operational_center": "Chão de fábrica dos conteúdos - interface principal de criação",
+    "artifacts": "Artefatos modulares que compõem o sistema",
+    "processes": "Templates reutilizáveis de processos",
+    "clients": "Instâncias específicas de clientes",
+    "funnels": "Funis de marketing estruturados",
+    "templates": "Moldes visuais e de copy",
+    "hooks": "Ganchos de atenção testados",
+    "proofs": "Elementos de prova social",
+    "ctas": "Call-to-actions otimizados"
+  }
+}
+
