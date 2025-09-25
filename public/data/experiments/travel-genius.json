@@ -1,7 +1,7 @@
 {
   "experiment": {
     "id": "travel-genius",
-    "name": "🌍 Holé Travel Genius AI - Seu Consultor de Viagens Inteligente",
+    "name": "Holé Travel Genius AI - Seu Consultor de Viagens Inteligente",
     "icon": "🌍",
     "description": "Sistema inteligente de recomendações de viagem com mineração de dados e sugestões personalizadas",
     "defaultDelay": 2000,
@@ -16,7 +16,7 @@
       "messages": [
         {
           "type": "bot",
-          "text": "🌍 Olá! Bem-vindo ao Holé Travel Genius AI!"
+          "text": "Olá! Bem-vindo ao Holé Travel Genius AI!"
         },
         {
           "type": "bot",

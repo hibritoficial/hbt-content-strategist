@@ -99,7 +99,10 @@
             :class="{ active: currentExperiment && currentExperiment.id === experiment.id }"
             @click="switchExperiment(experiment)"
           >
-            <span class="tab-icon">{{ experiment.icon }}</span>
+            <span class="tab-icon">
+              <img v-if="experiment.icon.startsWith('/')" :src="experiment.icon" :alt="experiment.name" class="icon-image" />
+              <span v-else>{{ experiment.icon }}</span>
+            </span>
             <span class="tab-label">{{ experiment.name }}</span>
           </button>
         </div>
@@ -614,7 +617,7 @@ export default {
         {
           id: 'travel-genius',
           name: 'Holé Travel Genius AI',
-          icon: '✈️',
+          icon: '/hole-icon.png',
           description: 'Sistema inteligente de recomendações de viagem com mineração de dados'
         },
         {
@@ -1761,6 +1764,12 @@ export default {
 
 .tab-icon {
   font-size: 1.1rem;
+}
+
+.icon-image {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 
 .tab-label {
