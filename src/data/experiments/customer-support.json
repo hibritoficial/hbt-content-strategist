@@ -1,0 +1,57 @@
+{
+  "experiment": {
+    "id": "customer-support",
+    "name": "Suporte ao Cliente",
+    "icon": "🎧",
+    "description": "Simulação de atendimento ao cliente com gestão de tickets",
+    "aiModel": "GPT-4 Turbo - OpenAI",
+    "version": "1.0.0",
+    "createdAt": "2024-01-15T10:00:00Z"
+  },
+  "chatStructure": {
+    "welcome": {
+      "messages": [
+        {
+          "type": "bot",
+          "text": "Olá! Sou o atendente virtual e estou aqui para te ajudar. Como posso resolver sua questão hoje?",
+          "time": "10:00"
+        }
+      ]
+    },
+    "flow": [
+      {
+        "type": "bot",
+        "text": "Qual é o seu nome?",
+        "question": {
+          "type": "text",
+          "placeholder": "Digite seu nome..."
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Como posso te ajudar hoje?",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "technical", "label": "Problema técnico", "icon": "🔧" },
+            { "value": "billing", "label": "Questão de cobrança", "icon": "💳" },
+            { "value": "product", "label": "Dúvida sobre produto", "icon": "📦" },
+            { "value": "other", "label": "Outro assunto", "icon": "❓" }
+          ]
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "framework": "Vue.js Chat Simulator",
+    "aiProvider": "OpenAI",
+    "model": "GPT-4 Turbo",
+    "capabilities": [
+      "Atendimento ao cliente",
+      "Gestão de tickets",
+      "Resolução de problemas",
+      "Classificação de solicitações"
+    ],
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  }
+}

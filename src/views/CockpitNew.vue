@@ -213,6 +213,42 @@
             </div>
           </div>
         </div>
+
+        <!-- Client Cockpits -->
+        <div class="control-panel client-cockpits">
+          <div class="panel-header">
+            <v-icon color="#00E5FF">mdi-view-dashboard</v-icon>
+            <span>CLIENT COCKPITS</span>
+            <div class="panel-status online"></div>
+          </div>
+          
+          <div class="panel-content">
+            <div class="cockpit-grid">
+              <div class="cockpit-item" @click="goToOCSCockpit">
+                <div class="cockpit-icon">
+                  <v-icon color="#FF6B35">mdi-home-floor-1</v-icon>
+                </div>
+                <div class="cockpit-info">
+                  <div class="cockpit-name">OCS Cockpit</div>
+                  <div class="cockpit-description">Blocos & Intertravados</div>
+                </div>
+                <div class="cockpit-arrow">
+                  <v-icon color="#00E5FF">mdi-arrow-right</v-icon>
+                </div>
+              </div>
+              
+              <div class="cockpit-item disabled">
+                <div class="cockpit-icon">
+                  <v-icon color="#9E9E9E">mdi-plus</v-icon>
+                </div>
+                <div class="cockpit-info">
+                  <div class="cockpit-name">Novo Cliente</div>
+                  <div class="cockpit-description">Em breve</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -443,6 +479,7 @@ const goToCalendar = () => router.push('/calendar')
 const goToMetrics = () => router.push('/metrics')
 const goToFunnelSection = (section) => router.push(`/funnels?focus=${section}`)
 const goToAlert = (alert) => router.push(alert.action_url)
+const goToOCSCockpit = () => router.push('/cockpit/ocs')
 
 onMounted(async () => {
   await cockpitStore.initialize()
@@ -975,6 +1012,99 @@ onMounted(async () => {
 .system-value {
   font-size: 0.8rem;
   color: #64748b;
+}
+
+.cockpit-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cockpit-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 107, 53, 0.05));
+  border: 1px solid rgba(255, 107, 53, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cockpit-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #FF6B35, transparent);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.cockpit-item:hover::before {
+  transform: translateX(100%);
+}
+
+.cockpit-item:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.15), rgba(255, 107, 53, 0.08));
+  border-color: #FF6B35;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.2);
+}
+
+.cockpit-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(158, 158, 158, 0.1);
+  border-color: rgba(158, 158, 158, 0.2);
+}
+
+.cockpit-item.disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.cockpit-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cockpit-info {
+  flex: 1;
+}
+
+.cockpit-name {
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 4px;
+  font-size: 1rem;
+}
+
+.cockpit-description {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.cockpit-arrow {
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.cockpit-item:hover .cockpit-arrow {
+  opacity: 1;
+  transform: translateX(4px);
 }
 
 .cockpit-card {

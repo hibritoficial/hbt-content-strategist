@@ -1,0 +1,57 @@
+{
+  "experiment": {
+    "id": "lead-qualification",
+    "name": "Qualificação de Leads",
+    "icon": "🎯",
+    "description": "Fluxo de qualificação de vendas com sistema de pontuação",
+    "aiModel": "GPT-4o - OpenAI",
+    "version": "1.0.0",
+    "createdAt": "2024-01-15T10:00:00Z"
+  },
+  "chatStructure": {
+    "welcome": {
+      "messages": [
+        {
+          "type": "bot",
+          "text": "Olá! Bem-vindo ao nosso processo de qualificação. Vou fazer algumas perguntas para entender melhor suas necessidades.",
+          "time": "10:00"
+        }
+      ]
+    },
+    "flow": [
+      {
+        "type": "bot",
+        "text": "Qual é o seu nome?",
+        "question": {
+          "type": "text",
+          "placeholder": "Digite seu nome..."
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Qual é o tamanho da sua empresa?",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "startup", "label": "Startup (1-10 pessoas)", "icon": "🚀" },
+            { "value": "small", "label": "Pequena (11-50 pessoas)", "icon": "🏢" },
+            { "value": "medium", "label": "Média (51-200 pessoas)", "icon": "🏭" },
+            { "value": "large", "label": "Grande (200+ pessoas)", "icon": "🏗️" }
+          ]
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "framework": "Vue.js Chat Simulator",
+    "aiProvider": "OpenAI",
+    "model": "GPT-4o",
+    "capabilities": [
+      "Qualificação de leads",
+      "Análise de necessidades",
+      "Sistema de pontuação",
+      "Segmentação de clientes"
+    ],
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  }
+}

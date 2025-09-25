@@ -202,10 +202,11 @@
             <v-btn
               block
               variant="outlined"
-              prepend-icon="mdi-robot"
-              disabled
+              prepend-icon="mdi-brain"
+              :to="{ name: 'NeuralNexusCenter' }"
+              class="neural-nexus-btn"
             >
-              Agentes IA
+              🧠 Neural Nexus
             </v-btn>
           </v-col>
           <v-col cols="6">
@@ -274,5 +275,36 @@ const docsStore = useDocsStore()
   border-color: #8a2be2 !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(138, 43, 226, 0.3) !important;
+}
+
+.neural-nexus-btn {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1)) !important;
+  border-color: rgba(0, 255, 255, 0.3) !important;
+  color: #00ffff !important;
+  font-weight: 600 !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.neural-nexus-btn:hover {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2)) !important;
+  border-color: #00ffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 255, 255, 0.4) !important;
+}
+
+.neural-nexus-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.neural-nexus-btn:hover::before {
+  left: 100%;
 }
 </style>

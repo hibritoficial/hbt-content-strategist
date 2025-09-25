@@ -169,6 +169,183 @@
       </div>
     </div>
 
+    <!-- Blocos Originais da Gamificação -->
+    
+    <!-- 1. Radar de Sinal - Diagnóstico Rápido -->
+    <div class="radar-section-original">
+      <div class="section-header">
+        <h3 class="section-title">🎯 Radar de Sinal - Diagnóstico Rápido</h3>
+        <p class="section-subtitle">Descubra em 90 segundos onde você está perdendo alunos</p>
+      </div>
+      
+      <div class="radar-container-original">
+        <div class="radar-display-large">
+          <div class="radar-grid">
+            <div class="grid-lines"></div>
+            <div class="radar-center">
+              <div class="center-dot"></div>
+            </div>
+            <div class="radar-sweep" :class="{ active: radarActive }"></div>
+            
+            <!-- Pontos de Sinal -->
+            <div 
+              v-for="signal in originalSignals" 
+              :key="signal.id"
+              class="signal-point"
+              :style="{ 
+                left: signal.x + '%', 
+                top: signal.y + '%',
+                '--signal-color': signal.color 
+              }"
+              :class="signal.status"
+            >
+              <div class="signal-pulse"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="radar-controls">
+          <v-btn 
+            class="radar-btn-original"
+            :class="{ active: radarActive }"
+            @click="startOriginalRadarScan"
+            :disabled="originalScanCompleted"
+          >
+            <span class="btn-icon">📡</span>
+            {{ radarActive ? 'Escaneando...' : originalScanCompleted ? 'Scan Completo' : 'Iniciar Radar' }}
+          </v-btn>
+          
+          <div v-if="originalScanProgress > 0" class="scan-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" :style="{ width: originalScanProgress + '%' }"></div>
+            </div>
+            <div class="progress-text">{{ originalScanProgress }}% completo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Termômetro de Ghosting -->
+    <div v-if="originalScanCompleted" class="thermometer-section-original">
+      <div class="section-header">
+        <h3 class="section-title">🌡️ Termômetro de Ghosting</h3>
+        <p class="section-subtitle">Seu nível atual de perda de alunos</p>
+      </div>
+      
+      <div class="thermometer-container-original">
+        <div class="thermometer">
+          <div class="thermometer-scale">
+            <div class="scale-mark critical">Crítico</div>
+            <div class="scale-mark high">Alto</div>
+            <div class="scale-mark medium">Médio</div>
+            <div class="scale-mark low">Baixo</div>
+          </div>
+          
+          <div class="thermometer-tube">
+            <div 
+              class="mercury-level" 
+              :style="{ height: originalGhostingLevel + '%' }"
+              :class="getOriginalGhostingClass(originalGhostingLevel)"
+            ></div>
+          </div>
+          
+          <div class="temperature-display">
+            <div class="temp-value">{{ originalGhostingLevel }}%</div>
+            <div class="temp-label">Ghosting</div>
+          </div>
+        </div>
+        
+        <div class="diagnosis-result">
+          <div class="result-card">
+            <div class="result-icon">{{ getOriginalDiagnosisIcon(originalGhostingLevel) }}</div>
+            <h4 class="result-title">{{ getOriginalDiagnosisTitle(originalGhostingLevel) }}</h4>
+            <p class="result-description">{{ getOriginalDiagnosisDescription(originalGhostingLevel) }}</p>
+            
+            <div class="impact-calculation">
+              <div class="impact-item">
+                <span class="impact-label">Perda mensal estimada:</span>
+                <span class="impact-value">R$ {{ calculateOriginalLoss(originalGhostingLevel).toLocaleString() }}</span>
+              </div>
+              <div class="impact-item">
+                <span class="impact-label">Alunos perdidos/mês:</span>
+                <span class="impact-value">{{ Math.floor(originalGhostingLevel / 10) }} alunos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Mapa de Rotas Anti-Ghosting -->
+    <div v-if="originalScanCompleted" class="routes-section-original">
+      <div class="section-header">
+        <h3 class="section-title">🗺️ Mapa de Rotas Anti-Ghosting</h3>
+        <p class="section-subtitle">3 passos simples para recuperar seus alunos</p>
+      </div>
+      
+      <div class="routes-map">
+        <div 
+          v-for="(route, index) in originalRoutes" 
+          :key="route.id"
+          class="route-step"
+        >
+          <div class="step-number">{{ index + 1 }}</div>
+          <div class="step-content">
+            <div class="step-icon">{{ route.icon }}</div>
+            <h4 class="step-title">{{ route.title }}</h4>
+            <p class="step-description">{{ route.description }}</p>
+            <div class="step-benefit">{{ route.benefit }}</div>
+          </div>
+          <div v-if="index < originalRoutes.length - 1" class="route-connector">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Operação Anti-Ghosting (CTA Principal) -->
+    <div v-if="originalScanCompleted" class="main-cta-original">
+      <div class="cta-background">
+        <div class="cta-glow"></div>
+      </div>
+      
+      <div class="cta-content">
+        <div class="cta-badge">
+          <span class="badge-icon">🎯</span>
+          <span class="badge-text">MAPA 8K - EDIÇÃO 2</span>
+        </div>
+        
+        <h3 class="cta-title">Operação Anti-Ghosting</h3>
+        <p class="cta-description">
+          Baixe o guia completo e recupere R$ 818/mês só ajustando sua conversa
+        </p>
+        
+        <div class="social-proof">
+          <div class="proof-item">
+            <span class="proof-icon">👥</span>
+            <span class="proof-text">+2.847 professores já baixaram</span>
+          </div>
+          <div class="proof-item">
+            <span class="proof-icon">⭐</span>
+            <span class="proof-text">4.9/5 estrelas de avaliação</span>
+          </div>
+        </div>
+        
+        <v-btn 
+          class="download-btn-original"
+          size="large"
+          @click="downloadOriginalMap"
+        >
+          <span class="btn-glow"></span>
+          <span class="btn-icon">📥</span>
+          <span class="btn-text">Baixar Mapa 8K Grátis</span>
+        </v-btn>
+        
+        <div class="cta-guarantee">
+          <span class="guarantee-icon">🔒</span>
+          <span class="guarantee-text">100% gratuito • Sem spam • Acesso imediato</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Radar Section -->
     <div class="radar-section">
       <div class="radar-header">
@@ -385,6 +562,43 @@ const lostValue = ref(818)
 const ghostingLevel = ref(0)
 
 const currentSlide = ref(0)
+
+// Variáveis dos blocos originais
+const originalScanCompleted = ref(false)
+const originalScanProgress = ref(0)
+const originalGhostingLevel = ref(0)
+
+const originalSignals = ref([
+  { id: 1, x: 25, y: 30, status: 'lost', color: '#ff4444' },
+  { id: 2, x: 60, y: 45, status: 'weak', color: '#ffaa00' },
+  { id: 3, x: 80, y: 25, status: 'strong', color: '#00ff88' },
+  { id: 4, x: 40, y: 70, status: 'lost', color: '#ff4444' },
+  { id: 5, x: 15, y: 60, status: 'weak', color: '#ffaa00' }
+])
+
+const originalRoutes = ref([
+  {
+    id: 1,
+    icon: '🔍',
+    title: 'Diagnóstico',
+    description: 'Identifique os pontos exatos onde perde alunos',
+    benefit: '+25% retenção'
+  },
+  {
+    id: 2,
+    icon: '🛠️',
+    title: 'Protocolo',
+    description: 'Implemente scripts testados de recuperação',
+    benefit: '+40% conversão'
+  },
+  {
+    id: 3,
+    icon: '📈',
+    title: 'Otimização',
+    description: 'Monitore e ajuste continuamente',
+    benefit: '+60% resultado'
+  }
+])
 
 const episodes = ref([
   {
@@ -618,6 +832,63 @@ const getSealName = (n) => {
     'Relógio', 'Preço Luminoso', 'Invocador', 'Espelho', 'Queda Livre'
   ]
   return names[n - 1] || `Selo ${n}`
+}
+
+// Funções dos blocos originais
+const startOriginalRadarScan = () => {
+  radarActive.value = true
+  originalScanProgress.value = 0
+  
+  const interval = setInterval(() => {
+    originalScanProgress.value += 2
+    
+    if (originalScanProgress.value >= 100) {
+      clearInterval(interval)
+      radarActive.value = false
+      originalScanCompleted.value = true
+      
+      // Simular resultado do diagnóstico
+      setTimeout(() => {
+        originalGhostingLevel.value = Math.floor(Math.random() * 40) + 60 // 60-100%
+      }, 500)
+    }
+  }, 50)
+}
+
+const getOriginalGhostingClass = (level) => {
+  if (level >= 80) return 'critical'
+  if (level >= 60) return 'high'
+  if (level >= 40) return 'medium'
+  return 'low'
+}
+
+const getOriginalDiagnosisIcon = (level) => {
+  if (level >= 80) return '🚨'
+  if (level >= 60) return '⚠️'
+  if (level >= 40) return '📈'
+  return '✅'
+}
+
+const getOriginalDiagnosisTitle = (level) => {
+  if (level >= 80) return 'Situação Crítica'
+  if (level >= 60) return 'Alto Risco'
+  if (level >= 40) return 'Atenção Necessária'
+  return 'Situação Controlada'
+}
+
+const getOriginalDiagnosisDescription = (level) => {
+  if (level >= 80) return 'Você está perdendo muitos alunos antes mesmo de falar sobre preços. Ação imediata necessária.'
+  if (level >= 60) return 'Há pontos críticos na sua abordagem que estão causando desistências prematuras.'
+  if (level >= 40) return 'Alguns ajustes na comunicação podem melhorar significativamente seus resultados.'
+  return 'Sua abordagem está funcionando bem, mas sempre há espaço para otimização.'
+}
+
+const calculateOriginalLoss = (level) => {
+  return Math.floor((level / 100) * 1200) // Base de R$ 1.200 de perda potencial
+}
+
+const downloadOriginalMap = () => {
+  console.log('Download do Mapa 8K iniciado')
 }
 </script>
 
@@ -1955,6 +2226,588 @@ const getSealName = (n) => {
   color: white;
 }
 
+/* Estilos dos Blocos Originais */
+
+/* Radar Section Original */
+.radar-section-original {
+  margin: 40px 60px;
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 128, 0, 0.05));
+  border-radius: 20px;
+  padding: 32px;
+  border: 2px solid rgba(0, 255, 136, 0.3);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #00ff88;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.radar-container-original {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.radar-display-large {
+  width: 300px;
+  height: 300px;
+  position: relative;
+}
+
+.radar-grid {
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(0, 255, 136, 0.3);
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle, rgba(0, 255, 136, 0.05) 0%, transparent 70%);
+}
+
+.grid-lines::before,
+.grid-lines::after {
+  content: '';
+  position: absolute;
+  background: rgba(0, 255, 136, 0.2);
+}
+
+.grid-lines::before {
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.grid-lines::after {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+.radar-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.center-dot {
+  width: 8px;
+  height: 8px;
+  background: #00ff88;
+  border-radius: 50%;
+  box-shadow: 0 0 15px #00ff88;
+}
+
+.radar-sweep {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 150px;
+  background: linear-gradient(to top, transparent, #00ff88);
+  transform-origin: bottom center;
+  transform: translate(-50%, -100%);
+  opacity: 0;
+}
+
+.radar-sweep.active {
+  opacity: 1;
+  animation: radar-sweep-scan 2s linear infinite;
+}
+
+@keyframes radar-sweep-scan {
+  0% { transform: translate(-50%, -100%) rotate(0deg); }
+  100% { transform: translate(-50%, -100%) rotate(360deg); }
+}
+
+.signal-point {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--signal-color);
+  transform: translate(-50%, -50%);
+}
+
+.signal-point.lost {
+  animation: signal-blink-lost 1s ease-in-out infinite;
+}
+
+.signal-point.weak {
+  animation: signal-blink-weak 1.5s ease-in-out infinite;
+}
+
+.signal-point.strong {
+  animation: signal-blink-strong 2s ease-in-out infinite;
+}
+
+@keyframes signal-blink-lost {
+  0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.8); }
+}
+
+@keyframes signal-blink-weak {
+  0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.9); }
+}
+
+@keyframes signal-blink-strong {
+  0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.signal-pulse {
+  position: absolute;
+  inset: -4px;
+  border: 2px solid var(--signal-color);
+  border-radius: 50%;
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.radar-btn-original {
+  background: linear-gradient(135deg, #00ff88, #0088ff) !important;
+  color: white !important;
+  border-radius: 12px !important;
+  padding: 16px 32px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  font-size: 16px !important;
+  transition: all 0.3s ease !important;
+}
+
+.radar-btn-original:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4) !important;
+}
+
+.radar-btn-original.active {
+  animation: radar-btn-pulse 1s ease-in-out infinite;
+}
+
+@keyframes radar-btn-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
+  50% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.8); }
+}
+
+.btn-icon {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.scan-progress {
+  margin-top: 16px;
+}
+
+.progress-bar {
+  width: 200px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0 auto 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00ff88, #0088ff);
+  transition: width 0.1s ease;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Thermometer Section Original */
+.thermometer-section-original {
+  margin: 40px 60px;
+  background: linear-gradient(135deg, rgba(255, 69, 0, 0.1), rgba(255, 140, 0, 0.05));
+  border-radius: 20px;
+  padding: 32px;
+  border: 2px solid rgba(255, 69, 0, 0.3);
+}
+
+.thermometer-container-original {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.thermometer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.thermometer-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 12px;
+}
+
+.scale-mark {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.scale-mark.critical {
+  background: rgba(255, 68, 68, 0.2);
+  color: #ff4444;
+}
+
+.scale-mark.high {
+  background: rgba(255, 170, 0, 0.2);
+  color: #ffaa00;
+}
+
+.scale-mark.medium {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
+.scale-mark.low {
+  background: rgba(0, 255, 136, 0.2);
+  color: #00ff88;
+}
+
+.thermometer-tube {
+  width: 20px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mercury-level {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 10px;
+  transition: height 1s ease;
+}
+
+.mercury-level.critical {
+  background: linear-gradient(to top, #ff4444, #ff6666);
+}
+
+.mercury-level.high {
+  background: linear-gradient(to top, #ffaa00, #ffcc44);
+}
+
+.mercury-level.medium {
+  background: linear-gradient(to top, #ffc107, #ffd54f);
+}
+
+.mercury-level.low {
+  background: linear-gradient(to top, #00ff88, #44ffaa);
+}
+
+.temperature-display {
+  text-align: center;
+}
+
+.temp-value {
+  font-size: 32px;
+  font-weight: 800;
+  color: #ff4444;
+  margin-bottom: 4px;
+}
+
+.temp-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.diagnosis-result {
+  max-width: 400px;
+}
+
+.result-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+}
+
+.result-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.result-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: #ff4444;
+}
+
+.result-description {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.impact-calculation {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.impact-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.impact-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.impact-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ff4444;
+}
+
+/* Routes Section Original */
+.routes-section-original {
+  margin: 40px 60px;
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(75, 0, 130, 0.05));
+  border-radius: 20px;
+  padding: 32px;
+  border: 2px solid rgba(138, 43, 226, 0.3);
+}
+
+.routes-map {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.route-step {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #00ff88, #0088ff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: white;
+  font-size: 18px;
+}
+
+.step-content {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 200px;
+  text-align: center;
+}
+
+.step-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.step-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #00ff88;
+}
+
+.step-description {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.step-benefit {
+  font-size: 11px;
+  color: #00ff88;
+  font-weight: 600;
+  background: rgba(0, 255, 136, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.route-connector {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: bold;
+}
+
+/* Main CTA Original */
+.main-cta-original {
+  position: relative;
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(75, 0, 130, 0.2));
+  border: 1px solid rgba(138, 43, 226, 0.5);
+  border-radius: 24px;
+  padding: 48px;
+  text-align: center;
+  overflow: hidden;
+  margin: 40px 60px;
+}
+
+.cta-background {
+  position: absolute;
+  inset: 0;
+}
+
+.cta-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.3) 0%, transparent 70%);
+  animation: cta-pulse 3s ease-in-out infinite;
+}
+
+@keyframes cta-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+.cta-content {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 255, 136, 0.2);
+  border: 1px solid rgba(0, 255, 136, 0.5);
+  padding: 8px 16px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cta-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 12px 0;
+  color: white;
+}
+
+.cta-description {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.social-proof {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.proof-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.proof-icon {
+  font-size: 16px;
+}
+
+.download-btn-original {
+  position: relative;
+  background: linear-gradient(135deg, #8a2be2, #4b0082) !important;
+  color: white !important;
+  border-radius: 16px !important;
+  padding: 20px 40px !important;
+  font-weight: 800 !important;
+  text-transform: none !important;
+  font-size: 18px !important;
+  margin-bottom: 16px !important;
+  overflow: hidden !important;
+}
+
+.btn-glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+  animation: btn-shimmer 2s ease-in-out infinite;
+}
+
+@keyframes btn-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.btn-text {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-guarantee {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.guarantee-icon {
+  font-size: 14px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .slide-thumbnails {
@@ -2019,21 +2872,40 @@ const getSealName = (n) => {
   }
   
   .radar-section,
-  .thermometer-section {
+  .thermometer-section,
+  .radar-section-original,
+  .thermometer-section-original,
+  .routes-section-original,
+  .main-cta-original {
     margin: 20px;
     padding: 20px;
   }
   
   .radar-container,
-  .thermometer-container {
+  .thermometer-container,
+  .thermometer-container-original {
     grid-template-columns: 1fr;
     gap: 20px;
+    flex-direction: column;
   }
   
   .radar-screen {
     width: 300px;
     height: 300px;
     margin: 0 auto;
+  }
+  
+  .routes-map {
+    flex-direction: column;
+  }
+  
+  .route-connector {
+    transform: rotate(90deg);
+  }
+  
+  .social-proof {
+    flex-direction: column;
+    gap: 16px;
   }
 }
 </style>

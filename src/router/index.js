@@ -31,6 +31,24 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/neural-nexus',
+    name: 'NeuralNexusCenter',
+    component: () => import('@/views/NeuralNexusCenter.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/neural-nexus/conversational-intelligence',
+    name: 'ConversationalIntelligenceLab',
+    component: () => import('@/views/ai/ConversationalIntelligenceLab.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/neural-nexus/conversational-intelligence/chat-simulator',
+    name: 'ChatSimulator',
+    component: () => import('@/views/ai/ChatSimulator.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/labs/interface-test',
     name: 'InterfaceTest',
     component: () => import('@/views/InterfaceTest.vue'),

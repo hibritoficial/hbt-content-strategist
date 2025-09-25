@@ -1,0 +1,56 @@
+{
+  "experiment": {
+    "id": "basic-chat",
+    "name": "Chat Básico",
+    "icon": "💬",
+    "description": "Fluxo conversacional simples para testar interações básicas",
+    "aiModel": "Claude 3 Haiku - Anthropic",
+    "version": "1.0.0",
+    "createdAt": "2024-01-15T10:00:00Z"
+  },
+  "chatStructure": {
+    "welcome": {
+      "messages": [
+        {
+          "type": "bot",
+          "text": "Olá! Como posso te ajudar hoje?",
+          "time": "10:00"
+        }
+      ]
+    },
+    "flow": [
+      {
+        "type": "bot",
+        "text": "Qual é o seu nome?",
+        "question": {
+          "type": "text",
+          "placeholder": "Digite seu nome..."
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Prazer em conhecê-lo! Em que posso te ajudar?",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "help", "label": "Preciso de ajuda", "icon": "🆘" },
+            { "value": "info", "label": "Quero informações", "icon": "ℹ️" },
+            { "value": "chat", "label": "Só conversar", "icon": "💬" }
+          ]
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "framework": "Vue.js Chat Simulator",
+    "aiProvider": "Anthropic",
+    "model": "Claude 3 Haiku",
+    "capabilities": [
+      "Conversação básica",
+      "Coleta de informações",
+      "Interações simples",
+      "Teste de funcionalidades"
+    ],
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  }
+}

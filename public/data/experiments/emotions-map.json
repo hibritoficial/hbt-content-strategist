@@ -1,0 +1,273 @@
+{
+  "experiment": {
+    "id": "emotions-map",
+    "name": "🌹 Mapa das Emoções",
+    "icon": "🌹",
+    "description": "Avaliação de inteligência emocional com orientação espiritual",
+    "defaultDelay": 2000,
+    "credits": "Powered by Hibrit Agency",
+    "version": "1.0.0",
+    "createdAt": "2024-01-15T10:00:00Z"
+  },
+  "chatStructure": {
+    "welcome": {
+      "messages": [
+        {
+          "type": "bot",
+          "text": "Olá! 🌹 Bem-vinda ao Mapa das Emoções!"
+        },
+        {
+          "type": "bot",
+          "text": "Sou a Samelly, sua guia espiritual e estou aqui para te ajudar a descobrir como você lida com suas emoções. Vamos fazer uma jornada de autoconhecimento juntas?",
+          "showPresentation": true,
+          "delay": 3000
+        }
+      ]
+    },
+    "flow": [
+      {
+        "type": "bot",
+        "text": "Antes de começarmos nossa jornada de autoconhecimento, preciso saber seu nome para que possamos nos conectar de forma mais pessoal. Qual é o seu nome?",
+        "question": {
+          "type": "text",
+          "placeholder": "Digite seu nome...",
+          "saveAs": "firstname"
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Que nome lindo, ${firstname}! Agora vou te explicar como funciona nosso teste de autoconhecimento."
+      },
+      {
+        "type": "bot",
+        "text": "Vou apresentar 10 situações do dia a dia e você escolherá a resposta que mais se parece com você. É importante ser sincera para que possamos descobrir juntas como você lida com suas emoções. Está pronta para começar?",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "start", "label": "Sim, estou pronta! 🌹", "icon": "🌹" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Perfeito, ${firstname}! Vamos começar. Responda com sinceridade: qual opção mais parece com você em cada situação?"
+      },
+      {
+        "type": "bot",
+        "text": "1. No trabalho, quando alguém critica sua ideia:",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "a1", "label": "Fico confuso(a), nem sei direito o que sinto na hora", "icon": "😕" },
+            { "value": "b1", "label": "Eu até sei que fiquei irritado(a) ou triste, mas não consigo reagir de forma saudável", "icon": "😤" },
+            { "value": "c1", "label": "Eu reconheço o que senti, consigo respirar fundo e escolher como responder", "icon": "😌" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "2. Em uma briga de casal ou amizade:",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "a2", "label": "Não sei o que sinto exatamente, só sei que \"dói\"", "icon": "💔" },
+            { "value": "b2", "label": "Sei que estou magoado(a), mas acabo explodindo ou me fechando", "icon": "😡" },
+            { "value": "c2", "label": "Reconheço a mágoa e tento conversar de forma clara, mesmo que difícil", "icon": "💙" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "3. Quando me sinto ansioso(a) sem motivo aparente:",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "a3", "label": "Fico perdido(a), não sei nem identificar se é ansiedade mesmo", "icon": "😰" },
+            { "value": "b3", "label": "Eu percebo que estou ansioso(a), mas não sei como acalmar meu corpo/mente", "icon": "😟" },
+            { "value": "c3", "label": "Consigo perceber os sinais e uso alguma prática (respiração, pausa, oração, exercício) para me ajudar", "icon": "🧘" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "4. Em momentos de estresse no trabalho:",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "a4", "label": "Só percebo que fiquei mal quando já estou exausto(a)", "icon": "😵" },
+            { "value": "b4", "label": "Percebo na hora, mas mesmo assim me afogo na pressão", "icon": "😫" },
+            { "value": "c4", "label": "Percebo e busco organizar prioridades ou pedir ajuda", "icon": "📋" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "5. Quando alguém não corresponde às minhas expectativas:",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "a5", "label": "Só sinto uma mistura estranha e não entendo bem o que está acontecendo comigo", "icon": "🤔" },
+            { "value": "b5", "label": "Sei que estou frustrado(a), mas não consigo mudar meu padrão de cobrança", "icon": "😠" },
+            { "value": "c5", "label": "Reconheço a frustração e tento ajustar minhas expectativas", "icon": "🔄" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "6. Em minha espiritualidade:",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "a6", "label": "Às vezes me sinto desconectado(a), mas nem sei o porquê", "icon": "🌫️" },
+            { "value": "b6", "label": "Eu até sinto quando estou distante, mas não sei como voltar a me alinhar", "icon": "🌙" },
+            { "value": "c6", "label": "Eu percebo quando me desconecto e tenho práticas que me ajudam a me reconectar", "icon": "✨" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "7. Quando algo dá errado em meus planos:",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "a7", "label": "Nem sei o que sinto, só fico meio \"paralisado(a)\"", "icon": "🛑" },
+            { "value": "b7", "label": "Sei que estou com raiva ou frustrado(a), mas fico remoendo", "icon": "😤" },
+            { "value": "c7", "label": "Reconheço a emoção e tento aprender com a situação", "icon": "📚" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "8. Em um dia difícil:",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "a8", "label": "Só percebo minhas emoções depois, quando já passei mal", "icon": "😔" },
+            { "value": "b8", "label": "Sei que estou mal, mas desconto em comida, redes sociais ou em outras pessoas", "icon": "🍕" },
+            { "value": "c8", "label": "Reconheço o que estou vivendo e busco uma forma mais saudável de lidar", "icon": "🌱" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "9. Ao lidar com alguém próximo que está sofrendo:",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "a9", "label": "Fico sem saber o que sentir ou fazer", "icon": "😶" },
+            { "value": "b9", "label": "Sei que estou triste junto, mas não consigo oferecer apoio verdadeiro", "icon": "😢" },
+            { "value": "c9", "label": "Reconheço minha emoção e consigo apoiar sem me perder", "icon": "🤗" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "10. Quando preciso tomar uma decisão importante:",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "a10", "label": "Fico travado(a), sem clareza do que sinto", "icon": "🤯" },
+            { "value": "b10", "label": "Sei o que sinto, mas deixo a emoção me dominar e não consigo decidir bem", "icon": "😵" },
+            { "value": "c10", "label": "Escuto minhas emoções e junto com a razão consigo escolher melhor", "icon": "⚖️" }
+          ]
+        }
+      }
+    ],
+    "scoring": {
+      "system": "majority_based",
+      "groups": {
+        "A": {
+          "name": "Reconhecimento inicial",
+          "description": "Muitas vezes nem consegue identificar o que sente. O primeiro passo é aprender a se escutar e dar nome às suas emoções.",
+          "threshold": "majority"
+        },
+        "B": {
+          "name": "Reconhece, mas não age", 
+          "description": "Já percebe suas emoções, mas ainda não sabe como transformá-las em escolhas saudáveis.",
+          "threshold": "majority"
+        },
+        "C": {
+          "name": "Gestor(a) em evolução",
+          "description": "Já tem consciência e algumas práticas, mas sente que pode aprofundar sua inteligência emocional e expandir ainda mais.",
+          "threshold": "majority"
+        }
+      }
+    },
+    "results": {
+      "groupA": {
+        "title": "🌱 Reconhecimento inicial",
+        "subtitle": "${firstname}, você está aprendendo a dar nome às suas emoções",
+        "description": "${firstname}, muitas vezes nem consegue identificar o que sente. O primeiro passo é aprender a se escutar e dar nome às suas emoções. Como eu posso te ajudar: te guiando num processo de autoconhecimento a partir do seu mapa astral, pra gente entender como suas emoções se manifestam.",
+        "detailed": {
+          "title": "🌱 Reconhecimento inicial",
+          "description": "${firstname}, você está aprendendo a dar nome às suas emoções. Às vezes sente um turbilhão por dentro, mas não consegue traduzir em palavras, nem entender de onde vem. Isso não é fraqueza — é apenas um convite da vida para se conhecer de verdade.",
+          "help": "Aqui o trabalho começa com o despertar da consciência, ${firstname}. Através da escrita emocional, você vai aprender a dar voz ao que sente; com a astrologia, podemos olhar para seus mapas e ciclos para entender como suas emoções se manifestam; e com o baralho cigano, trazemos a força dos arquétipos para situações que parecem confusas. É o início de uma jornada de alfabetização emocional e espiritual e estou aqui para seguirmos juntas."
+        }
+      },
+      "groupB": {
+        "title": "🔥 Reconhece, mas não age",
+        "subtitle": "${firstname}, já percebe suas emoções, mas ainda não sabe como transformá-las",
+        "description": "${firstname}, já percebe suas emoções, mas ainda não sabe como transformá-las em escolhas saudáveis. Como eu posso te ajudar: trabalhando seus padrões inconscientes para que você não fique repetindo as mesmas reações.",
+        "detailed": {
+          "title": "🔥 Reconhece, mas não age",
+          "description": "${firstname}, você já percebe suas emoções, sabe quando está ansioso(a), frustrado(a) ou triste. Mas sente que fica preso(a) no mesmo lugar — reconhece, mas não consegue transformar. É como se estivesse olhando para a porta, mas sem força ou coragem de atravessá-la.",
+          "help": "Aqui entramos no campo da integração, ${firstname}. Com base em Jung, podemos trabalhar seus padrões inconscientes, para que você não fique repetindo as mesmas reações. Através da escrita emocional, você aprende a transformar percepção em ação. E com a espiritualidade prática — astrologia e baralho cigano — abrimos caminhos para escolhas mais conscientes e alinhadas. Assim, você sai da estagnação e entra no movimento da vida."
+        }
+      },
+      "groupC": {
+        "title": "🌟 Gestora em evolução",
+        "subtitle": "${firstname}, já tem consciência e algumas práticas, mas pode aprofundar ainda mais",
+        "description": "${firstname}, já tem consciência e algumas práticas, mas sente que pode aprofundar sua inteligência emocional e expandir ainda mais. Como eu posso te ajudar: expandindo sua maestria emocional e espiritual.",
+        "detailed": {
+          "title": "🌟 Gestora em evolução",
+          "description": "${firstname}, você já tem consciência, já experimenta algumas práticas e percebe suas emoções de forma mais clara. Mas sabe que pode ir além: sente que existe uma versão mais livre, mais inteira e mais sábia de si mesma, esperando para emergir.",
+          "help": "Nesse ponto, minha função é expandir sua maestria emocional e espiritual, ${firstname}. Podemos mergulhar em leituras mais profundas do seu mapa e dos trânsitos astrológicos, trabalhar arquétipos junguianos para ampliar sua visão de mundo, e usar o baralho cigano como espelho do inconsciente, mostrando possibilidades de evolução. Você já não busca apenas sobreviver às emoções — você busca crescer com elas."
+        }
+      }
+    },
+    "finalMessage": {
+      "title": "🌹 Convite final",
+      "text": "${firstname}, independentemente do seu perfil, existe uma verdade: ➡️ você não precisa atravessar esse caminho sozinha. Meus atendimentos terapêuticos unem ciência da psique, espiritualidade prática e educação emocional para que você se sinta mais clara, mais livre e mais em paz consigo mesma.",
+      "cta": {
+        "text": "👉 Quer agendar uma conversa para começarmos sua jornada de autoconhecimento, ${firstname}?",
+        "button": "Sim, quero agendar! 🌹"
+      }
+    },
+    "contactFlow": [
+      {
+        "type": "bot",
+        "text": "Que maravilha, ${firstname}! 🌹 Para eu conseguir entrar em contato e agendarmos nossa sessão, preciso do seu WhatsApp. Qual é o seu número?",
+        "question": {
+          "type": "text",
+          "placeholder": "Digite seu WhatsApp...",
+          "saveAs": "whatsapp"
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Perfeito, ${firstname}! Agora preciso do seu e-mail para te enviar algumas informações importantes sobre nossa sessão. Qual é o seu e-mail?",
+        "question": {
+          "type": "text",
+          "placeholder": "Digite seu e-mail...",
+          "saveAs": "email"
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Pronto, ${firstname}! ✨ Tenho todos os seus dados:\n\n👤 Nome: ${firstname}\n📱 WhatsApp: ${whatsapp}\n📧 E-mail: ${email}\n\nEm breve vou entrar em contato pelo WhatsApp para agendarmos nossa sessão de autoconhecimento. Estou muito animada para começarmos essa jornada transformadora juntas! 🌹"
+      }
+    ]
+  },
+  "metadata": {
+    "framework": "Vue.js Chat Simulator",
+    "aiProvider": "Anthropic",
+    "model": "Claude 3.5 Sonnet",
+    "capabilities": [
+      "Análise emocional",
+      "Orientação espiritual",
+      "Avaliação de inteligência emocional",
+      "Interpretação de resultados personalizados"
+    ],
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  }
+}
