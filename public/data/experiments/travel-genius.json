@@ -1,7 +1,7 @@
 {
   "experiment": {
     "id": "travel-genius",
-    "name": "🌍 Travel Genius AI - Seu Consultor de Viagens Inteligente",
+    "name": "🌍 Holé Travel Genius AI - Seu Consultor de Viagens Inteligente",
     "icon": "🌍",
     "description": "Sistema inteligente de recomendações de viagem com mineração de dados e sugestões personalizadas",
     "defaultDelay": 2000,
@@ -16,11 +16,11 @@
       "messages": [
         {
           "type": "bot",
-          "text": "🌍 Olá! Bem-vindo ao Travel Genius AI!"
+          "text": "🌍 Olá! Bem-vindo ao Holé Travel Genius AI!"
         },
         {
           "type": "bot",
-          "text": "Sou Luna, sua consultora de viagens inteligente! Uso mineração de dados e inteligência artificial para criar sugestões de viagem totalmente personalizadas para você. Vamos descobrir seu destino dos sonhos?",
+          "text": "Sou Inácia, sua consultora de viagens inteligente! Uso mineração de dados e inteligência artificial para criar sugestões de viagem totalmente personalizadas para você. Vamos descobrir seu destino dos sonhos?",
           "showPresentation": true,
           "delay": 3000
         }
@@ -203,7 +203,7 @@
       },
       {
         "type": "bot",
-        "text": "Pronto, ${firstname}! 🎉 Seus dados estão salvos:\\n\\n👤 Nome: ${firstname}\\n📱 WhatsApp: ${whatsapp}\\n📧 E-mail: ${email}\\n\\nEm breve você receberá:\\n✅ Roteiro detalhado personalizado\\n✅ Dicas exclusivas de viagem\\n✅ Ofertas especiais de hotéis e passagens\\n✅ Guia local com restaurantes e atrações\\n\\nObrigada por usar o Travel Genius AI! Boa viagem! 🌍✈️"
+        "text": "Pronto, ${firstname}! 🎉 Seus dados estão salvos:\\n\\n👤 Nome: ${firstname}\\n📱 WhatsApp: ${whatsapp}\\n📧 E-mail: ${email}\\n\\nEm breve você receberá:\\n✅ Roteiro detalhado personalizado\\n✅ Dicas exclusivas de viagem\\n✅ Ofertas especiais de hotéis e passagens\\n✅ Guia local com restaurantes e atrações\\n\\nObrigada por usar o Holé Travel Genius AI! Boa viagem! 🌍✈️"
       }
     ]
   },

@@ -613,7 +613,7 @@ export default {
         },
         {
           id: 'travel-genius',
-          name: 'Travel Genius AI',
+          name: 'Holé Travel Genius AI',
           icon: '✈️',
           description: 'Sistema inteligente de recomendações de viagem com mineração de dados'
         },
