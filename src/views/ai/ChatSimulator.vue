@@ -1,12 +1,9 @@
 <template>
   <div class="chat-simulator" :class="{ 'dark-mode': isDarkMode, 'with-sidebar': showJsonSidebar }">
-    <!-- JSON FAB when closed -->
-    <div v-if="!showJsonSidebar" class="json-fab" @click="showJsonSidebar = true" title="Abrir Estrutura JSON">
-      <i class="mdi mdi-code-json"></i>
-    </div>
+
 
     <!-- JSON Sidebar -->
-    <div v-if="showJsonSidebar" class="json-sidebar" :class="{ 'closing': isClosing }">
+    <div v-if="showJsonSidebar" class="json-sidebar" :class="{ 'closing': isClosing, 'in-modal': showExperimentModal }">
       <div class="sidebar-header">
         <h3><i class="mdi mdi-code-json"></i> Estrutura JSON</h3>
         <div class="header-actions">
@@ -97,32 +94,98 @@
     <!-- Experiments Menu -->
     <div class="experiments-menu">
       <div class="menu-container">
+        <div class="menu-header">
+          <div class="menu-title">
+            <h2><span class="title-icon">🧪</span> Experimentos Disponíveis</h2>
+            <p>Selecione um experimento para iniciar a simulação</p>
+          </div>
+          <div class="menu-stats">
+            <div class="stat-badge">
+              <span class="badge-number">{{ experiments.length }}</span>
+              <span class="badge-label">Experimentos</span>
+            </div>
+          </div>
+        </div>
+        
         <div class="menu-tabs">
-          <button 
+          <div 
             v-for="experiment in experiments" 
             :key="experiment.id"
-            class="tab-btn"
+            class="experiment-card"
             :class="{ active: currentExperiment && currentExperiment.id === experiment.id }"
-            @click="switchExperiment(experiment)"
+            @click="openExperimentModal(experiment)"
           >
-            <span class="tab-icon">{{ experiment.icon }}</span>
-            <span class="tab-label">{{ experiment.name }}</span>
-          </button>
-        </div>
-        <div class="experiment-info" v-if="currentExperiment">
-          <div class="experiment-header">
-            <h3>{{ currentExperiment.name }}</h3>
-            <p>{{ currentExperiment.description }}</p>
+            <div class="card-header">
+              <div class="card-icon">
+                <img v-if="experiment.id === 'travel-genius'" 
+                 src="/images/hole-favicon.ico" 
+                 alt="Holé Travel" 
+                 class="icon-image" />
+            <span v-else class="icon-emoji">{{ experiment.icon }}</span>
+                <div class="icon-glow"></div>
+              </div>
+              <div class="card-status" v-if="currentExperiment && currentExperiment.id === experiment.id">
+                <span class="status-dot"></span>
+                <span class="status-text">Ativo</span>
+              </div>
+            </div>
+            <div class="card-content">
+              <h4 class="card-title">{{ experiment.name }}</h4>
+              <p class="card-description">{{ experiment.description }}</p>
+            </div>
+            <div class="card-footer">
+              <div class="card-tags">
+                <span class="tag" v-if="experiment.id === 'emotions-map'">IA Espiritual</span>
+                <span class="tag" v-else-if="experiment.id === 'travel-genius'">Holé Travel</span>
+                <span class="tag" v-else-if="experiment.id === 'customer-support'">Atendimento</span>
+                <span class="tag" v-else="experiment.id === 'lead-qualification'">Vendas</span>
+              </div>
+              <div class="card-action">
+                <span class="action-text">{{ currentExperiment && currentExperiment.id === experiment.id ? 'Em uso' : 'Selecionar' }}</span>
+                <span class="action-arrow">→</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-      <!-- Chat Interface -->
-      <div class="chat-interface">
-        <div class="chat-container">
+    <!-- Experiment Modal -->
+    <div v-if="showExperimentModal" class="experiment-modal" @click="closeExperimentModal">
+      <div class="modal-container" @click.stop>
+        <div class="modal-header">
+          <div class="modal-title">
+            <img v-if="currentExperiment?.id === 'travel-genius'" 
+                 src="/images/hole-favicon.ico" 
+                 alt="Holé Travel" 
+                 class="modal-icon-image" />
+            <span v-else class="modal-icon">{{ currentExperiment?.icon }}</span>
+            <div>
+              <h3>{{ currentExperiment?.name }}</h3>
+              <p>{{ currentExperiment?.description }}</p>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <div class="device-toggle">
+              <button class="device-btn" :class="{ active: !isMobileView }" @click="isMobileView = false" title="Visualização Desktop">
+                <i class="mdi mdi-monitor"></i>
+              </button>
+              <button class="device-btn" :class="{ active: isMobileView }" @click="isMobileView = true" title="Visualização Mobile">
+                <i class="mdi mdi-cellphone"></i>
+              </button>
+            </div>
+            <button v-if="!showJsonSidebar" class="modal-json-fab" @click="showJsonSidebar = true" title="Abrir Estrutura JSON">
+              <i class="mdi mdi-code-json"></i>
+            </button>
+            <button class="modal-close" @click="closeExperimentModal">
+              <i class="mdi mdi-close"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Chat Interface -->
+        <div class="modal-chat" :class="{ 'mobile-view': isMobileView }">
+          <div class="chat-container">
         <div class="chat-messages" ref="chatMessages">
           <div 
             class="message" 
@@ -136,6 +199,11 @@
                      src="/images/samelly-avatar.jpg" 
                      alt="Samelly - Guia Espiritual" 
                      class="avatar-image human-avatar samelly-avatar"
+                     @error="handleImageError" />
+                <img v-else-if="message.type === 'bot' && currentExperiment && currentExperiment.id === 'travel-genius'" 
+                     :src="currentExperiment.avatarUrl || 'https://cdn.midjourney.com/26ab421c-8918-415a-955e-2d85ce7f0884/0_0.png'" 
+                     alt="Inácia - Holé Travel" 
+                     class="avatar-image human-avatar hole-avatar"
                      @error="handleImageError" />
                 <img v-else-if="message.type === 'bot' && currentExperiment && currentExperiment.id === 'customer-support'" 
                      src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face&auto=format&q=95" 
@@ -154,7 +222,7 @@
               <!-- Presentation Photo -->
               <div v-if="message.showPresentation" class="presentation-photo">
                 <div class="photo-container">
-                  <img src="/images/samelly-presentation.jpg" alt="Samelly" class="presentation-image" />
+                  <img :src="getPresentationImage()" :alt="currentExperiment?.assistantName || 'Assistente'" class="presentation-image" />
                   <div class="photo-glow"></div>
                 </div>
               </div>
@@ -195,14 +263,28 @@
                     <span></span>
                   </div>
                 </div>
+                <div v-else-if="message.formatted" class="formatted-content">
+                  <div v-if="message.formatted.title" class="content-title">{{ processMessageTags(message.formatted.title) }}</div>
+                  <div v-if="message.formatted.subtitle" class="content-subtitle">{{ processMessageTags(message.formatted.subtitle) }}</div>
+                  <div v-for="section in message.formatted.sections" :key="section.title" class="content-section">
+                    <div class="section-header">
+                      <span class="section-icon">{{ section.icon }}</span>
+                      <span class="section-title">{{ section.title }}</span>
+                    </div>
+                    <ul class="section-list">
+                      <li v-for="item in section.items" :key="item" class="list-item">{{ item }}</li>
+                    </ul>
+                  </div>
+                  <div v-if="message.formatted.footer" class="content-footer">{{ message.formatted.footer }}</div>
+                </div>
                 <div v-else class="message-text" v-html="message.text"></div>
               </div>
               <div class="message-time">{{ message.time }}</div>
             </div>
           </div>
-        </div>
+          </div>
 
-        <!-- Interactive Elements -->
+          <!-- Interactive Elements -->
         <div class="interactive-elements" v-if="currentQuestion">
           <div class="question-container">
             <div class="question-content">
@@ -286,7 +368,7 @@
             <input 
               v-model="userInput" 
               @keyup.enter="sendMessage"
-              placeholder="Type your message..."
+              placeholder="Digite sua mensagem..."
               class="message-input"
               ref="messageInput"
             />
@@ -295,8 +377,20 @@
             </button>
           </div>
         </div>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Main Content (when no modal) -->
+    <div v-if="!showExperimentModal" class="main-content">
+      <div class="welcome-screen">
+        <div class="welcome-content">
+          <div class="welcome-icon">🧪</div>
+          <h2>Selecione um Experimento</h2>
+          <p>Escolha um dos experimentos acima para iniciar a simulação de chat</p>
+        </div>
+      </div>
     </div>
 
     <!-- JSON Viewer Modal -->
@@ -388,6 +482,9 @@ export default {
           name: 'Mapa das Emoções',
           icon: '🌹',
           description: 'Avaliação de inteligência emocional com orientação espiritual',
+          assistantName: 'Samelly',
+          avatarUrl: '/images/samelly-avatar.jpg',
+          presentationUrl: '/images/samelly-presentation.jpg',
           chatStructure: {
             welcome: {
               messages: [
@@ -568,6 +665,9 @@ export default {
           name: 'Suporte ao Cliente',
           icon: '🎧',
           description: 'Simulação de atendimento ao cliente com gestão de tickets',
+          assistantName: 'Atendente',
+          avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face&auto=format&q=95',
+          presentationUrl: null,
           chatStructure: {
             welcome: {
               messages: [
@@ -606,14 +706,20 @@ export default {
         {
           id: 'travel-genius',
           name: 'Holé Travel Genius AI',
-          icon: '✈️',
-          description: 'Sistema inteligente de recomendações de viagem com mineração de dados'
+          icon: '🌴',
+          description: 'Sistema inteligente de recomendações de viagem com mineração de dados',
+          assistantName: 'Inácia',
+          avatarUrl: 'https://cdn.midjourney.com/c9376d79-5212-4698-8010-766e288d2fe3/0_0.png',
+          presentationUrl: 'https://cdn.midjourney.com/26ab421c-8918-415a-955e-2d85ce7f0884/0_0.png'
         },
         {
           id: 'lead-qualification',
           name: 'Qualificação de Leads',
           icon: '🎯',
           description: 'Fluxo de qualificação de vendas com sistema de pontuação',
+          assistantName: 'Consultor',
+          avatarUrl: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=300&fit=crop&crop=face&auto=format&q=95',
+          presentationUrl: null,
           chatStructure: {
             welcome: {
               messages: [
@@ -664,7 +770,9 @@ export default {
       },
       finalResult: null,
       showDetailedResults: false,
-      showJsonSidebar: true,
+      showJsonSidebar: false,
+      showExperimentModal: false,
+      isMobileView: false,
       isClosing: false,
       currentJsonHighlight: null,
       jsonScrollPosition: 0,
@@ -752,19 +860,11 @@ export default {
     }
   },
   mounted() {
-    this.initializeSimulator()
+    // Don't auto-initialize, let user select experiment
   },
   methods: {
     initializeSimulator() {
-      // Set default experiment to emotions-map
-      const defaultExperiment = this.experiments.find(exp => exp.id === 'emotions-map')
-      if (defaultExperiment) {
-        this.currentExperiment = defaultExperiment
-        this.loadExperimentFromJSON(defaultExperiment)
-      } else {
-        // Fallback: create basic experiment
-        this.createFallbackExperiment()
-      }
+      // Removed auto-initialization - user selects experiment
     },
     
     createFallbackExperiment() {
@@ -839,13 +939,21 @@ export default {
     askNextQuestion() {
       if (this.currentFlowIndex < this.conversationFlow.length) {
         const flowItem = this.conversationFlow[this.currentFlowIndex]
-        this.addBotMessage(flowItem.text, true)
+        
+        // Check for formatted content
+        const formatted = flowItem.formatted || null
+        const customDelay = flowItem.delay || null
+        
+        this.addBotMessage(flowItem.text, true, formatted, customDelay)
         
         // Update JSON highlight
         this.updateJsonHighlight('flow', this.currentFlowIndex)
         
         // Increment index first
         this.currentFlowIndex++
+        
+        // Calculate delay based on content
+        const messageDelay = customDelay || this.calculateTypingDelay(flowItem.text)
         
         // Wait for typing animation to complete before showing question
         setTimeout(() => {
@@ -860,35 +968,95 @@ export default {
                 this.scrollToBottom()
               }, 200)
             })
+          } else if (flowItem.interactionCheck) {
+            // Check if interaction is needed
+            this.checkForInteraction()
           } else {
             // If no question, continue to next item automatically
             setTimeout(() => {
               this.askNextQuestion()
-            }, 2000)
+            }, 1000)
           }
-        }, 2500) // Longer delay to ensure message is fully typed
+        }, messageDelay + 500)
       }
     },
     
-    addBotMessage(text, isTyping = false) {
+    checkForInteraction() {
+      // Count consecutive bot messages
+      let consecutiveBotMessages = 0
+      for (let i = this.messages.length - 1; i >= 0; i--) {
+        if (this.messages[i].type === 'bot') {
+          consecutiveBotMessages++
+        } else {
+          break
+        }
+      }
+      
+      // If more than 3 consecutive bot messages, add interaction
+      if (consecutiveBotMessages >= 3) {
+        setTimeout(() => {
+          this.addInteractionQuestion()
+        }, 1000)
+      } else {
+        setTimeout(() => {
+          this.askNextQuestion()
+        }, 1000)
+      }
+    },
+    
+    addInteractionQuestion() {
+      const interactionQuestions = [
+        'Está acompanhando bem até aqui? 😊',
+        'Alguma dúvida sobre essas informações?',
+        'O que você achou dessas sugestões?',
+        'Posso continuar com mais detalhes?'
+      ]
+      
+      const randomQuestion = interactionQuestions[Math.floor(Math.random() * interactionQuestions.length)]
+      
+      this.addBotMessage(randomQuestion, true)
+      
+      setTimeout(() => {
+        this.currentQuestion = {
+          type: 'buttons',
+          options: [
+            { value: 'continue', label: 'Sim, continue! 👍', icon: '👍' },
+            { value: 'question', label: 'Tenho uma dúvida', icon: '❓' }
+          ]
+        }
+      }, 1500)
+    },
+    
+    addBotMessage(text, isTyping = false, formatted = null, customDelay = null) {
       const message = {
         id: Date.now(),
         type: 'bot',
         text: this.processMessageTags(text),
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        isTyping: isTyping
+        isTyping: isTyping,
+        formatted: formatted
       }
       
       this.messages.push(message)
       this.conversationStats.messages++
       
       if (isTyping) {
+        const delay = customDelay || this.calculateTypingDelay(text)
         setTimeout(() => {
           message.isTyping = false
-        }, 1500)
+        }, delay)
       }
       
       this.scrollToBottom()
+    },
+    
+    calculateTypingDelay(text) {
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0)
+      const baseDelay = 1500
+      
+      if (sentences.length <= 1) return baseDelay
+      if (sentences.length === 2) return baseDelay + 1000
+      return baseDelay + 2000
     },
     
     processMessageTags(text) {
@@ -939,6 +1107,14 @@ export default {
         setTimeout(() => {
           this.askNextQuestion()
         }, 1000)
+      } else if (value === 'question') {
+        this.addBotMessage('Pode perguntar! Estou aqui para esclarecer suas dúvidas. 😊', true)
+        setTimeout(() => {
+          this.currentQuestion = {
+            type: 'text',
+            placeholder: 'Digite sua pergunta...'
+          }
+        }, 1500)
       } else if (value === 'start') {
         setTimeout(() => {
           this.askNextQuestion()
@@ -1092,10 +1268,21 @@ export default {
     },
     
     // Experiment Methods
-    switchExperiment(experiment) {
+    openExperimentModal(experiment) {
       this.currentExperiment = experiment
+      this.showExperimentModal = true
       this.resetConversation()
       this.loadExperimentFromJSON(experiment)
+    },
+    
+    closeExperimentModal() {
+      this.showExperimentModal = false
+      this.currentExperiment = null
+      this.resetConversation()
+    },
+    
+    switchExperiment(experiment) {
+      this.openExperimentModal(experiment)
     },
     
     resetConversation() {
@@ -1347,18 +1534,34 @@ export default {
           setTimeout(async () => {
             this.addBotMessage(`🤖 Gerando roteiro personalizado com IA...`)
             
-            // Generate itinerary with Claude
-            const itinerary = await this.generatePersonalizedItinerary()
-            
             setTimeout(() => {
-              this.addBotMessage(itinerary.content)
+              // Use formatted content if available
+              if (resultData.formatted) {
+                this.addBotMessage('Aqui estão suas recomendações personalizadas:', false, resultData.formatted)
+              } else {
+                // Fallback to Claude generation
+                this.generateAndShowItinerary()
+              }
+              
               setTimeout(() => {
                 this.showFinalMessage()
-              }, 2000)
-            }, 3000)
+              }, 3000)
+            }, 2000)
           }, 2000)
         }, 2000)
       }, 2000)
+    },
+    
+    async generateAndShowItinerary() {
+      const itinerary = await this.generatePersonalizedItinerary()
+      this.addBotMessage(itinerary.content)
+    },
+    
+    getPresentationImage() {
+      if (this.currentExperiment?.presentationUrl) {
+        return this.currentExperiment.presentationUrl
+      }
+      return '/images/samelly-presentation.jpg' // fallback
     },
     
     handleImageError(event) {
@@ -1433,6 +1636,15 @@ export default {
   justify-content: center;
   width: calc(100% - 400px);
   margin: 0;
+  padding: 2rem;
+}
+
+.chat-simulator:not(.with-sidebar) .main-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  margin: 0 auto;
   padding: 2rem;
 }
 
@@ -1701,16 +1913,16 @@ export default {
 .experiments-menu {
   position: relative;
   z-index: 10;
-  padding: 1rem 2rem;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
+  backdrop-filter: blur(25px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  transition: all 0.4s ease;
 }
 
 .dark-mode .experiments-menu {
-  background: rgba(20, 20, 40, 0.8);
-  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.15);
 }
 
 .menu-container {
@@ -1718,101 +1930,430 @@ export default {
   margin: 0 auto;
 }
 
-.menu-tabs {
+.menu-header {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.tab-btn {
+.dark-mode .menu-header {
+  border-bottom-color: rgba(0, 255, 255, 0.15);
+}
+
+.menu-title h2 {
+  color: #1e293b;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1.2rem;
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 25px;
-  color: #64748b;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  flex-shrink: 0;
+  gap: 0.8rem;
 }
 
-.dark-mode .tab-btn {
-  background: rgba(0, 0, 0, 0.3);
-  border-color: rgba(0, 255, 255, 0.2);
-  color: #cccccc;
-}
-
-.tab-btn:hover {
-  background: rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-.dark-mode .tab-btn:hover {
-  background: rgba(0, 255, 255, 0.1);
-}
-
-.tab-btn.active {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  border-color: #3b82f6;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
-}
-
-.dark-mode .tab-btn.active {
-  background: linear-gradient(135deg, #00ffff, #ff00ff);
-  border-color: #00ffff;
-  box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
-}
-
-.tab-icon {
-  font-size: 1.1rem;
-}
-
-.tab-label {
-  font-weight: 500;
-}
-
-.experiment-info {
-  text-align: center;
-}
-
-.experiment-info h3 {
-  color: #1e293b;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 0 0 0.3rem 0;
-}
-
-.dark-mode .experiment-info h3 {
+.dark-mode .menu-title h2 {
   color: #ffffff;
 }
 
-.experiment-info p {
+.title-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.3));
+}
+
+.dark-mode .title-icon {
+  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
+}
+
+.menu-title p {
   color: #64748b;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.dark-mode .menu-title p {
+  color: #cbd5e1;
+}
+
+.menu-stats {
+  display: flex;
+  gap: 1rem;
+}
+
+.stat-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(29, 78, 216, 0.05));
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.dark-mode .stat-badge {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.05));
+  border-color: rgba(0, 255, 255, 0.3);
+}
+
+.stat-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+}
+
+.dark-mode .stat-badge:hover {
+  box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3);
+}
+
+.badge-number {
+  color: #3b82f6;
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.dark-mode .badge-number {
+  color: #00ffff;
+}
+
+.badge-label {
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.25rem;
+}
+
+.dark-mode .badge-label {
+  color: #cbd5e1;
+}
+
+.menu-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.experiment-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.8));
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  padding: 1.8rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(15px);
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-mode .experiment-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.8));
+  border-color: rgba(0, 255, 255, 0.15);
+}
+
+.experiment-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.dark-mode .experiment-card::before {
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+}
+
+.experiment-card:hover::before {
+  left: 100%;
+}
+
+.experiment-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.dark-mode .experiment-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+  border-color: rgba(0, 255, 255, 0.4);
+}
+
+.experiment-card.active {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(29, 78, 216, 0.1));
+  border-color: #3b82f6;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.25);
+}
+
+.dark-mode .experiment-card.active {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(255, 0, 255, 0.1));
+  border-color: #00ffff;
+  box-shadow: 0 15px 35px rgba(0, 255, 255, 0.3);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.2rem;
+}
+
+.card-icon {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(29, 78, 216, 0.05));
+  border: 2px solid rgba(59, 130, 246, 0.2);
+  border-radius: 18px;
+  transition: all 0.4s ease;
+}
+
+.dark-mode .card-icon {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.05));
+  border-color: rgba(0, 255, 255, 0.3);
+}
+
+.experiment-card:hover .card-icon {
+  transform: scale(1.1) rotate(5deg);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.dark-mode .experiment-card:hover .card-icon {
+  border-color: rgba(0, 255, 255, 0.5);
+}
+
+.experiment-card.active .card-icon {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-color: #3b82f6;
+  transform: scale(1.05);
+}
+
+.dark-mode .experiment-card.active .card-icon {
+  background: linear-gradient(135deg, #00ffff, #ff00ff);
+  border-color: #00ffff;
+}
+
+.icon-emoji {
+  font-size: 1.8rem;
+  z-index: 2;
+  position: relative;
+}
+
+.icon-image {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  z-index: 2;
+  position: relative;
+  border-radius: 6px;
+}
+
+.modal-icon-image {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.experiment-card.active .icon-emoji {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+}
+
+.icon-glow {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: linear-gradient(45deg, #3b82f6, #1d4ed8, #3b82f6);
+  border-radius: 20px;
+  opacity: 0;
+  animation: iconPulse 2s ease-in-out infinite;
+  z-index: 1;
+}
+
+.dark-mode .icon-glow {
+  background: linear-gradient(45deg, #00ffff, #ff00ff, #00ffff);
+}
+
+.experiment-card.active .icon-glow {
+  opacity: 0.3;
+}
+
+@keyframes iconPulse {
+  0%, 100% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 0.3; }
+}
+
+.card-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.card-content {
+  margin-bottom: 1.5rem;
+}
+
+.card-title {
+  color: #1e293b;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.8rem 0;
+  line-height: 1.3;
+}
+
+.dark-mode .card-title {
+  color: #ffffff;
+}
+
+.experiment-card.active .card-title {
+  color: #3b82f6;
+}
+
+.dark-mode .experiment-card.active .card-title {
+  color: #00ffff;
+}
+
+.card-description {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
   margin: 0;
 }
 
-.dark-mode .experiment-info p {
-  color: #cccccc;
+.dark-mode .card-description {
+  color: #cbd5e1;
 }
 
-.experiment-header {
-  margin-bottom: 1rem;
-}
-
-
-.experiment-actions {
+.card-footer {
   display: flex;
-  justify-content: center;
-  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.dark-mode .card-footer {
+  border-top-color: rgba(0, 255, 255, 0.15);
+}
+
+.card-tags {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tag {
+  padding: 0.3rem 0.8rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #3b82f6;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dark-mode .tag {
+  background: rgba(0, 255, 255, 0.1);
+  border-color: rgba(0, 255, 255, 0.3);
+  color: #00ffff;
+}
+
+.card-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .card-action {
+  color: #cbd5e1;
+}
+
+.experiment-card:hover .card-action {
+  color: #3b82f6;
+  transform: translateX(4px);
+}
+
+.dark-mode .experiment-card:hover .card-action {
+  color: #00ffff;
+}
+
+.experiment-card.active .card-action {
+  color: #10b981;
+}
+
+.action-arrow {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.experiment-card:hover .action-arrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .experiments-menu {
+    padding: 1.5rem 1rem;
+  }
+  
+  .menu-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .menu-tabs {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .experiment-card {
+    padding: 1.5rem;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
 }
 
 /* Chat Interface */
@@ -1979,6 +2520,22 @@ export default {
 .assistant-avatar {
   background: linear-gradient(135deg, #00ffff, #00e6e6);
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.hole-avatar {
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+}
+
+.favicon-avatar {
+  border: 2px solid rgba(255, 107, 53, 0.5);
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+  filter: brightness(1.1) contrast(1.2);
+}
+
+.favicon-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255, 107, 53, 0.5);
 }
 
 /* Score Display Styles */
@@ -2180,44 +2737,32 @@ export default {
   transition: all 0.3s ease;
 }
 
+.json-sidebar.in-modal {
+  top: 120px;
+  right: 20px;
+  left: auto;
+  width: 350px;
+  height: calc(100vh - 140px);
+  z-index: 4000;
+}
+
 .json-sidebar.closing {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  top: 240px;
-  left: 100px;
-  opacity: 0.8;
+  opacity: 0;
+  transform: scale(0.3);
 }
 
-.json-fab {
-  position: fixed;
-  top: 240px;
-  left: 100px;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 255, 255, 0.3));
-  border: 1px solid rgba(0, 255, 255, 0.4);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 1000;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 255, 255, 0.3);
+.json-sidebar.in-modal.closing {
+  top: 140px;
+  right: 180px;
+  left: auto;
+  width: 40px;
+  height: 40px;
 }
 
-.json-fab:hover {
-  transform: scale(1.1);
-  background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(0, 255, 255, 0.4));
-  box-shadow: 0 6px 25px rgba(0, 255, 255, 0.4);
-}
 
-.json-fab i {
-  font-size: 24px;
-  color: #00ffff;
-}
 
 .sidebar-header {
   padding: 20px;
@@ -3413,6 +3958,484 @@ export default {
   100% {
     opacity: 0;
     transform: translate(-50%, -40%) scale(0.9);
+  }
+}
+
+/* Formatted Content Styles */
+.formatted-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.content-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.dark-mode .content-title {
+  color: #ffffff;
+}
+
+.content-subtitle {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin-bottom: 0.8rem;
+  font-style: italic;
+}
+
+.dark-mode .content-subtitle {
+  color: #cbd5e1;
+}
+
+.content-section {
+  margin-bottom: 0.8rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(29, 78, 216, 0.05));
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+.dark-mode .section-header {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.05));
+  border-color: rgba(0, 255, 255, 0.3);
+}
+
+.section-icon {
+  font-size: 1.3rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.dark-mode .section-icon {
+  background: rgba(0, 255, 255, 0.2);
+}
+
+.section-title {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 1rem;
+}
+
+.dark-mode .section-title {
+  color: #ffffff;
+}
+
+.section-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.5rem 0.8rem;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  font-size: 0.9rem;
+  color: #1e293b;
+}
+
+.dark-mode .list-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(0, 255, 255, 0.15);
+  color: #e2e8f0;
+}
+
+.list-item:hover {
+  background: rgba(59, 130, 246, 0.05);
+  border-color: rgba(59, 130, 246, 0.2);
+  transform: translateX(2px);
+}
+
+.dark-mode .list-item:hover {
+  background: rgba(0, 255, 255, 0.05);
+  border-color: rgba(0, 255, 255, 0.3);
+}
+
+.list-item::before {
+  content: '•';
+  color: #3b82f6;
+  font-weight: bold;
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.dark-mode .list-item::before {
+  color: #00ffff;
+}
+
+.content-footer {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 12px;
+  margin-top: 0.5rem;
+}
+
+.dark-mode .content-footer {
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.05));
+  border-color: rgba(0, 255, 255, 0.3);
+}
+
+/* Experiment Modal */
+.experiment-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-container {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 1200px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark-mode .modal-container {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
+  border-color: rgba(0, 255, 255, 0.2);
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.device-toggle {
+  display: flex;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  padding: 4px;
+  gap: 2px;
+}
+
+.dark-mode .device-toggle {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.device-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark-mode .device-btn {
+  color: #cbd5e1;
+}
+
+.device-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.dark-mode .device-btn:hover {
+  background: rgba(0, 255, 255, 0.1);
+  color: #00ffff;
+}
+
+.device-btn.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.dark-mode .device-btn.active {
+  background: #00ffff;
+  color: #0f1419;
+}
+
+.device-btn i {
+  font-size: 16px;
+}
+
+.modal-json-fab {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 255, 255, 0.3));
+  border: 1px solid rgba(0, 255, 255, 0.4);
+  color: #00ffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.modal-json-fab:hover {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(0, 255, 255, 0.4));
+}
+
+.modal-json-fab i {
+  font-size: 18px;
+}
+
+.dark-mode .modal-header {
+  border-bottom-color: rgba(0, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.modal-icon {
+  font-size: 2.5rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(29, 78, 216, 0.05));
+  border: 2px solid rgba(59, 130, 246, 0.2);
+  border-radius: 18px;
+}
+
+.dark-mode .modal-icon {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.05));
+  border-color: rgba(0, 255, 255, 0.3);
+}
+
+.modal-title h3 {
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.dark-mode .modal-title h3 {
+  color: #ffffff;
+}
+
+.modal-title p {
+  color: #64748b;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.dark-mode .modal-title p {
+  color: #cbd5e1;
+}
+
+.modal-close {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  color: #64748b;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .modal-close {
+  background: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+}
+
+.modal-close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  transform: scale(1.1);
+}
+
+.modal-chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal-chat.mobile-view {
+  max-width: 375px;
+  margin: 0 auto;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .modal-chat.mobile-view {
+  border-left-color: rgba(0, 255, 255, 0.2);
+  border-right-color: rgba(0, 255, 255, 0.2);
+}
+
+.modal-chat .chat-container {
+  flex: 1;
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+}
+
+/* Welcome Screen */
+.welcome-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  width: 100%;
+}
+
+.welcome-content {
+  text-align: center;
+  padding: 3rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.8));
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  max-width: 500px;
+}
+
+.dark-mode .welcome-content {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.8));
+  border-color: rgba(0, 255, 255, 0.2);
+}
+
+.welcome-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.3));
+}
+
+.dark-mode .welcome-icon {
+  filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.4));
+}
+
+.welcome-content h2 {
+  color: #1e293b;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.dark-mode .welcome-content h2 {
+  color: #ffffff;
+}
+
+.welcome-content p {
+  color: #64748b;
+  font-size: 1.1rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.dark-mode .welcome-content p {
+  color: #cbd5e1;
+}
+
+@media (max-width: 768px) {
+  .experiment-modal {
+    padding: 1rem;
+  }
+  
+  .modal-container {
+    height: 95vh;
+    border-radius: 16px;
+  }
+  
+  .modal-header {
+    padding: 1.5rem;
+  }
+  
+  .modal-title {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .welcome-content {
+    padding: 2rem;
+    margin: 1rem;
   }
 }
 </style>
