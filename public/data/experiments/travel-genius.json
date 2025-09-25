@@ -1,0 +1,228 @@
+{
+  "experiment": {
+    "id": "travel-genius",
+    "name": "🌍 Travel Genius AI - Seu Consultor de Viagens Inteligente",
+    "icon": "🌍",
+    "description": "Sistema inteligente de recomendações de viagem com mineração de dados e sugestões personalizadas",
+    "defaultDelay": 2000,
+    "credits": "Powered by Hibrit Agency",
+    "avatarUrl": "https://cdn.midjourney.com/c9376d79-5212-4698-8010-766e288d2fe3/0_0.png",
+    "presentationUrl": "https://cdn.midjourney.com/26ab421c-8918-415a-955e-2d85ce7f0884/0_0.png",
+    "version": "1.0.0",
+    "createdAt": "2024-01-15T12:00:00Z"
+  },
+  "chatStructure": {
+    "welcome": {
+      "messages": [
+        {
+          "type": "bot",
+          "text": "🌍 Olá! Bem-vindo ao Travel Genius AI!"
+        },
+        {
+          "type": "bot",
+          "text": "Sou Luna, sua consultora de viagens inteligente! Uso mineração de dados e inteligência artificial para criar sugestões de viagem totalmente personalizadas para você. Vamos descobrir seu destino dos sonhos?",
+          "showPresentation": true,
+          "delay": 3000
+        }
+      ]
+    },
+    "flow": [
+      {
+        "type": "bot",
+        "text": "Primeiro, preciso saber seu nome para personalizar suas recomendações. Como posso te chamar?",
+        "question": {
+          "type": "text",
+          "placeholder": "Digite seu nome...",
+          "saveAs": "firstname"
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Que nome lindo, ${firstname}! Agora vou fazer algumas perguntas para entender seu perfil de viajante e criar sugestões perfeitas para você."
+      },
+      {
+        "type": "bot",
+        "text": "Vamos começar! Qual é o seu estilo de viagem preferido?",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "adventure", "label": "🏔️ Aventura e Adrenalina" },
+            { "value": "relax", "label": "🏖️ Relaxamento e Praias" },
+            { "value": "culture", "label": "🏛️ Cultura e História" },
+            { "value": "gastronomy", "label": "🍷 Gastronomia e Vinhos" },
+            { "value": "nature", "label": "🌿 Natureza e Ecoturismo" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Perfeito, ${firstname}! Qual é o seu orçamento aproximado para a viagem?",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "budget", "label": "💰 Econômico (até R$ 3.000)" },
+            { "value": "medium", "label": "💎 Intermediário (R$ 3.000 - R$ 8.000)" },
+            { "value": "luxury", "label": "👑 Premium (acima de R$ 8.000)" },
+            { "value": "flexible", "label": "🤔 Flexível (depende do destino)" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Quantos dias você tem disponível para viajar?",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "weekend", "label": "🗓️ Final de semana (2-3 dias)" },
+            { "value": "week", "label": "📅 Uma semana (4-7 dias)" },
+            { "value": "extended", "label": "🌟 Viagem longa (8-15 dias)" },
+            { "value": "month", "label": "🌍 Mochilão (mais de 15 dias)" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Com quem você pretende viajar?",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "solo", "label": "🎒 Sozinho(a)" },
+            { "value": "couple", "label": "💕 Em casal" },
+            { "value": "friends", "label": "👥 Com amigos" },
+            { "value": "family", "label": "👨‍👩‍👧‍👦 Em família" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Qual tipo de acomodação você prefere?",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "hostel", "label": "🏠 Hostel/Pousada" },
+            { "value": "hotel", "label": "🏨 Hotel confortável" },
+            { "value": "resort", "label": "🏖️ Resort all-inclusive" },
+            { "value": "unique", "label": "🏰 Experiências únicas" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Que tipo de atividades mais te interessam? (Pode escolher várias)",
+        "question": {
+          "type": "checkboxes",
+          "options": [
+            { "value": "museums", "label": "🏛️ Museus e galerias" },
+            { "value": "nightlife", "label": "🌃 Vida noturna" },
+            { "value": "shopping", "label": "🛍️ Compras" },
+            { "value": "sports", "label": "⚽ Esportes" },
+            { "value": "wellness", "label": "🧘 Bem-estar e spa" },
+            { "value": "photography", "label": "📸 Fotografia" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Qual é a sua preferência climática?",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "tropical", "label": "☀️ Clima tropical quente" },
+            { "value": "temperate", "label": "🌤️ Clima ameno" },
+            { "value": "cold", "label": "❄️ Clima frio" },
+            { "value": "any", "label": "🌈 Qualquer clima" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Você tem alguma restrição ou preferência especial?",
+        "question": {
+          "type": "checkboxes",
+          "options": [
+            { "value": "vegetarian", "label": "🥗 Opções vegetarianas" },
+            { "value": "accessibility", "label": "♿ Acessibilidade" },
+            { "value": "petfriendly", "label": "🐕 Pet-friendly" },
+            { "value": "language", "label": "🗣️ Destinos que falam português" },
+            { "value": "none", "label": "✅ Nenhuma restrição" }
+          ]
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Por último, qual é a época ideal para sua viagem?",
+        "question": {
+          "type": "buttons",
+          "options": [
+            { "value": "immediate", "label": "🚀 Próximas semanas" },
+            { "value": "months", "label": "📆 Próximos 3 meses" },
+            { "value": "semester", "label": "🗓️ Próximos 6 meses" },
+            { "value": "flexible", "label": "🤷 Flexível" }
+          ]
+        }
+      }
+    ],
+    "results": {
+      "analysis": {
+        "title": "🎯 Análise do Seu Perfil de Viajante",
+        "subtitle": "${firstname}, nossa IA analisou suas preferências e criou recomendações personalizadas!",
+        "description": "Com base em suas respostas, identificamos seu perfil único de viajante e selecionamos os melhores destinos que combinam com você. Nossas sugestões são baseadas em dados de milhões de viajantes e análise de tendências de turismo.",
+        "detailed": {
+          "title": "🌍 Suas Recomendações Personalizadas",
+          "description": "${firstname}, criamos um roteiro exclusivo baseado em suas preferências! Nosso sistema analisou destinos, custos, atividades e clima para encontrar as opções perfeitas para você. Cada sugestão foi cuidadosamente selecionada usando inteligência artificial e mineração de dados de viagem.",
+          "help": "Posso te ajudar com um roteiro detalhado, incluindo: • Destinos personalizados • Atrações imperdíveis • Restaurantes recomendados • Dicas de orçamento • Melhor época para viajar • Ofertas exclusivas de hotéis e passagens"
+        }
+      }
+    },
+    "finalMessage": {
+      "title": "✈️ Pronto para viajar?",
+      "text": "${firstname}, suas recomendações foram criadas usando inteligência artificial e análise de dados de milhões de viajantes! Quer receber um roteiro detalhado personalizado?",
+      "cta": {
+        "text": "📱 Posso enviar suas recomendações completas por WhatsApp com roteiro detalhado, dicas exclusivas e ofertas especiais!",
+        "button": "Sim, quero meu roteiro! ✈️"
+      }
+    },
+    "contactFlow": [
+      {
+        "type": "bot",
+        "text": "Perfeito, ${firstname}! 🌟 Para enviar seu roteiro personalizado completo, preciso do seu WhatsApp. Qual é o número?",
+        "question": {
+          "type": "text",
+          "placeholder": "Digite seu WhatsApp...",
+          "saveAs": "whatsapp"
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Ótimo! Agora preciso do seu e-mail para enviar materiais exclusivos e atualizações sobre ofertas especiais. Qual é seu e-mail?",
+        "question": {
+          "type": "text",
+          "placeholder": "Digite seu e-mail...",
+          "saveAs": "email"
+        }
+      },
+      {
+        "type": "bot",
+        "text": "Pronto, ${firstname}! 🎉 Seus dados estão salvos:\\n\\n👤 Nome: ${firstname}\\n📱 WhatsApp: ${whatsapp}\\n📧 E-mail: ${email}\\n\\nEm breve você receberá:\\n✅ Roteiro detalhado personalizado\\n✅ Dicas exclusivas de viagem\\n✅ Ofertas especiais de hotéis e passagens\\n✅ Guia local com restaurantes e atrações\\n\\nObrigada por usar o Travel Genius AI! Boa viagem! 🌍✈️"
+      }
+    ]
+  },
+  "metadata": {
+    "framework": "Vue.js Chat Simulator",
+    "capabilities": [
+      "Mineração de dados de viagem",
+      "Sugestões personalizadas com IA",
+      "Análise de perfil de viajante",
+      "Recomendações baseadas em big data",
+      "Coleta inteligente de preferências"
+    ],
+    "dataSources": [
+      "APIs de turismo",
+      "Dados públicos de destinos",
+      "Reviews de viajantes",
+      "Informações climáticas",
+      "Dados de custos e orçamentos"
+    ],
+    "lastUpdated": "2024-01-15T12:00:00Z"
+  }
+}

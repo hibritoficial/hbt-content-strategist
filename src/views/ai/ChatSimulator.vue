@@ -131,6 +131,12 @@
                      alt="Samelly - Guia Espiritual" 
                      class="avatar-image human-avatar samelly-avatar"
                      @error="handleImageError" />
+                <img v-else-if="message.type === 'bot' && currentExperiment && currentExperiment.avatarUrl" 
+                     :src="currentExperiment.avatarUrl" 
+                     :alt="currentExperiment.name" 
+                     class="avatar-image human-avatar"
+                     @error="handleImageError" />
+
                 <img v-else-if="message.type === 'bot' && currentExperiment && currentExperiment.id === 'customer-support'" 
                      src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face&auto=format&q=95" 
                      alt="Atendente" 
@@ -148,7 +154,15 @@
               <!-- Presentation Photo -->
               <div v-if="message.showPresentation" class="presentation-photo">
                 <div class="photo-container">
-                  <img src="/images/samelly-presentation.jpg" alt="Samelly" class="presentation-image" />
+                  <img v-if="currentExperiment && currentExperiment.id === 'emotions-map'" 
+                       src="/images/samelly-presentation.jpg" 
+                       alt="Samelly" 
+                       class="presentation-image" />
+                  <img v-else-if="currentExperiment && currentExperiment.presentationUrl" 
+                       :src="currentExperiment.presentationUrl" 
+                       :alt="currentExperiment.name" 
+                       class="presentation-image" />
+
                   <div class="photo-glow"></div>
                 </div>
               </div>
@@ -598,6 +612,12 @@ export default {
           }
         },
         {
+          id: 'travel-genius',
+          name: 'Travel Genius AI',
+          icon: '✈️',
+          description: 'Sistema inteligente de recomendações de viagem com mineração de dados'
+        },
+        {
           id: 'lead-qualification',
           name: 'Qualificação de Leads',
           icon: '🎯',
@@ -944,6 +964,18 @@ export default {
           }
         }, 1000)
       } else {
+        // Save user preference data
+        if (this.currentExperiment?.id === 'travel-genius') {
+          this.userData[`preference_${Date.now()}`] = value
+          
+          // Check if this is the last question for travel-genius
+          if (this.currentFlowIndex >= this.conversationFlow.length) {
+            setTimeout(() => {
+              this.showTravelResults()
+            }, 1000)
+            return
+          }
+        }
         // Handle other answers
         setTimeout(() => {
           this.askNextQuestion()
@@ -1227,6 +1259,38 @@ export default {
           this.showSelectAlert = false
         }, 3000)
       }
+    },
+    
+    showTravelResults() {
+      if (!this.currentExperimentData?.chatStructure?.results) return
+      
+      const resultData = this.currentExperimentData.chatStructure.results.analysis
+      if (!resultData) return
+      
+      setTimeout(() => {
+        this.addBotMessage(`🔍 Analisando suas preferências...`)
+        setTimeout(() => {
+          this.addBotMessage(resultData.subtitle)
+          setTimeout(() => {
+            this.addBotMessage(resultData.description)
+            setTimeout(() => {
+              this.addBotMessage(`✨ Gerando recomendações personalizadas`)
+              setTimeout(() => {
+                this.addBotMessage(`${resultData.detailed.title} ${resultData.detailed.description}`)
+                setTimeout(() => {
+                  this.addBotMessage(`💡 Como posso te ajudar:`)
+                  setTimeout(() => {
+                    this.addBotMessage(resultData.detailed.help)
+                    setTimeout(() => {
+                      this.showFinalMessage()
+                    }, 2000)
+                  }, 2000)
+                }, 2000)
+              }, 2000)
+            }, 2000)
+          }, 2000)
+        }, 2000)
+      }, 2000)
     },
     
     showFinalMessage() {
@@ -1867,6 +1931,15 @@ export default {
 
 .samelly-avatar.human-avatar:hover {
   box-shadow: 0 0 30px rgba(255, 107, 157, 0.5);
+}
+
+.luna-avatar.human-avatar {
+  border-color: rgba(0, 191, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+}
+
+.luna-avatar.human-avatar:hover {
+  box-shadow: 0 0 30px rgba(0, 191, 255, 0.5);
 }
 
 .support-avatar.human-avatar {
