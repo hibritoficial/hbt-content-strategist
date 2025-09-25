@@ -1,16 +1,22 @@
 <template>
   <div class="chat-simulator" :class="{ 'dark-mode': isDarkMode, 'with-sidebar': showJsonSidebar }">
+    <!-- JSON FAB when closed -->
+    <div v-if="!showJsonSidebar" class="json-fab" @click="showJsonSidebar = true" title="Abrir Estrutura JSON">
+      <i class="mdi mdi-code-json"></i>
+    </div>
+
     <!-- JSON Sidebar -->
-    <div v-if="showJsonSidebar" class="json-sidebar">
+    <div v-if="showJsonSidebar" class="json-sidebar" :class="{ 'closing': isClosing }">
       <div class="sidebar-header">
-        <h3>📋 Estrutura JSON</h3>
-        <button @click="showJsonSidebar = false" class="close-sidebar">×</button>
-      </div>
-      <div class="sidebar-actions">
-        <button @click="selectAllJson" class="select-all-btn">
-          <span class="select-icon">📋</span>
-          <span class="select-text">Selecionar Tudo</span>
-        </button>
+        <h3><i class="mdi mdi-code-json"></i> Estrutura JSON</h3>
+        <div class="header-actions">
+          <button @click="selectAllJson" class="select-all-btn" title="Selecionar Tudo">
+            <i class="mdi mdi-select-all"></i>
+          </button>
+          <button @click="closeJsonSidebar" class="close-sidebar" title="Fechar">
+            <i class="mdi mdi-close"></i>
+          </button>
+        </div>
       </div>
       <div class="json-content" ref="jsonContent">
         <pre class="json-display" ref="jsonDisplay"><code v-html="highlightedJson"></code></pre>
@@ -598,6 +604,12 @@ export default {
           }
         },
         {
+          id: 'travel-genius',
+          name: 'Holé Travel Genius AI',
+          icon: '✈️',
+          description: 'Sistema inteligente de recomendações de viagem com mineração de dados'
+        },
+        {
           id: 'lead-qualification',
           name: 'Qualificação de Leads',
           icon: '🎯',
@@ -653,6 +665,7 @@ export default {
       finalResult: null,
       showDetailedResults: false,
       showJsonSidebar: true,
+      isClosing: false,
       currentJsonHighlight: null,
       jsonScrollPosition: 0,
       showSelectAlert: false,
@@ -834,23 +847,26 @@ export default {
         // Increment index first
         this.currentFlowIndex++
         
-        // Only set question after message is displayed
+        // Wait for typing animation to complete before showing question
         setTimeout(() => {
           if (flowItem.question) {
             this.currentQuestion = flowItem.question
-            // Auto-scroll to bottom after options appear
+            // Save question data if it has saveAs property
+            if (flowItem.question.saveAs) {
+              this.currentQuestion.saveAs = flowItem.question.saveAs
+            }
             this.$nextTick(() => {
               setTimeout(() => {
                 this.scrollToBottom()
-              }, 100) // Small delay to ensure options are rendered
+              }, 200)
             })
           } else {
             // If no question, continue to next item automatically
             setTimeout(() => {
               this.askNextQuestion()
-            }, 1500)
+            }, 2000)
           }
-        }, 2000) // Wait for message to be fully displayed
+        }, 2500) // Longer delay to ensure message is fully typed
       }
     },
     
@@ -944,6 +960,18 @@ export default {
           }
         }, 1000)
       } else {
+        // Save user preference data
+        if (this.currentExperiment?.id === 'travel-genius') {
+          this.userData[`preference_${Date.now()}`] = value
+          
+          // Check if this is the last question for travel-genius
+          if (this.currentFlowIndex >= this.conversationFlow.length) {
+            setTimeout(() => {
+              this.showTravelResults()
+            }, 1500)
+            return
+          }
+        }
         // Handle other answers
         setTimeout(() => {
           this.askNextQuestion()
@@ -1196,6 +1224,14 @@ export default {
       }
     },
     
+    closeJsonSidebar() {
+      this.isClosing = true
+      setTimeout(() => {
+        this.showJsonSidebar = false
+        this.isClosing = false
+      }, 300)
+    },
+    
     selectAllJson() {
       if (!this.$refs.jsonDisplay) return
       
@@ -1283,6 +1319,46 @@ export default {
           }
         }, 2000)
       }
+    },
+    
+    async generatePersonalizedItinerary() {
+      try {
+        const { claudeService } = await import('@/services/claudeService')
+        return await claudeService.generateTravelItinerary(this.userData)
+      } catch (error) {
+        console.error('Erro ao gerar roteiro:', error)
+        return {
+          title: '🌟 Roteiro Personalizado',
+          content: `Olá ${this.userData.firstname || 'viajante'}! 🎒\n\nCom base no seu perfil, criamos sugestões especiais para você:\n\n🏖️ **Destinos Recomendados**\n\n• Locais que combinam com seu estilo\n• Experiências únicas\n\n📅 **Roteiro Sugerido**\n\n• Atividades personalizadas\n• Dicas locais\n\n💰 **Orçamento Otimizado**\n\n• Melhores ofertas\n• Custo-benefício ideal\n\n✈️ Prepare-se para uma viagem incrível!`
+        }
+      }
+    },
+    
+    async showTravelResults() {
+      if (!this.currentExperimentData?.chatStructure?.results) return
+      
+      const resultData = this.currentExperimentData.chatStructure.results.analysis
+      if (!resultData) return
+      
+      setTimeout(() => {
+        this.addBotMessage(`🔍 Analisando suas preferências...`)
+        setTimeout(() => {
+          this.addBotMessage(resultData.subtitle)
+          setTimeout(async () => {
+            this.addBotMessage(`🤖 Gerando roteiro personalizado com IA...`)
+            
+            // Generate itinerary with Claude
+            const itinerary = await this.generatePersonalizedItinerary()
+            
+            setTimeout(() => {
+              this.addBotMessage(itinerary.content)
+              setTimeout(() => {
+                this.showFinalMessage()
+              }, 2000)
+            }, 3000)
+          }, 2000)
+        }, 2000)
+      }, 2000)
     },
     
     handleImageError(event) {
@@ -2089,25 +2165,117 @@ export default {
 /* JSON Sidebar Styles */
 .json-sidebar {
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 220px;
+  left: 80px;
   width: 400px;
-  height: 100vh;
+  height: calc(100vh - 220px);
   background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
   backdrop-filter: blur(20px);
-  border-left: 1px solid rgba(0, 255, 255, 0.2);
-  z-index: 999;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 15px;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.json-sidebar.closing {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  top: 240px;
+  left: 100px;
+  opacity: 0.8;
+}
+
+.json-fab {
+  position: fixed;
+  top: 240px;
+  left: 100px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 255, 255, 0.3));
+  border: 1px solid rgba(0, 255, 255, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 255, 255, 0.3);
+}
+
+.json-fab:hover {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(0, 255, 255, 0.4));
+  box-shadow: 0 6px 25px rgba(0, 255, 255, 0.4);
+}
+
+.json-fab i {
+  font-size: 24px;
+  color: #00ffff;
 }
 
 .sidebar-header {
   padding: 20px;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.select-all-btn {
+  padding: 8px;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 6px;
+  color: #00ffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.select-all-btn:hover {
+  background: rgba(0, 255, 255, 0.2);
+  border-color: rgba(0, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.select-all-btn i {
+  font-size: 16px;
+}
+
+.close-sidebar {
+  padding: 8px;
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 6px;
+  color: #ff6b6b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-sidebar:hover {
+  background: rgba(255, 0, 0, 0.2);
+  border-color: rgba(255, 0, 0, 0.5);
+  transform: scale(1.05);
+}
+
+.close-sidebar i {
+  font-size: 16px;
 }
 
 .sidebar-header h3 {
