@@ -286,10 +286,20 @@
           color="success"
           prepend-icon="mdi-flask"
           variant="elevated"
-          class="hibrit-labs-btn"
+          class="hibrit-labs-btn mr-4"
           @click="() => router.push('/labs')"
         >
           HIBRIT LABS
+        </v-btn>
+        
+        <v-btn
+          color="cyan"
+          prepend-icon="mdi-brain"
+          variant="elevated"
+          class="knowledge-nexus-btn"
+          @click="openKnowledgeNexus"
+        >
+          KNOWLEDGE NEXUS
         </v-btn>
         
         <v-spacer />
@@ -435,6 +445,10 @@ const openFunnelCenter = () => {
   router.push({ name: 'FunnelCenter' })
 }
 
+const openKnowledgeNexus = () => {
+  router.push({ name: 'KnowledgeNexus' })
+}
+
 const generateCopies = () => {
   // Implementar geração de copies
   showSnackbar('Gerando 3 variações...', 'info')
@@ -577,6 +591,21 @@ onMounted(async () => {
   }
   to {
     box-shadow: 0 6px 20px rgba(0, 255, 157, 0.6);
+  }
+}
+
+.knowledge-nexus-btn {
+  background: linear-gradient(45deg, #00bcd4, #0097a7) !important;
+  box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4) !important;
+  animation: nexus-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes nexus-glow {
+  from {
+    box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4);
+  }
+  to {
+    box-shadow: 0 6px 20px rgba(0, 188, 212, 0.6);
   }
 }
 

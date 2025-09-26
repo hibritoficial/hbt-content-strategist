@@ -49,6 +49,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/knowledge-nexus',
+    name: 'KnowledgeNexus',
+    component: () => import('@/views/KnowledgeNexus.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/labs/interface-test',
     name: 'InterfaceTest',
     component: () => import('@/views/InterfaceTest.vue'),
