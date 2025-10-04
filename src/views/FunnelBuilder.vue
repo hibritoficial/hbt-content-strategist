@@ -10,65 +10,127 @@
       </v-toolbar-title>
       
       <v-spacer />
-      
-      <!-- Janela de tempo -->
-      <v-btn-group density="compact" class="mr-4">
-        <v-btn
-          v-for="window in [5, 30, 120]"
-          :key="window"
-          :color="timeWindow === window ? 'primary' : 'default'"
-          size="small"
-          @click="timeWindow = window"
-        >
-          {{ window }}min
-        </v-btn>
-      </v-btn-group>
-      
-      <!-- Modo de visualização -->
-      <v-btn-group density="compact" class="mr-4">
-        <v-btn
-          :color="viewMode === 'design' ? 'primary' : 'default'"
-          @click="viewMode = 'design'"
-        >
-          <v-icon>mdi-pencil</v-icon>
-          Design
-        </v-btn>
-        <v-btn
-          :color="viewMode === 'live' ? 'success' : 'default'"
-          @click="toggleLiveMode"
-        >
-          <v-icon>mdi-pulse</v-icon>
-          Live
-        </v-btn>
-      </v-btn-group>
-      
-      <v-btn-group density="compact">
-        <v-btn @click="autoLayout">
-          <v-icon>mdi-auto-fix</v-icon>
-          Auto
-        </v-btn>
-        <v-btn @click="fitView">
-          <v-icon>mdi-fit-to-screen</v-icon>
-          Fit
-        </v-btn>
-        <v-btn @click="downloadFunnel">
-          <v-icon>mdi-download</v-icon>
-          Download
-        </v-btn>
-        <v-btn @click="toggleCompactMode">
-          <v-icon>{{ compactMode ? 'mdi-view-list' : 'mdi-view-comfy' }}</v-icon>
-          {{ compactMode ? 'Detalhado' : 'Compacto' }}
-        </v-btn>
+
+      <!-- Mobile overflow menu -->
+      <v-menu class="d-inline-flex d-md-none">
+        <template #activator="{ props }">
+          <v-btn icon="mdi-dots-vertical" v-bind="props" title="Ações" />
+        </template>
+        <v-list>
+          <v-list-subheader>Janela</v-list-subheader>
+          <v-list-item
+            v-for="window in [5, 30, 120]"
+            :key="`mob-${window}`"
+            @click="timeWindow = window"
+          >
+            <v-list-item-title>{{ window }}min</v-list-item-title>
+            <template #append>
+              <v-icon v-if="timeWindow === window" color="primary">mdi-check</v-icon>
+            </template>
+          </v-list-item>
+
+          <v-divider class="my-1" />
+          <v-list-subheader>Modo</v-list-subheader>
+          <v-list-item @click="viewMode = 'design'">
+            <template #prepend><v-icon>mdi-pencil</v-icon></template>
+            <v-list-item-title>Design</v-list-item-title>
+            <template #append>
+              <v-icon v-if="viewMode === 'design'" color="primary">mdi-check</v-icon>
+            </template>
+          </v-list-item>
+          <v-list-item @click="toggleLiveMode">
+            <template #prepend><v-icon>mdi-pulse</v-icon></template>
+            <v-list-item-title>Live</v-list-item-title>
+            <template #append>
+              <v-icon v-if="viewMode === 'live'" color="success">mdi-check</v-icon>
+            </template>
+          </v-list-item>
+
+          <v-divider class="my-1" />
+          <v-list-item @click="autoLayout">
+            <template #prepend><v-icon>mdi-auto-fix</v-icon></template>
+            <v-list-item-title>Auto</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="fitView">
+            <template #prepend><v-icon>mdi-fit-to-screen</v-icon></template>
+            <v-list-item-title>Fit</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="downloadFunnel">
+            <template #prepend><v-icon>mdi-download</v-icon></template>
+            <v-list-item-title>Download</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="toggleCompactMode">
+            <template #prepend><v-icon>{{ compactMode ? 'mdi-view-list' : 'mdi-view-comfy' }}</v-icon></template>
+            <v-list-item-title>{{ compactMode ? 'Detalhado' : 'Compacto' }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="startQuickTour">
+            <template #prepend><v-icon>mdi-help-circle</v-icon></template>
+            <v-list-item-title>Ajuda</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <!-- Desktop groups -->
+      <div class="d-none d-md-inline-flex align-center">
+        <!-- Janela de tempo -->
+        <v-btn-group density="compact" class="mr-4">
+          <v-btn
+            v-for="window in [5, 30, 120]"
+            :key="window"
+            :color="timeWindow === window ? 'primary' : 'default'"
+            size="small"
+            @click="timeWindow = window"
+          >
+            {{ window }}min
+          </v-btn>
+        </v-btn-group>
         
-        <!-- Botão de ajuda -->
-        <v-btn 
-          icon="mdi-help-circle"
-          variant="text"
-          color="white"
-          @click="startQuickTour"
-          class="ml-2"
-        />
-      </v-btn-group>
+        <!-- Modo de visualização -->
+        <v-btn-group density="compact" class="mr-4">
+          <v-btn
+            :color="viewMode === 'design' ? 'primary' : 'default'"
+            @click="viewMode = 'design'"
+          >
+            <v-icon>mdi-pencil</v-icon>
+            Design
+          </v-btn>
+          <v-btn
+            :color="viewMode === 'live' ? 'success' : 'default'"
+            @click="toggleLiveMode"
+          >
+            <v-icon>mdi-pulse</v-icon>
+            Live
+          </v-btn>
+        </v-btn-group>
+        
+        <v-btn-group density="compact">
+          <v-btn @click="autoLayout">
+            <v-icon>mdi-auto-fix</v-icon>
+            Auto
+          </v-btn>
+          <v-btn @click="fitView">
+            <v-icon>mdi-fit-to-screen</v-icon>
+            Fit
+          </v-btn>
+          <v-btn @click="downloadFunnel">
+            <v-icon>mdi-download</v-icon>
+            Download
+          </v-btn>
+          <v-btn @click="toggleCompactMode">
+            <v-icon>{{ compactMode ? 'mdi-view-list' : 'mdi-view-comfy' }}</v-icon>
+            {{ compactMode ? 'Detalhado' : 'Compacto' }}
+          </v-btn>
+          
+          <!-- Botão de ajuda -->
+          <v-btn 
+            icon="mdi-help-circle"
+            variant="text"
+            color="white"
+            @click="startQuickTour"
+            class="ml-2"
+          />
+        </v-btn-group>
+      </div>
     </v-app-bar>
 
     <div class="funnel-builder">

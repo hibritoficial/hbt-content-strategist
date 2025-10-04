@@ -10,27 +10,63 @@
       
       <v-spacer />
       
-      <v-btn-group density="compact">
-        <v-btn
-          :color="focusMode ? 'primary' : 'default'"
-          @click="toggleFocusMode"
-        >
-          <v-icon>mdi-focus-field</v-icon>
-          Focus
-        </v-btn>
-        <v-btn @click="fitView">
-          <v-icon>mdi-fit-to-screen</v-icon>
-          Fit
-        </v-btn>
-        <v-btn @click="exportCanvas">
-          <v-icon>mdi-download</v-icon>
-          Export
-        </v-btn>
-        <v-btn @click="startStoryMode" color="success">
-          <v-icon>mdi-play</v-icon>
-          Tour 30s
-        </v-btn>
-      </v-btn-group>
+      <!-- Mobile overflow menu -->
+      <v-menu class="d-inline-flex d-md-none">
+        <template #activator="{ props }">
+          <v-btn icon="mdi-dots-vertical" v-bind="props" title="Ações" />
+        </template>
+        <v-list>
+          <v-list-item @click="toggleFocusMode">
+            <template #prepend>
+              <v-icon>mdi-focus-field</v-icon>
+            </template>
+            <v-list-item-title>{{ focusMode ? 'Focus: On' : 'Focus: Off' }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="fitView">
+            <template #prepend>
+              <v-icon>mdi-fit-to-screen</v-icon>
+            </template>
+            <v-list-item-title>Fit</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="exportCanvas">
+            <template #prepend>
+              <v-icon>mdi-download</v-icon>
+            </template>
+            <v-list-item-title>Export</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="startStoryMode">
+            <template #prepend>
+              <v-icon>mdi-play</v-icon>
+            </template>
+            <v-list-item-title>Tour 30s</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <!-- Desktop button group -->
+      <div class="d-none d-md-inline-flex">
+        <v-btn-group density="compact">
+          <v-btn
+            :color="focusMode ? 'primary' : 'default'"
+            @click="toggleFocusMode"
+          >
+            <v-icon>mdi-focus-field</v-icon>
+            Focus
+          </v-btn>
+          <v-btn @click="fitView">
+            <v-icon>mdi-fit-to-screen</v-icon>
+            Fit
+          </v-btn>
+          <v-btn @click="exportCanvas">
+            <v-icon>mdi-download</v-icon>
+            Export
+          </v-btn>
+          <v-btn @click="startStoryMode" color="success">
+            <v-icon>mdi-play</v-icon>
+            Tour 30s
+          </v-btn>
+        </v-btn-group>
+      </div>
     </v-app-bar>
 
     <!-- Breadcrumb -->
