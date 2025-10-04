@@ -1,14 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
-// Runtime dev bypass helper (mirrors auth store logic)
-const LOCALSTORAGE_KEY_BYPASS = 'hibrit_auth_bypass'
-const getEnvBypassFlag = () => String(import.meta.env.VITE_AUTH_BYPASS || '').toLowerCase() === 'true'
-const isBypassActive = () => {
-  if (typeof window === 'undefined') return getEnvBypassFlag()
-  return getEnvBypassFlag() || localStorage.getItem(LOCALSTORAGE_KEY_BYPASS) === 'true'
-}
-
 const routes = [
   {
     path: '/',
@@ -260,12 +252,6 @@ router.beforeEach(async (to, from, next) => {
   // Aguardar inicialização do auth se necessário
   if (!authStore.initialized) {
     await authStore.initialize()
-  }
-  
-  // Se bypass está ativo e usuário tentar ir para /login, redireciona
-  if (isBypassActive() && to.path === '/login') {
-    next('/cockpit')
-    return
   }
   
   if (to.meta.requiresAuth && !authStore.user) {
