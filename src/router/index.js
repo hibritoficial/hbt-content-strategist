@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
+// Development-only auth bypass flag
+const AUTH_BYPASS_ENABLED = String(import.meta.env.VITE_AUTH_BYPASS || '').toLowerCase() === 'true'
+
 const routes = [
   {
     path: '/',
@@ -252,6 +255,12 @@ router.beforeEach(async (to, from, next) => {
   // Aguardar inicialização do auth se necessário
   if (!authStore.initialized) {
     await authStore.initialize()
+  }
+  
+  // Se bypass está ativo e usuário tentar ir para /login, redireciona
+  if (AUTH_BYPASS_ENABLED && to.path === '/login') {
+    next('/cockpit')
+    return
   }
   
   if (to.meta.requiresAuth && !authStore.user) {
