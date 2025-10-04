@@ -250,57 +250,87 @@
           title="Compactar menu"
           class="mr-2"
         />
-        
-        <!-- Left side buttons -->
-        <v-btn
-          color="deep-purple"
-          prepend-icon="mdi-crown"
-          variant="elevated"
-          class="mr-4 funnel-ultimate-btn"
-          @click="openFunnelCenter"
-        >
-          Funnel ULTIMATE
-        </v-btn>
-        
-        <v-btn
-          color="primary"
-          prepend-icon="mdi-chart-timeline-variant"
-          variant="elevated"
-          class="mr-4"
-          @click="openContentCenter"
-        >
-          Content Center
-        </v-btn>
-        
-        <v-btn
-          color="orange"
-          prepend-icon="mdi-factory"
-          variant="elevated"
-          class="mr-4"
-          @click="openCOC"
-        >
-          COC
-        </v-btn>
-        
-        <v-btn
-          color="success"
-          prepend-icon="mdi-flask"
-          variant="elevated"
-          class="hibrit-labs-btn mr-4"
-          @click="() => router.push('/labs')"
-        >
-          HIBRIT LABS
-        </v-btn>
-        
-        <v-btn
-          color="cyan"
-          prepend-icon="mdi-brain"
-          variant="elevated"
-          class="knowledge-nexus-btn"
-          @click="openKnowledgeNexus"
-        >
-          KNOWLEDGE NEXUS
-        </v-btn>
+        <!-- Mobile actions menu -->
+        <v-menu class="d-inline-flex d-md-none">
+          <template #activator="{ props }">
+            <v-btn
+              icon="mdi-dots-vertical"
+              v-bind="props"
+              title="Ações"
+              class="mr-2"
+            />
+          </template>
+          <v-list>
+            <v-list-item prepend-icon="mdi-crown" @click="openFunnelCenter">
+              <v-list-item-title>Funnel ULTIMATE</v-list-item-title>
+            </v-list-item>
+            <v-list-item prepend-icon="mdi-chart-timeline-variant" @click="openContentCenter">
+              <v-list-item-title>Content Center</v-list-item-title>
+            </v-list-item>
+            <v-list-item prepend-icon="mdi-factory" @click="openCOC">
+              <v-list-item-title>COC</v-list-item-title>
+            </v-list-item>
+            <v-list-item prepend-icon="mdi-flask" @click="() => router.push('/labs')">
+              <v-list-item-title>Hibrit Labs</v-list-item-title>
+            </v-list-item>
+            <v-list-item prepend-icon="mdi-brain" @click="openKnowledgeNexus">
+              <v-list-item-title>Knowledge Nexus</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+        <!-- Left side buttons (desktop) -->
+        <div class="d-none d-md-flex align-center">
+          <v-btn
+            color="deep-purple"
+            prepend-icon="mdi-crown"
+            variant="elevated"
+            class="mr-4 funnel-ultimate-btn"
+            @click="openFunnelCenter"
+          >
+            Funnel ULTIMATE
+          </v-btn>
+          
+          <v-btn
+            color="primary"
+            prepend-icon="mdi-chart-timeline-variant"
+            variant="elevated"
+            class="mr-4"
+            @click="openContentCenter"
+          >
+            Content Center
+          </v-btn>
+          
+          <v-btn
+            color="orange"
+            prepend-icon="mdi-factory"
+            variant="elevated"
+            class="mr-4"
+            @click="openCOC"
+          >
+            COC
+          </v-btn>
+          
+          <v-btn
+            color="success"
+            prepend-icon="mdi-flask"
+            variant="elevated"
+            class="hibrit-labs-btn mr-4"
+            @click="() => router.push('/labs')"
+          >
+            HIBRIT LABS
+          </v-btn>
+          
+          <v-btn
+            color="cyan"
+            prepend-icon="mdi-brain"
+            variant="elevated"
+            class="knowledge-nexus-btn"
+            @click="openKnowledgeNexus"
+          >
+            KNOWLEDGE NEXUS
+          </v-btn>
+        </div>
         
         <v-spacer />
         
@@ -340,10 +370,18 @@
           color="error"
           prepend-icon="mdi-close"
           @click="stopSimulation"
-          class="ml-2"
+          class="ml-2 d-none d-sm-inline-flex"
         >
           Sair da Simulação
         </v-btn>
+        <v-btn
+          v-if="simulationStore.isSimulating"
+          icon="mdi-close"
+          color="error"
+          class="ml-2 d-inline-flex d-sm-none"
+          @click="stopSimulation"
+          title="Sair da Simulação"
+        />
         
         <v-menu>
           <template #activator="{ props }">
